@@ -13,16 +13,5 @@ interface Comparable{
      */
     fun isObjectOfSameType(otherComparable: Comparable?) : Boolean
 
-    companion object {
 
-        fun isObjectOfSameType(first: Comparable?, second: Comparable?) : Boolean {
-            return if(first == null || second == null) {
-                true
-            } else {
-                first::class.java.isAssignableFrom(second::class.java) ||
-                        second::class.java.isAssignableFrom(first::class.java)
-            }
-        }
-
-    }
 }
