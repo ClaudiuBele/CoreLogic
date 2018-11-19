@@ -22,6 +22,8 @@ Architecture Components, Livedata and ViewModel
 ### di
 
 Dependency Injection support
+- Relies on Singleton Application Component, which is then used by activities and fragments,
+however it can be decoupled and DI-related controllers safely interract and query eachother
 - At ui level through `dk.sidereal.corelogic.di.ui`
 
 ### repo

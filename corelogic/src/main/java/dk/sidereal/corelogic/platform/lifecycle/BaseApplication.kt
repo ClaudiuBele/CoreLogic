@@ -2,8 +2,25 @@ package dk.sidereal.corelogic.platform.lifecycle
 
 import android.app.Application
 
-class BaseApplication : Application() {
+open class BaseApplication : Application() {
 
-    val controller = ApplicationController(this)
+    internal val controllers: List<ApplicationController> = mutableListOf()
 
+    override fun onCreate() {
+        super.onCreate()
+        onSetupControllers()
+        controllers.forEach { it.onCreate() }
+    }
+
+    internal open fun onSetupControllers() {}
+
+    @Suppress("UNCHECKED_CAST")
+    internal fun <T : ApplicationController> getController(clazz: Class<T>) : T?
+            = controllers.firstOrNull { it.javaClass.isAssignableFrom(clazz) } as? T
+
+    override fun onTerminate() {
+        super.onTerminate()
+        controllers.forEach { it.dispose() }
+    }
 }
+
