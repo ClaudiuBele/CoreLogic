@@ -10,12 +10,15 @@ abstract class DiActivityController<T : BaseActivity>(activity: T) : ActivityCon
     abstract fun getComponent(): DiComponent
     abstract fun inject(activity: T)
 
+    @Suppress("UNUSED")
     val applicationController: DiApplicationController<*>?
         get () = activity.baseApplication.getController(DiApplicationController::class.java)
 
+    @Suppress("UNUSED")
     val applicationComponent: DiComponent?
         get() = activity.baseApplication.getController(DiApplicationController::class.java)?.getComponent()
 
+    @Suppress("UNUSED")
     override fun onAttachFragment(baseFragment: BaseFragment?) {
         super.onAttachFragment(baseFragment)
 

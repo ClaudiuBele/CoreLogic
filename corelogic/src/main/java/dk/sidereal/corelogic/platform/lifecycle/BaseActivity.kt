@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 
 open class BaseActivity : AppCompatActivity() {
 
-    protected val controllers: List<ActivityController> = mutableListOf()
+    protected val controllers: MutableList<ActivityController> = mutableListOf()
 
     val baseApplication: BaseApplication
         get() = application as BaseApplication

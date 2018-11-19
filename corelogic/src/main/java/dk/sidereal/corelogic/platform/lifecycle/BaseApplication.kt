@@ -4,7 +4,7 @@ import android.app.Application
 
 open class BaseApplication : Application() {
 
-    internal val controllers: List<ApplicationController> = mutableListOf()
+    internal val controllers: MutableList<ApplicationController> = mutableListOf()
 
     override fun onCreate() {
         super.onCreate()

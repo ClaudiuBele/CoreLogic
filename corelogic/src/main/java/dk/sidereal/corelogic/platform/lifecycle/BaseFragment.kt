@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 
 open class BaseFragment : Fragment() {
 
-    protected val controllers: List<FragmentController> = mutableListOf()
+    protected val controllers: MutableList<FragmentController> = mutableListOf()
 
     val baseActivity: BaseActivity? = activity as? BaseActivity
     val baseApplication: BaseApplication? = baseActivity?.baseApplication

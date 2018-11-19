@@ -2,9 +2,6 @@ package dk.sidereal.corelogic.di.lifecycle
 
 import android.os.Bundle
 import android.os.PersistableBundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
 /** Prebuild [BaseActivity] for DI.
@@ -13,16 +10,17 @@ import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
  */
 abstract class DiActivity : BaseActivity() {
 
-    abstract fun getDiComponent(): DiActivityController<DiActivity>
+    internal abstract fun getDiController(): DiActivityController<DiActivity>
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
+        controllers.add(getDiController())
         onInject()
         onPostInject()
     }
 
     protected open fun onInject() {
-        getDiComponent().inject(this)
+        getDiController().inject(this)
     }
 
     protected open fun onPostInject() {
