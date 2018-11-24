@@ -62,13 +62,13 @@ abstract  class NavActivity : BaseNavActivity() {
 
         val bottomNavigationMenuId = getBottomNavigationMenuId()
         if(bottomNavigationMenuId != null) {
-            NavigationUI.setupWithNavController(bottomNavigationView, navController)
             contentRoot.applyViewConstraints(bottomNavigationView) {
                 constraintApplier ->
                 constraintApplier.disconnect(ConstraintSet.TOP)
                 constraintApplier.connect(ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
             }
             bottomNavigationView.inflateMenu(bottomNavigationMenuId)
+            NavigationUI.setupWithNavController(bottomNavigationView, navController)
         } else {
             contentRoot.applyViewConstraints(bottomNavigationView) {
                     constraintApplier ->
@@ -83,9 +83,9 @@ abstract  class NavActivity : BaseNavActivity() {
         val navigationMenuId = getNavigationMenuId()
         navigationView.isEnabled = navigationMenuId != null
         if(navigationMenuId != null) {
-            NavigationUI.setupWithNavController(navigationView, navController)
             root.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             navigationView.inflateMenu(navigationMenuId)
+            NavigationUI.setupWithNavController(navigationView, navController)
         } else {
             root.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }

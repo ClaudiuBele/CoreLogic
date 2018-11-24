@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">CoreLogic</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="contacts_title">Contacts page</string>
+
+    <string name="info_title">This is the info page</string>
+    <string name="info_description">Hey, this is a description. It\'s on at least 2 rows, because the text is long and
+        there is a lot of padding
+    </string>
+
 </resources>
