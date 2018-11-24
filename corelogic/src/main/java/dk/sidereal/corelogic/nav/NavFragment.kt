@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import dk.sidereal.corelogic.nav.NavActivity.Companion.DEBUG_TAG
+import dk.sidereal.corelogic.nav.BaseNavActivity.Companion.DEBUG_TAG
 import dk.sidereal.corelogic.platform.lifecycle.BaseFragment
 
 /** Base fragment to be used for navigation
@@ -16,7 +16,7 @@ import dk.sidereal.corelogic.platform.lifecycle.BaseFragment
  */
 open class NavFragment : BaseFragment() {
 
-    /** Not null from [onAttach] if used with [NavActivity] and [BaseNavHostFragment]
+    /** Not null from [onAttach] if used with [BaseNavActivity] and [BaseNavHostFragment]
      *
      */
     val  navController : NavController?

@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import dk.sidereal.corelogic.nav.NavActivity.Companion.DEBUG_TAG
+import dk.sidereal.corelogic.nav.BaseNavActivity.Companion.DEBUG_TAG
 
-/** [NavHostFragment] alternative to be used when your activity is [NavActivity].
+/** [NavHostFragment] alternative to be used when your activity is [BaseNavActivity].
  * Fragments inside must be [NavFragment]
  */
 class BaseNavHostFragment : NavHostFragment() {
@@ -85,8 +85,8 @@ class BaseNavHostFragment : NavHostFragment() {
         super.onViewCreated(view, savedInstanceState)
         Log.d(DEBUG_TAG, "BaseNavHostFragment: onViewCreated")
         val controller = view.findNavController()
-        if(activity is NavActivity) {
-            (activity as NavActivity).onNavControllerReady(controller)
+        if(activity is BaseNavActivity) {
+            (activity as BaseNavActivity).onNavControllerReady(controller)
         }
     }
 
