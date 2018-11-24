@@ -9,8 +9,8 @@ open class BaseFragment : Fragment() {
 
     val baseActivity: BaseActivity? = activity as? BaseActivity
     val baseApplication: BaseApplication? = baseActivity?.baseApplication
-    val requireBaseActivity: BaseActivity = requireActivity() as BaseActivity
-    val requireApplication: BaseApplication = requireBaseActivity.baseApplication
+    val requireBaseActivity: BaseActivity get() = requireActivity() as BaseActivity
+    val requireApplication: BaseApplication get() = requireBaseActivity.baseApplication
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

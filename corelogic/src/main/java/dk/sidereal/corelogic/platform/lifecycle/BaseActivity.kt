@@ -1,7 +1,6 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
@@ -13,7 +12,7 @@ open class BaseActivity : AppCompatActivity() {
         get() = application as BaseApplication
 
     val baseFragments: List<BaseFragment>
-        get() = supportFragmentManager.fragments.map { it as BaseFragment }
+        get() = supportFragmentManager.fragments.dropWhile { it !is BaseFragment }.map { it as BaseFragment }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

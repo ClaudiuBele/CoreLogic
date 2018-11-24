@@ -30,4 +30,9 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(":corelogic")
+    // implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_main"
+            app:startDestination="@id/introFragment">
+    <fragment android:id="@+id/introFragment"
+              android:name="dk.sidereal.corelogic.IntroFragment"
+              android:label="fragment_intro"
+              tools:layout="@layout/fragment_intro">
+        <argument android:name="meme"
+                  app:argType="string"
+                  android:defaultValue='"Shareek"'/>
+        <action android:id="@+id/action_introFragment_to_helloFragment"
+                app:destination="@id/helloFragment"/>
+    </fragment>
+    <fragment android:id="@+id/helloFragment"
+              android:name="dk.sidereal.corelogic.HelloFragment"
+              android:label="fragment_hello"
+              tools:layout="@layout/fragment_hello">
+        <argument android:name="name"
+                  app:argType="string"
+                  android:defaultValue="Shareek"/>
+        <action android:id="@+id/action_helloFragment_to_shareekFragment2"
+                app:destination="@id/shareekFragment"/>
+    </fragment>
+    <fragment android:id="@+id/shareekFragment"
+              android:name="dk.sidereal.corelogic.ShareekFragment"
+              android:label="fragment_shareek"
+              tools:layout="@layout/fragment_shareek"/>
+</navigation>
