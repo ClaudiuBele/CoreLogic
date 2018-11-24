@@ -14,4 +14,8 @@ class MainActivity : NavActivity() {
     override fun getNavigationMenuId(): Int? {
         return R.menu.menu_main
     }
+
+    override fun getStartDestinations(): List<Int> {
+        return listOf(R.id.contactsFragment, R.id.infoFragment)
+    }
 }

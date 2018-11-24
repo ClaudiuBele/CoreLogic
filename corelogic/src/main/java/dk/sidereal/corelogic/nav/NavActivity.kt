@@ -2,6 +2,7 @@ package dk.sidereal.corelogic.nav
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.drawerlayout.widget.DrawerLayout
@@ -16,10 +17,13 @@ import dk.sidereal.corelogic.platform.widget.constraint.applyViewConstraints
 abstract  class NavActivity : BaseNavActivity() {
 
 
-    lateinit var root: DrawerLayout
-    lateinit var navigationView: NavigationView
-    lateinit var contentRoot: ConstraintLayout
-    lateinit var bottomNavigationView: BottomNavigationView
+    protected lateinit var drawerLayout: DrawerLayout
+    protected lateinit var navigationView: NavigationView
+    protected lateinit var contentRoot: ConstraintLayout
+    protected lateinit var bottomNavigationView: BottomNavigationView
+    protected lateinit var toolbar: Toolbar
+    protected var savedAppBarConfiguration: AppBarConfiguration? = null
+    protected lateinit var navigationUI: MultiStartNavigationUI
 
     override fun setNavContentView() {
         setContentView(R.layout.activity_nav)
@@ -27,10 +31,12 @@ abstract  class NavActivity : BaseNavActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        root = findViewById(R.id.root)
+        drawerLayout = findViewById(R.id.root)
         navigationView = findViewById(R.id.navigation_view)
         contentRoot = findViewById(R.id.content_root)
         bottomNavigationView = findViewById(R.id.bottom_navigation)
+        toolbar = findViewById(R.id.toolbar)
+        setSupportActionBar(toolbar)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -41,22 +47,27 @@ abstract  class NavActivity : BaseNavActivity() {
     override fun onNavControllerReady(navController: NavController) {
         super.onNavControllerReady(navController)
 
-        // only setup action bar connection with navigation if configuration is not null
-        getAppBarConfiguration()?.let {
-            NavigationUI.setupActionBarWithNavController(this, navController, it)
-        }
-        // with [BottomNavigationView]
-        //NavigationUI.setupWithNavController(bottomNavView, navController)
         invalidateBottomNavigationView()
         invalidateNavigationView()
-    }
-    // works with getSupportActionBar
-    open fun getAppBarConfiguration(): AppBarConfiguration? {
-        return null
 
-        // use something like this to specify which destinations to count as top components (so no up arrow)
-        // val appBarConfiguration = AppBarConfiguration(setOf(R.id.main, R.id.android)) // list of destinations inside
+        navigationUI = MultiStartNavigationUI(getStartDestinations())
+        navigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+
     }
+
+    override fun onBackPressed() {
+        // Optional if you want the app to close when the back button is pressed
+        // on a start destination
+        if (!navigationUI.onBackPressed(this, navController)) {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onSupportNavigateUp() = navigationUI.navigateUp(drawerLayout, navController)
+
+    /** Destinations for which toolbar shows up as home
+     */
+    abstract fun getStartDestinations(): List<Int>
 
     fun invalidateBottomNavigationView() {
 
@@ -79,15 +90,15 @@ abstract  class NavActivity : BaseNavActivity() {
     }
 
     fun invalidateNavigationView() {
-        root.closeDrawers()
+        drawerLayout.closeDrawers()
         val navigationMenuId = getNavigationMenuId()
         navigationView.isEnabled = navigationMenuId != null
         if(navigationMenuId != null) {
-            root.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
             navigationView.inflateMenu(navigationMenuId)
             NavigationUI.setupWithNavController(navigationView, navController)
         } else {
-            root.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
     }
 

@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import dk.sidereal.corelogic.R
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
@@ -40,7 +39,7 @@ abstract class BaseNavActivity : BaseActivity() {
         // set content view, you can override it
         setNavContentView()
 
-        // root view must not be null
+        // drawerLayout view must not be null
         navHostRoot = findViewById<ViewGroup>(NAV_HOST_ROOT_ID)!!
 
         val navHostFragment = getNavHostFragment()
@@ -70,7 +69,7 @@ abstract class BaseNavActivity : BaseActivity() {
         Log.d(DEBUG_TAG, "BaseNavActivity: onResume")
     }
 
-    override fun onSupportNavigateUp() = findNavController(R.id.nav_host_fragment_root).navigateUp()
+    override fun onSupportNavigateUp() = navController.navigateUp() or super.onSupportNavigateUp()
 
     override fun onAttachFragment(fragment: Fragment?) {
         super.onAttachFragment(fragment)
@@ -97,7 +96,7 @@ abstract class BaseNavActivity : BaseActivity() {
      * into the activity. If you want to remove this, expect to be able to call [Navigation.findNavController]
      * and not get an exception beggining with onStart.
      *
-     * The benefit of this callback is that it is called before the root navigation's fragment's [NavFragment.onAttach]
+     * The benefit of this callback is that it is called before the drawerLayout navigation's fragment's [NavFragment.onAttach]
      * is called, which means they can access the activity's nav controller if they want to.
      *
      * BaseNavHostFragment: onCreate

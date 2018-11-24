@@ -19,7 +19,7 @@ open class NavFragment : BaseFragment() {
     /** Not null from [onAttach] if used with [BaseNavActivity] and [BaseNavHostFragment]
      *
      */
-    val  navController : NavController?
+    val  navController : NavController
         get() = NavHostFragment.findNavController(this)
 
     /** Nav controller not null here. Becomes not null after [BaseNavHostFragment.onViewCreated], after which the home
@@ -28,15 +28,13 @@ open class NavFragment : BaseFragment() {
      */
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        val controller = navController
-        Log.d(DEBUG_TAG, "NavFragment onAttach, controller null ${controller == null}")
+        Log.d(DEBUG_TAG, "NavFragment onAttach")
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val controller = navController
-        Log.d(DEBUG_TAG, "NavFragment onCreate, controller null ${controller == null}")
+        Log.d(DEBUG_TAG, "NavFragment onCreate")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
