@@ -3,12 +3,10 @@ dependencies {
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'androidx.appcompat:appcompat:1.0.2@aar'
-    api 'android.arch.navigation:navigation-runtime:1.0.0-alpha07@aar'
-    api 'android.arch.navigation:navigation-runtime-ktx:1.0.0-alpha07@aar'
-    api 'android.arch.navigation:navigation-fragment:1.0.0-alpha07@aar'
-    api 'android.arch.navigation:navigation-ui:1.0.0-alpha07@aar'
-    api 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07@aar'
-    api 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha07@aar'
+    api 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
+    api 'android.arch.navigation:navigation-ui:1.0.0-alpha07'
+    api 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07'
+    api 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha07'
     api 'androidx.core:core-ktx:1.0.1@aar'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
