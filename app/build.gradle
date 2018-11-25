@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation('com.github.ClaudiuBele:core-logic:c754300a4b')
+    implementation 'com.github.ClaudiuBele:core-logic:0.2'
 
     // implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-
+    // needs to be added despite being in core-logic
     api 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
     api 'android.arch.navigation:navigation-ui:1.0.0-alpha07'
     api 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07'
