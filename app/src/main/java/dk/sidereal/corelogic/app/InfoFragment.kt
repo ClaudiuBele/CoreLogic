@@ -1,4 +1,4 @@
-package dk.sidereal.corelogic
+package dk.sidereal.corelogic.app
 
 import android.os.Bundle
 import android.view.LayoutInflater

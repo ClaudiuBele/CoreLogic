@@ -1,4 +1,4 @@
-package dk.sidereal.corelogic
+package dk.sidereal.corelogic.app
 
 import dk.sidereal.corelogic.nav.BaseNavHostFragment
 import dk.sidereal.corelogic.nav.NavActivity
