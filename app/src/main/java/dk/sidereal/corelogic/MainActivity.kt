@@ -13,6 +13,7 @@ class MainActivity : NavActivity() {
 
     override fun getNavigationMenuId(): Int? {
         return R.menu.menu_main
+//        return null
     }
 
     override fun getStartDestinations(): List<Int> {

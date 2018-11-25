@@ -17,15 +17,24 @@ import androidx.navigation.NavDestination
  *
  */
 class MultiStartNavigationUI(private val startDestinations: List<Int>) {
-    fun setupActionBarWithNavController(activity: AppCompatActivity, navController: NavController,
-                                        drawerLayout: DrawerLayout?) {
 
-        navController.addOnNavigatedListener(ActionBarOnNavigatedListener(
-            activity, startDestinations, drawerLayout))
+    fun setupActionBarWithNavController(
+        activity: AppCompatActivity, navController: NavController,
+        drawerLayout: DrawerLayout?
+    ) {
+
+        navController.addOnNavigatedListener(
+            ActionBarOnNavigatedListener(
+                activity, startDestinations, drawerLayout
+            )
+        )
     }
 
     fun navigateUp(drawerLayout: DrawerLayout?, navController: NavController): Boolean {
-        if (drawerLayout != null && startDestinations.contains(navController.currentDestination?.id)) {
+        if (drawerLayout != null
+            && startDestinations.contains(navController.currentDestination?.id)
+            && drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+
             drawerLayout.openDrawer(GravityCompat.START)
             return true
         } else {
@@ -33,8 +42,10 @@ class MultiStartNavigationUI(private val startDestinations: List<Int>) {
         }
     }
 
-    fun onBackPressed(activity: AppCompatActivity,
-                      navController: NavController): Boolean {
+    fun onBackPressed(
+        activity: AppCompatActivity,
+        navController: NavController
+    ): Boolean {
         if (startDestinations.contains(navController.currentDestination?.id)) {
             ActivityCompat.finishAfterTransition(activity)
             return true

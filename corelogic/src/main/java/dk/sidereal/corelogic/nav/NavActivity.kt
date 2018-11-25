@@ -47,12 +47,9 @@ abstract  class NavActivity : BaseNavActivity() {
     override fun onNavControllerReady(navController: NavController) {
         super.onNavControllerReady(navController)
 
+        navigationUI = MultiStartNavigationUI(getStartDestinations())
         invalidateBottomNavigationView()
         invalidateNavigationView()
-
-        navigationUI = MultiStartNavigationUI(getStartDestinations())
-        navigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-
     }
 
     override fun onBackPressed() {
@@ -94,10 +91,20 @@ abstract  class NavActivity : BaseNavActivity() {
         val navigationMenuId = getNavigationMenuId()
         navigationView.isEnabled = navigationMenuId != null
         if(navigationMenuId != null) {
+
+            navigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+            // unlock drawer
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+
+            // set menu
             navigationView.inflateMenu(navigationMenuId)
+
+            // bind navigation to selected item two ways
             NavigationUI.setupWithNavController(navigationView, navController)
         } else {
+            navigationUI.setupActionBarWithNavController(this, navController, null)
+
+            // lock menu so it can't be swiped away
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
     }
