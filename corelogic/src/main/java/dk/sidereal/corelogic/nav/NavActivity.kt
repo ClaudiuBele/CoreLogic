@@ -2,6 +2,7 @@ package dk.sidereal.corelogic.nav
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -14,6 +15,21 @@ import com.google.android.material.navigation.NavigationView
 import dk.sidereal.corelogic.R
 import dk.sidereal.corelogic.platform.widget.constraint.applyViewConstraints
 
+/** Subclass of [BaseNavActivity] which bundles Navigation integration with the following widgets [BottomNavigationView],
+ * [NavigationView], [Toolbar].
+ *
+ * You need to implement [getStartDestinations] to set which destinations will count as home in relation to [Toolbar.getNavigationIcon]],
+ * [onBackPressed], [onNavigateUp]
+ *
+ * You can override [getNavigationMenuId] and returns a non-null id to have a navigation view swipeable from the start
+ * side. The view is setup with [navController] automatically
+ *
+ * You can override [showActionBar] to returns true or false based on whether you want the built-in [Toolbar]
+ * to be shown and used for navigation
+ *
+ * You can override [getBottomNavigationMenuId] and return a non-null [androidx.annotation.MenuRes] id to show a
+ * [BottomNavigationView] with current theme applied. The view is setup with [navController] automatically
+ */
 abstract  class NavActivity : BaseNavActivity() {
 
 
@@ -36,6 +52,7 @@ abstract  class NavActivity : BaseNavActivity() {
         contentRoot = findViewById(R.id.content_root)
         bottomNavigationView = findViewById(R.id.bottom_navigation)
         toolbar = findViewById(R.id.toolbar)
+        toolbar.visibility = if(showActionBar()) View.VISIBLE else View.GONE
         setSupportActionBar(toolbar)
     }
 
@@ -114,4 +131,8 @@ abstract  class NavActivity : BaseNavActivity() {
     open fun getBottomNavigationMenuId(): Int? = null
 
     open fun getNavigationMenuId(): Int? = null
+
+    /** Whether the action bar should be showed
+     */
+    open fun showActionBar(): Boolean = true
 }

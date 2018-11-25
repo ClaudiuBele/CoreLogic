@@ -19,4 +19,8 @@ class MainActivity : NavActivity() {
     override fun getStartDestinations(): List<Int> {
         return listOf(R.id.contactsFragment, R.id.infoFragment)
     }
+
+    override fun showActionBar(): Boolean {
+        return true
+    }
 }
