@@ -33,7 +33,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.github.ClaudiuBele:core-logic:63a86368bd'
+    implementation('com.github.ClaudiuBele:core-logic:c754300a4b')
 
     // implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

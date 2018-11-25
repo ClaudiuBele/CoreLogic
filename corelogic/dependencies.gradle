@@ -5,8 +5,6 @@ dependencies {
     api 'androidx.appcompat:appcompat:1.0.2@aar'
 
 
-    api 'android.arch.navigation:navigation-runtime:1.0.0-alpha07'
-    api 'android.arch.navigation:navigation-runtime-ktx:1.0.0-alpha07'
     api 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
     api 'android.arch.navigation:navigation-ui:1.0.0-alpha07'
     api 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07'

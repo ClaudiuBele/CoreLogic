@@ -7,12 +7,12 @@
         app:startDestination="@id/contactsFragment">
         <fragment
             android:id="@+id/contactsFragment"
-            android:name="dk.sidereal.corelogic.ContactsFragment"
+            android:name="dk.sidereal.corelogic.app.ContactsFragment"
             android:label="fragment_contacts"
             tools:layout="@layout/fragment_contacts" />
         <fragment
             android:id="@+id/infoFragment"
-            android:name="dk.sidereal.corelogic.InfoFragment"
+            android:name="dk.sidereal.corelogic.app.InfoFragment"
             android:label="fragment_info"
             tools:layout="@layout/fragment_info" >
             <action
@@ -21,7 +21,7 @@
         </fragment>
         <fragment
             android:id="@+id/moreInfoFragment"
-            android:name="dk.sidereal.corelogic.MoreInfoFragment"
+            android:name="dk.sidereal.corelogic.app.MoreInfoFragment"
             android:label="fragment_more_info"
             tools:layout="@layout/fragment_more_info" />
     </navigation>
