@@ -15,6 +15,9 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -30,7 +33,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    api 'com.github.ClaudiuBele:core-logic:0.1'
+    api 'com.github.ClaudiuBele:core-logic:47018a7005'
 
     // implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
