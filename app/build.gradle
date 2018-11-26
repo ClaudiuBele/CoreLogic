@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -31,10 +29,5 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    api 'com.github.ClaudiuBele:core-logic:1325e5f1a2'
-}
-repositories {
-    mavenCentral()
+    api 'com.github.claudiu-bele:core-logic:0.3'
 }
