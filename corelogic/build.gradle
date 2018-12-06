@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
-group = 'com.github.ClaudiuBele'
+group  'com.github.ClaudiuBele'
+version '0.3.2'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -12,7 +13,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 3
-        versionName '0.3.1'
+        versionName '0.3.2'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
     }
@@ -55,17 +56,17 @@ dependencies {
     androidTestCompile'androidx.test.espresso:espresso-core:3.1.0'
 
     api 'android.arch.lifecycle:extensions:1.1.1'
-    kapt "android.arch.lifecycle:apir:1.1.1"
+    kapt "android.arch.lifecycle:compiler:1.1.1"
     api 'android.arch.lifecycle:common-java8:1.1.1'
 
     // android arch-room
     api "android.arch.persistence.room:runtime:1.1.1"
-    kapt "android.arch.persistence.room:apir:1.1.1"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
 
     // dagger
     /*
     api 'com.google.dagger:dagger:2.12'
-    kapt "com.google.dagger:dagger-apir:2.12"
+    kapt "com.google.dagger:dagger-compiler:2.12"
     apiOnly 'org.glassfish:javax.annotation:10.0-b28'
     apiOnly 'javax.annotation:jsr250-api:1.0'
     */
