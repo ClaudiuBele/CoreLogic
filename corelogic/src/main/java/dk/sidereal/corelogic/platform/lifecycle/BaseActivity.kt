@@ -31,8 +31,8 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         controllers.forEach { it.dispose() }
+        super.onDestroy()
     }
 
     override fun onAttachFragment(fragment: Fragment?) {

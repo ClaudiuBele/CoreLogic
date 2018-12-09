@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+
 group  'com.github.ClaudiuBele'
-version '0.3.2'
+version '0.3.3'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -12,10 +13,6 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName '0.3.2'
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -40,8 +37,6 @@ dependencies {
     // api is used as fix to https://youtrack.jetbrains.com/issue/KT-28355
     // applying the `apply 'java-library'` plugin doesn't work with an android library so this is the only solution
     // error with `java-library`: The 'java' plugin has been applied, but it is not compatible with the Android plugins.
-    api fileTree(dir: 'libs', include: ['*.jar'])
-
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     api 'androidx.appcompat:appcompat:1.0.2@aar'
 
@@ -51,6 +46,7 @@ dependencies {
     api 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07'
     api 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha07'
     api 'androidx.core:core-ktx:1.0.1@aar'
+
     testCompile 'junit:junit:4.12'
     androidTestCompile 'androidx.test:runner:1.1.0'
     androidTestCompile'androidx.test.espresso:espresso-core:3.1.0'
@@ -75,7 +71,6 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     api 'com.squareup.retrofit2:converter-gson:2.3.0'
     api 'com.squareup.retrofit2:retrofit:2.3.0'
-
 
     // UI
     api 'com.android.support.constraint:constraint-layout:1.1.3'

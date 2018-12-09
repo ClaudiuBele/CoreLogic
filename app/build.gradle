@@ -29,5 +29,9 @@ android {
 }
 
 dependencies {
-    api 'com.github.claudiu-bele:core-logic:0.3'
+    api 'com.github.claudiu-bele:core-logic:a084659525'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
