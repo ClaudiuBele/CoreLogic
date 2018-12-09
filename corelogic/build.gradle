@@ -34,14 +34,12 @@ android {
 
 dependencies {
 
-    // compile is used as fix to https://youtrack.jetbrains.com/issue/KT-28355
+    // compile is used as fix to https://youtrack.jetbzrains.com/issue/KT-28355
     // applying the `apply 'java-library'` plugin doesn't work with an android library so this is the only solution
     // error with `java-library`: The 'java' plugin has been applied, but it is not compatible with the Android plugins.
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile 'androidx.appcompat:appcompat:1.0.2@aar'
 
-    compile 'android.arch.navigation:navigation-fragment:1.0.0-alpha07'
-    compile 'android.arch.navigation:navigation-ui:1.0.0-alpha07'
     compile 'android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha07'
     compile 'android.arch.navigation:navigation-ui-ktx:1.0.0-alpha07'
     compile 'androidx.core:core-ktx:1.0.1@aar'
@@ -53,23 +51,6 @@ dependencies {
     compile 'android.arch.lifecycle:extensions:1.1.1'
     kapt "android.arch.lifecycle:compiler:1.1.1"
     compile 'android.arch.lifecycle:common-java8:1.1.1'
-
-    // android arch-room
-    compile "android.arch.persistence.room:runtime:1.1.1"
-    kapt "android.arch.persistence.room:compiler:1.1.1"
-
-    // dagger
-    /*
-    compile 'com.google.dagger:dagger:2.12'
-    kapt "com.google.dagger:dagger-compiler:2.12"
-    apiOnly 'org.glassfish:javax.annotation:10.0-b28'
-    apiOnly 'javax.annotation:jsr250-api:1.0'
-    */
-    compile 'com.google.code.gson:gson:2.8.2'
-
-    compile 'com.squareup.okhttp3:logging-interceptor:3.9.1'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
 
     // UI
     compile 'com.android.support.constraint:constraint-layout:1.1.3'
