@@ -88,8 +88,8 @@ abstract class BaseNavActivity : BaseActivity() {
      * to the NavController
      */
     @CallSuper
-    open fun onNavigated(navController: NavController, navDestination: NavDestination) {
-        Log.d(DEBUG_TAG, "BaseNavActivity: onNavigated, destination: ${navDestination.label}")
+    open fun onDestinationChanged(navController: NavController, navDestination: NavDestination) {
+        Log.d(DEBUG_TAG, "BaseNavActivity: onDestinationChanged, destination: ${navDestination.label}")
     }
 
     /** Called by [BaseNavHostFragment.onViewCreated] after whichs' super creates the [NavController] which is passed
@@ -102,7 +102,7 @@ abstract class BaseNavActivity : BaseActivity() {
      * BaseNavHostFragment: onCreate
     BaseNavHostFragment: onViewCreated
     BaseNavActivity: onNavControllerReady
-    BaseNavActivity: onNavigated, destination: fragment_intro
+    BaseNavActivity: onDestinationChanged, destination: fragment_intro
     NavFragment onAttach, controller null false
     NavFragment onCreate, controller null false
     BaseNavHostFragment: onStart
@@ -119,8 +119,8 @@ abstract class BaseNavActivity : BaseActivity() {
         this.navController = navController
 
         // called whenever navigation destination changes
-        navController.addOnNavigatedListener { controller, destination ->
-            onNavigated(
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+            onDestinationChanged(
                 controller,
                 destination
             )

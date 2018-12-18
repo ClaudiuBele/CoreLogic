@@ -3,6 +3,7 @@ package dk.sidereal.corelogic.nav
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable
 import androidx.core.app.ActivityCompat
@@ -22,18 +23,18 @@ class MultiStartNavigationUI(private val startDestinations: List<Int>) {
         activity: AppCompatActivity, navController: NavController,
         drawerLayout: DrawerLayout?
     ) {
-
-        navController.addOnNavigatedListener(
+        navController.addOnDestinationChangedListener { controller, destination, arguments ->
             ActionBarOnNavigatedListener(
                 activity, startDestinations, drawerLayout
             )
-        )
+        }
     }
 
     fun navigateUp(drawerLayout: DrawerLayout?, navController: NavController): Boolean {
         if (drawerLayout != null
             && startDestinations.contains(navController.currentDestination?.id)
-            && drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED) {
+            && drawerLayout.getDrawerLockMode(GravityCompat.START) != DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+        ) {
 
             drawerLayout.openDrawer(GravityCompat.START)
             return true
@@ -58,11 +59,11 @@ class MultiStartNavigationUI(private val startDestinations: List<Int>) {
         private val mActivity: AppCompatActivity,
         private val startDestinations: List<Int>,
         private val mDrawerLayout: DrawerLayout?
-    ) : NavController.OnNavigatedListener {
+    ) : NavController.OnDestinationChangedListener {
         private var mArrowDrawable: DrawerArrowDrawable? = null
         private var mAnimator: ValueAnimator? = null
 
-        override fun onNavigated(controller: NavController, destination: NavDestination) {
+        override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
             val actionBar = mActivity.supportActionBar
 
             val title = destination.label
