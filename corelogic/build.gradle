@@ -48,9 +48,10 @@ dependencies {
     androidTestCompile 'androidx.test:runner:1.1.0'
     androidTestCompile'androidx.test.espresso:espresso-core:3.1.0'
 
-    api 'android.arch.lifecycle:extensions:1.1.1'
-    kapt "android.arch.lifecycle:compiler:1.1.1"
-    api 'android.arch.lifecycle:common-java8:1.1.1'
+    def lifecycle_version = "2.0.0"
+    // ViewModel and LiveData
+    api "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version" // use kapt for Kotlin
 
     // UI
     api 'com.android.support.constraint:constraint-layout:1.1.3'
