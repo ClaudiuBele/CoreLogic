@@ -19,7 +19,7 @@ import com.google.android.material.navigation.NavigationView
  * You can override [getBottomNavigationMenuId] and return a non-null [androidx.annotation.MenuRes] id to show a
  * [BottomNavigationView] with current theme applied. The view is setup with [navController] automatically
  */
-abstract  class NavActivity2 : BaseNavActivity() {
+abstract  class NavActivity2 : BaseNavActivity2() {
 
     override fun onCreateControllers() {
         super.onCreateControllers()

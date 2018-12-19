@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.claudiu-bele:core-logic:b810ed41bb'
+    implementation 'com.github.claudiu-bele:core-logic:239f07cc3c'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 repositories {

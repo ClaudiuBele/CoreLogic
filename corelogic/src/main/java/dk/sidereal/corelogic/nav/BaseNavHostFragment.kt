@@ -87,11 +87,6 @@ class BaseNavHostFragment : NavHostFragment() {
             is BaseNavActivityController -> {
                 navActivityController.onNavControllerReady(controller)
             }
-            else -> {
-                if (activity is BaseNavActivity) {
-                    (activity as BaseNavActivity).onNavControllerReady(controller)
-                }
-            }
         }
 
     }
