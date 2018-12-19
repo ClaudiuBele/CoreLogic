@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
-import dk.sidereal.corelogic.nav.BaseNavActivity.Companion.DEBUG_TAG
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
 /** [NavHostFragment] alternative to be used when your activity is [BaseNavActivity].
@@ -19,6 +18,8 @@ class BaseNavHostFragment : NavHostFragment() {
 
 
     companion object {
+        val DEBUG_TAG = "NAV"
+
 
         private val KEY_GRAPH_ID = "android-support-nav:fragment:graphId"
         private val KEY_START_DESTINATION_ARGS = "android-support-nav:fragment:startDestinationArgs"
