@@ -21,8 +21,8 @@ import com.google.android.material.navigation.NavigationView
  */
 abstract  class NavActivity2 : BaseNavActivity() {
 
-    override fun onSetupControllers() {
-        super.onSetupControllers()
+    override fun onCreateControllers() {
+        super.onCreateControllers()
         controllers.add(object: NavActivityController(this@NavActivity2) {
             override fun getStartDestinations(): List<Int> {
                 return this@NavActivity2.getStartDestinations()

@@ -18,7 +18,7 @@ open class BaseFragment : Fragment() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        onSetupControllers()
+        onCreateControllers()
         controllers.forEach { it.onAttach(context) }
     }
 
@@ -28,12 +28,12 @@ open class BaseFragment : Fragment() {
      * activity shouldn't call super
      *
      */
-    internal open fun onBackPressed(): Boolean = false
+    protected open fun onBackPressed(): Boolean = false
 
     /** Called in [BaseFragment.onAttach]
      *
      */
-    internal open fun onSetupControllers() {}
+    protected open fun onCreateControllers() {}
 
 
     /** Called in [BaseActivity.onDestroy]

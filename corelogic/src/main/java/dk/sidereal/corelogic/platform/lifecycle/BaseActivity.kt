@@ -18,7 +18,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onSetupControllers()
+        onCreateControllers()
         controllers.forEach { it.onCreate(savedInstanceState) }
 
         var hasSetContentView = false
@@ -83,7 +83,7 @@ open class BaseActivity : AppCompatActivity() {
     /** Where you setup your [ActivityController]. called in [onCreate]. Add your controllers to [controllers]
 
      */
-    internal open fun onSetupControllers() {}
+    protected open fun onCreateControllers() {}
 
     @Suppress("UNCHECKED_CAST")
     internal fun <T : ActivityController> getController(clazz: Class<T>): T? =

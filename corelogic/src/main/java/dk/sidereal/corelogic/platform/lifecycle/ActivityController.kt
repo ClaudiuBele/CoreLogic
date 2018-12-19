@@ -27,7 +27,7 @@ abstract class ActivityController(protected val activity: BaseActivity)  {
     }
 
     /** Called in [BaseActivity.onCreate] after
-     * [BaseActivity.onSetupControllers]
+     * [BaseActivity.onCreateControllers]
      */
     open fun onCreate(savedInstanceState: Bundle?) {}
 

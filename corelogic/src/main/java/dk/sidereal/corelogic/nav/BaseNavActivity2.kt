@@ -33,8 +33,8 @@ abstract class BaseNavActivity2 : BaseActivity() {
         Log.d(DEBUG_TAG, "BaseNavActivity: onCreate")
     }
 
-    override fun onSetupControllers() {
-        super.onSetupControllers()
+    override fun onCreateControllers() {
+        super.onCreateControllers()
         controllers.add(object: BaseNavActivityController(this@BaseNavActivity2){
             override fun getNavHostFragment(): BaseNavHostFragment {
                 return this@BaseNavActivity2.getNavHostFragment()

@@ -10,7 +10,7 @@ open class FragmentController(protected val baseFragment: BaseFragment) {
     protected val baseActivity = baseFragment.baseActivity
     protected val requireBaseActivity = baseFragment.requireBaseActivity
 
-    /** Called in [BaseFragment.onCreate] after [BaseFragment.onSetupControllers]
+    /** Called in [BaseFragment.onCreate] after [BaseFragment.onCreateControllers]
      */
     internal open fun onAttach(context: Context?) {}
 
