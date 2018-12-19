@@ -10,6 +10,7 @@ import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import dk.sidereal.corelogic.nav.BaseNavActivity.Companion.DEBUG_TAG
+import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
 /** [NavHostFragment] alternative to be used when your activity is [BaseNavActivity].
  * Fragments inside must be [NavFragment]
@@ -68,6 +69,33 @@ class BaseNavHostFragment : NavHostFragment() {
         Log.d(DEBUG_TAG, "BaseNavHostFragment: onCreate")
     }
 
+    /** After [onViewCreated], nav controller is not null.Root [NavFragment] in the navigation flow's onCreate
+     * will be called after
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(DEBUG_TAG, "BaseNavHostFragment: onViewCreated")
+        val controller = view.findNavController()
+
+        val navActivityController =
+            (activity as? BaseActivity)?.controllers?.firstOrNull { it is BaseNavActivityController || it is NavActivityController }
+
+        when (navActivityController) {
+            is NavActivityController -> {
+                navActivityController.onNavControllerReady(controller)
+            }
+            is BaseNavActivityController -> {
+                navActivityController.onNavControllerReady(controller)
+            }
+            else -> {
+                if (activity is BaseNavActivity) {
+                    (activity as BaseNavActivity).onNavControllerReady(controller)
+                }
+            }
+        }
+
+    }
+
     override fun onStart() {
         super.onStart()
         Log.d(DEBUG_TAG, "BaseNavHostFragment: onStart")
@@ -76,18 +104,6 @@ class BaseNavHostFragment : NavHostFragment() {
     override fun onResume() {
         super.onResume()
         Log.d(DEBUG_TAG, "BaseNavHostFragment: onResume")
-    }
-
-    /** After [onViewCreated], nav controller is not null.Root [NavFragment] in the navigation flow's onCreate
-     * will be called after
-     */
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        Log.d(DEBUG_TAG, "BaseNavHostFragment: onViewCreated")
-        val controller = view.findNavController()
-        if(activity is BaseNavActivity) {
-            (activity as BaseNavActivity).onNavControllerReady(controller)
-        }
     }
 
     override fun onAttachFragment(fragment: Fragment?) {

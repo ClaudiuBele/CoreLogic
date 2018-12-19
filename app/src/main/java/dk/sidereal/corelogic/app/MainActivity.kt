@@ -8,7 +8,8 @@ class MainActivity : NavActivity() {
     override fun getNavHostFragment(): BaseNavHostFragment = BaseNavHostFragment.create(R.navigation.nav_main)
 
     override fun getBottomNavigationMenuId(): Int? {
-        return R.menu.menu_main
+//        return R.menu.menu_main
+        return null
     }
 
     override fun getNavigationMenuId(): Int? {

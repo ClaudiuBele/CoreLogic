@@ -1,17 +1,19 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 
 open class BaseActivity : AppCompatActivity() {
 
-    protected val controllers: MutableList<ActivityController> = mutableListOf()
+    val controllers: MutableList<ActivityController> = mutableListOf()
 
     val baseApplication: BaseApplication
         get() = application as BaseApplication
 
-    val baseFragments: List<BaseFragment>
+    private val baseFragments: List<BaseFragment>
         get() = supportFragmentManager.fragments.dropWhile { it !is BaseFragment }.map { it as BaseFragment }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,20 +21,57 @@ open class BaseActivity : AppCompatActivity() {
         onSetupControllers()
         controllers.forEach { it.onCreate(savedInstanceState) }
 
+        var hasSetContentView = false
+        controllers.forEach { hasSetContentView = hasSetContentView or it.onCreateView(this) }
+
+        if (!hasSetContentView) {
+            Log.w("BaseActivity", "No content view set by activity controllers")
+        }
+        controllers.forEach { it.onViewCreated(this) }
     }
 
     override fun onBackPressed() {
-        baseFragments.firstOrNull() {
-            it.onBackPressed()
-        }?.let {
-            return
+        var handledBackPressed = false
+        controllers.forEach {
+            if(!handledBackPressed) {
+                handledBackPressed = handledBackPressed or it.onBackPressed()
+            }
         }
-        super.onBackPressed()
+        if(!handledBackPressed) {
+
+            baseFragments.firstOrNull() {
+                it.onBackPressed()
+            }?.let {
+                return
+            }
+            super.onBackPressed()
+        }
+
     }
 
     override fun onDestroy() {
         controllers.forEach { it.dispose() }
         super.onDestroy()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        var handledOptionsItem = false
+        controllers.forEach {
+            if (!handledOptionsItem) {
+                handledOptionsItem = handledOptionsItem or it.onOptionsItemSelected(item)
+            }
+        }
+        return handledOptionsItem or super.onOptionsItemSelected(item)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        var handledNavigateUp = false
+        controllers.forEach {
+            if (!handledNavigateUp) {
+                handledNavigateUp = handledNavigateUp or it.onNavigateUp()
+            }
+        }
+        return handledNavigateUp or super.onSupportNavigateUp()
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
@@ -41,7 +80,7 @@ open class BaseActivity : AppCompatActivity() {
 
     }
 
-    /** Where you setup your [ActivityController]. called in [onCreate]
+    /** Where you setup your [ActivityController]. called in [onCreate]. Add your controllers to [controllers]
 
      */
     internal open fun onSetupControllers() {}

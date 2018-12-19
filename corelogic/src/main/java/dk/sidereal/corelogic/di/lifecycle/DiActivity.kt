@@ -10,8 +10,6 @@ import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
  */
 abstract class DiActivity : BaseActivity() {
 
-    internal abstract fun getDiController(): DiActivityController<DiActivity>
-
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
         controllers.add(getDiController())
@@ -26,4 +24,7 @@ abstract class DiActivity : BaseActivity() {
     protected open fun onPostInject() {
 
     }
+
+    internal abstract fun getDiController(): DiActivityController<DiActivity>
+
 }
