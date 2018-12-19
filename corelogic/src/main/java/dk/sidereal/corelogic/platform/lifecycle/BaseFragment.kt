@@ -28,7 +28,7 @@ open class BaseFragment : Fragment() {
      * activity shouldn't call super
      *
      */
-    protected open fun onBackPressed(): Boolean = false
+    open fun onBackPressed(): Boolean = false
 
     /** Called in [BaseFragment.onAttach]
      *
