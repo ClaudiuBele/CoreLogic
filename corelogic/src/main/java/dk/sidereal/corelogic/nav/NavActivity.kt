@@ -58,7 +58,7 @@ abstract  class NavActivity : BaseNavActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         NavigationUI.onNavDestinationSelected(item!!, navController)
-        return super.onOptionsItemSelected(item)
+        return false
     }
 
     override fun onNavControllerReady(navController: NavController) {
