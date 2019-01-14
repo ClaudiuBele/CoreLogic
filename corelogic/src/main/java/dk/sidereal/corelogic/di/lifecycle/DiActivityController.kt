@@ -5,9 +5,10 @@ import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 import dk.sidereal.corelogic.platform.lifecycle.BaseFragment
 
-abstract class DiActivityController<T : BaseActivity>(activity: T) : ActivityController(activity) {
+abstract class DiActivityController<T : BaseActivity>(activity: T) :
+    ActivityController(activity),
+    DiController {
 
-    abstract fun getComponent(): DiComponent
     abstract fun inject(activity: T)
 
     @Suppress("UNUSED")
