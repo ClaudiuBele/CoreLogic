@@ -7,7 +7,7 @@ import dk.sidereal.corelogic.R
 
 fun Resources.Theme.getColorInt(@AttrRes attrId: Int) = get(attrId, true).data
 
-fun Resources.Theme.get(@AttrRes attrId: Int, resolveRefs: Boolean = false) : TypedValue{
+fun Resources.Theme.get(@AttrRes attrId: Int, resolveRefs: Boolean = false): TypedValue {
     val typedValue = android.util.TypedValue()
     resolveAttribute(attrId, typedValue, resolveRefs)
     return typedValue

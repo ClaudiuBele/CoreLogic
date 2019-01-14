@@ -23,8 +23,11 @@ class MultiStartNavigationUI(private val startDestinations: List<Int>) {
         activity: AppCompatActivity, navController: NavController,
         drawerLayout: DrawerLayout?
     ) {
-        navController.addOnDestinationChangedListener(ActionBarOnNavigatedListener(
-            activity, startDestinations, drawerLayout))
+        navController.addOnDestinationChangedListener(
+            ActionBarOnNavigatedListener(
+                activity, startDestinations, drawerLayout
+            )
+        )
     }
 
     fun navigateUp(drawerLayout: DrawerLayout?, navController: NavController): Boolean {

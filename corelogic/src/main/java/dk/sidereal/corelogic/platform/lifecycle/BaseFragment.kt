@@ -11,7 +11,7 @@ import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
 open class BaseFragment : Fragment() {
 
-    protected val TAG by lazy { javaClass.simpleTagName()}
+    protected val TAG by lazy { javaClass.simpleTagName() }
 
     companion object {
         val INNER_TAG by lazy { BaseFragment::class.simpleTagName() }
@@ -19,10 +19,14 @@ open class BaseFragment : Fragment() {
 
     protected val controllers: MutableList<FragmentController> = mutableListOf()
 
-    val baseActivity: BaseActivity? = activity as? BaseActivity
-    val baseApplication: BaseApplication? = baseActivity?.baseApplication
-    val requireBaseActivity: BaseActivity get() = requireActivity() as BaseActivity
-    val requireApplication: BaseApplication get() = requireBaseActivity.baseApplication
+    val baseActivity: BaseActivity?
+        get() = activity as? BaseActivity
+    val baseApplication: BaseApplication?
+        get() = baseActivity?.baseApplication
+    val requireBaseActivity: BaseActivity
+        get() = requireActivity() as BaseActivity
+    val requireApplication: BaseApplication
+        get() = requireBaseActivity.baseApplication
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -31,19 +35,17 @@ open class BaseFragment : Fragment() {
         controllers.forEach { it.onAttach(context) }
     }
 
-    /** Called by [BaseActivity.onBackPressed]
-     * Return true to flag that the fragment
-     * handled the back internally and that the
-     * activity shouldn't call super
-     *
-     */
-    open fun onBackPressed(): Boolean = false
-
     /** Called in [BaseFragment.onAttach]
      *
      */
     protected open fun onCreateControllers() {}
 
+
+    /** Called from [BaseActivity.onBackPressed]
+     * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
+     *
+     */
+    open fun onBackPressed(): Boolean = false
 
     /** Called in [BaseActivity.onDestroy]
      *
@@ -52,9 +54,7 @@ open class BaseFragment : Fragment() {
 
     /** Called after [BaseActivity.onAttachFragment] inside the override
      */
-    open fun onAttachFragment(baseFragment: BaseFragment?) {
-
-    }
+    open fun onAttachFragment(baseFragment: BaseFragment?) {}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -62,6 +62,25 @@ open class BaseFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    /** Called by [BaseActivity.onBackPressed]
+     * Return true to flag that the fragment
+     * handled the back internally and that the
+     * activity shouldn't call super
+     *
+     */
+    internal fun onBackPressedInternal(): Boolean {
+        var handledBackPressed = false
+        controllers.forEach {
+            if (!handledBackPressed) {
+                handledBackPressed = handledBackPressed or it.onBackPressed()
+            }
+        }
+        if (handledBackPressed) {
+            return true
+        }
+        return onBackPressed()
     }
 
 

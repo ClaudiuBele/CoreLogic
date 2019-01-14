@@ -13,7 +13,7 @@ open class NavFragment : BaseFragment() {
     /** Not null from [onAttach] if used with [BaseNavActivity] and [BaseNavHostFragment]
      *
      */
-    val  navController : NavController
+    val navController: NavController
         get() = NavHostFragment.findNavController(this)
 
     /** Nav controller not null here. Becomes not null after [BaseNavHostFragment.onViewCreated], after which the home

@@ -11,18 +11,18 @@ object StringFormattingUtils {
             val hasPrevChar = index - 1 >= 0
             when {
                 c.isUpperCase() -> {
-                    if(hasPrevChar) {
+                    if (hasPrevChar) {
                         stringBuilder.append('_')
                     }
                     stringBuilder.append(c.toLowerCase())
                 }
                 c.isDigit() -> {
                     // add '_' before digit, if preceded by non-digit
-                    if(hasPrevChar && !trimmedInput[index-1].isDigit()) {
+                    if (hasPrevChar && !trimmedInput[index - 1].isDigit()) {
                         stringBuilder.append('_')
                     }
                     stringBuilder.append(c)
-                    if(hasNextChar && !trimmedInput[index+1].isDigit()) {
+                    if (hasNextChar && !trimmedInput[index + 1].isDigit()) {
                         stringBuilder.append('_')
                     }
                 }

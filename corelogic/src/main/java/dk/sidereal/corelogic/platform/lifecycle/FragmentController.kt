@@ -13,13 +13,19 @@ open class FragmentController(protected val baseFragment: BaseFragment) {
         val INNER_TAG by lazy { FragmentController::class.simpleTagName() }
     }
 
-    protected val context = baseFragment.context
-    protected val requireContext = baseFragment.requireContext()
-    protected val baseActivity = baseFragment.baseActivity
-    protected val requireBaseActivity = baseFragment.requireBaseActivity
+    protected val context: Context?
+        get() = baseFragment.context
+    protected val requireContext: Context
+        get() = baseFragment.requireContext()
+    protected val baseActivity: BaseActivity?
+        get() = baseFragment.baseActivity
+    protected val requireBaseActivity: BaseActivity
+        get() = baseFragment.requireBaseActivity
 
     /** Called in [BaseFragment.onCreate] after [BaseFragment.onCreateControllers]
      */
     internal open fun onAttach(context: Context?) {}
+
+    open fun onBackPressed(): Boolean = false
 
 }

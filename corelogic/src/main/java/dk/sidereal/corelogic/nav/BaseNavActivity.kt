@@ -34,7 +34,7 @@ abstract class BaseNavActivity : BaseActivity() {
     }
 
     override fun onCreateControllers() {
-        controllers.add(object: BaseNavActivityController(this@BaseNavActivity){
+        controllers.add(object : BaseNavActivityController(this@BaseNavActivity) {
             override fun getNavHostFragment(): BaseNavHostFragment {
                 return this@BaseNavActivity.getNavHostFragment()
             }

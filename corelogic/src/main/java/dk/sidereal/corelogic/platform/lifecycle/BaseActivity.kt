@@ -31,8 +31,11 @@ open class BaseActivity : AppCompatActivity() {
         var hasSetContentView = false
         controllers.forEach {
             val hasNewControllerSetContentView = it.onCreateView(this)
-            if(hasSetContentView && hasNewControllerSetContentView) {
-                Log.w(INNER_TAG, "onCreate: ${it.javaClass.simpleName} returned true in onCreateView after another Controller")
+            if (hasSetContentView && hasNewControllerSetContentView) {
+                Log.w(
+                    INNER_TAG,
+                    "onCreate: ${it.javaClass.simpleName} returned true in onCreateView after another Controller"
+                )
             }
             hasSetContentView = hasSetContentView or hasNewControllerSetContentView
         }
@@ -46,20 +49,23 @@ open class BaseActivity : AppCompatActivity() {
     override fun onBackPressed() {
         var handledBackPressed = false
         controllers.forEach {
-            if(!handledBackPressed) {
+            if (!handledBackPressed) {
                 handledBackPressed = handledBackPressed or it.onBackPressed()
             }
         }
-        if(!handledBackPressed) {
-
-            baseFragments.firstOrNull() {
-                it.onBackPressed()
-            }?.let {
-                return
-            }
-            super.onBackPressed()
+        if (handledBackPressed) {
+            return
         }
 
+        baseFragments.forEach {
+            if (!handledBackPressed) {
+                handledBackPressed = handledBackPressed or it.onBackPressed()
+            }
+        }
+
+        if (handledBackPressed) {
+            super.onBackPressed()
+        }
     }
 
     override fun onDestroy() {

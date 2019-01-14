@@ -38,7 +38,7 @@ abstract class NavActivityController(baseActivity: BaseActivity) : BaseNavActivi
             contentRoot = findViewById(R.id.content_root)
             bottomNavigationView = findViewById(R.id.bottom_navigation)
             toolbar = findViewById(R.id.toolbar)
-            toolbar.visibility = if(showActionBar()) View.VISIBLE else View.GONE
+            toolbar.visibility = if (showActionBar()) View.VISIBLE else View.GONE
             setSupportActionBar(toolbar)
         }
     }
@@ -77,17 +77,15 @@ abstract class NavActivityController(baseActivity: BaseActivity) : BaseNavActivi
     fun invalidateBottomNavigationView() {
 
         val bottomNavigationMenuId = getBottomNavigationMenuId()
-        if(bottomNavigationMenuId != null) {
-            contentRoot.applyViewConstraints(bottomNavigationView) {
-                    constraintApplier ->
+        if (bottomNavigationMenuId != null) {
+            contentRoot.applyViewConstraints(bottomNavigationView) { constraintApplier ->
                 constraintApplier.disconnect(ConstraintSet.TOP)
                 constraintApplier.connect(ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
             }
             bottomNavigationView.inflateMenu(bottomNavigationMenuId)
             NavigationUI.setupWithNavController(bottomNavigationView, navController)
         } else {
-            contentRoot.applyViewConstraints(bottomNavigationView) {
-                    constraintApplier ->
+            contentRoot.applyViewConstraints(bottomNavigationView) { constraintApplier ->
                 constraintApplier.disconnect(ConstraintSet.BOTTOM)
                 constraintApplier.connect(ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
             }
@@ -98,7 +96,7 @@ abstract class NavActivityController(baseActivity: BaseActivity) : BaseNavActivi
         drawerLayout.closeDrawers()
         val navigationMenuId = getNavigationMenuId()
         navigationView.isEnabled = navigationMenuId != null
-        if(navigationMenuId != null) {
+        if (navigationMenuId != null) {
 
             navigationUI.setupActionBarWithNavController(activity, navController, drawerLayout)
             // unlock drawer

@@ -4,8 +4,7 @@ import dk.sidereal.corelogic.nav.BaseNavHostFragment
 import dk.sidereal.corelogic.nav.NavActivityController
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
-class MainActivityNavController(baseActivity: BaseActivity)
-    : NavActivityController(baseActivity) {
+class MainActivityNavController(baseActivity: BaseActivity) : NavActivityController(baseActivity) {
 
     override fun getNavHostFragment(): BaseNavHostFragment = BaseNavHostFragment.create(R.navigation.nav_main)
 
