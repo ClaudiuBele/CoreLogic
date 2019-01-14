@@ -3,15 +3,23 @@ package dk.sidereal.corelogic.platform.lifecycle
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.CallSuper
+import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
 /** Activity controller. Contains a reference to a BaseActivity in order to delegate logic related to it
  * away from the activity. Should be created in [BaseActivity.onCreate], and [dispose] is called from [BaseActivity.onDestroy]
  *
  */
-abstract class ActivityController(protected val activity: BaseActivity)  {
+abstract class ActivityController(protected val activity: BaseActivity) {
+
+    protected val TAG by lazy { javaClass.simpleTagName() }
+
+    companion object {
+        val INNER_TAG by lazy { ActivityController::class.simpleTagName() }
+    }
+
 
     val applicationControllers: List<ApplicationController>
-    get() = activity.baseApplication.controllers
+        get() = activity.baseApplication.controllers
 
     val context = activity
 
@@ -34,18 +42,21 @@ abstract class ActivityController(protected val activity: BaseActivity)  {
     /** Called in [BaseActivity.onCreate]. Return true if you are setting the content view in this controller.
      *
      */
-    open fun onCreateView(baseActivity: BaseActivity) : Boolean { return false }
+    open fun onCreateView(baseActivity: BaseActivity): Boolean {
+        return false
+    }
 
     /** Called in [BaseActivity.onCreate] after it calls [onCreateView] on all controllers
      *
      */
     @CallSuper
-    open fun onViewCreated(baseActivity: BaseActivity) {}
+    open fun onViewCreated(baseActivity: BaseActivity) {
+    }
 
     /** Called in [BaseActivity.onSupportNavigateUp]
      *
      */
-    open fun onNavigateUp() : Boolean = false
+    open fun onNavigateUp(): Boolean = false
 
     /** Called in [BaseActivity.onOptionsItemSelected]
      *

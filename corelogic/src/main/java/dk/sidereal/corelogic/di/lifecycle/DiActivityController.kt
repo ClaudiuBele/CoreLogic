@@ -1,7 +1,7 @@
 package dk.sidereal.corelogic.di.lifecycle
 
+import dk.sidereal.corelogic.di.DiComponent
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
-import dk.sidereal.corelogic.platform.lifecycle.ApplicationController
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 import dk.sidereal.corelogic.platform.lifecycle.BaseFragment
 

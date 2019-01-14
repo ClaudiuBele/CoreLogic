@@ -16,9 +16,9 @@ inline fun ConstraintLayout.applyViewConstraints(view: View, constraintApplier: 
     if (view.id == android.view.View.NO_ID) {
         view.id = android.view.View.generateViewId()
     }
-    applyConstraints({ constraintSet: ConstraintSet ->
+    applyConstraints { constraintSet: ConstraintSet ->
         constraintApplier.invoke(constraintSet.getConstraintApplier(view))
-    })
+    }
 }
 
 inline fun ConstraintLayout.addViewAndApplyViewConstraints(view: View, index: Int = 0, constraintApplier: (ConstraintApplier) -> Unit) {
@@ -26,7 +26,7 @@ inline fun ConstraintLayout.addViewAndApplyViewConstraints(view: View, index: In
         view.id = android.view.View.generateViewId()
     }
     addView(view, index)
-    applyConstraints({ constraintSet: ConstraintSet ->
+    applyConstraints { constraintSet: ConstraintSet ->
         constraintApplier.invoke(constraintSet.getConstraintApplier(view))
-    })
+    }
 }

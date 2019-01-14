@@ -2,12 +2,20 @@ package dk.sidereal.corelogic.platform.lifecycle
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
 open class BaseFragment : Fragment() {
+
+    protected val TAG by lazy { javaClass.simpleTagName()}
+
+    companion object {
+        val INNER_TAG by lazy { BaseFragment::class.simpleTagName() }
+    }
 
     protected val controllers: MutableList<FragmentController> = mutableListOf()
 
@@ -19,6 +27,7 @@ open class BaseFragment : Fragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         onCreateControllers()
+        Log.d(TAG, "onAttach")
         controllers.forEach { it.onAttach(context) }
     }
 

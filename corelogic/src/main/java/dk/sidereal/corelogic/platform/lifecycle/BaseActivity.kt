@@ -5,8 +5,15 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
 open class BaseActivity : AppCompatActivity() {
+
+    protected val TAG by lazy { javaClass.simpleTagName() }
+
+    companion object {
+        val INNER_TAG by lazy { BaseActivity::class.simpleTagName() }
+    }
 
     val controllers: MutableList<ActivityController> = mutableListOf()
 
@@ -22,7 +29,13 @@ open class BaseActivity : AppCompatActivity() {
         controllers.forEach { it.onCreate(savedInstanceState) }
 
         var hasSetContentView = false
-        controllers.forEach { hasSetContentView = hasSetContentView or it.onCreateView(this) }
+        controllers.forEach {
+            val hasNewControllerSetContentView = it.onCreateView(this)
+            if(hasSetContentView && hasNewControllerSetContentView) {
+                Log.w(INNER_TAG, "onCreate: ${it.javaClass.simpleName} returned true in onCreateView after another Controller")
+            }
+            hasSetContentView = hasSetContentView or hasNewControllerSetContentView
+        }
 
         if (!hasSetContentView) {
             Log.w("BaseActivity", "No content view set by activity controllers")

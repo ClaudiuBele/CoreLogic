@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import dk.sidereal.corelogic.R
-import dk.sidereal.corelogic.nav.BaseNavHostFragment.Companion.DEBUG_TAG
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
@@ -67,7 +66,7 @@ abstract class BaseNavActivityController(baseActivity: BaseActivity) : ActivityC
      */
     @CallSuper
     open fun onNavControllerReady(navController: NavController) {
-        Log.d(DEBUG_TAG, "BaseNavActivity: onNavControllerReady")
+        Log.d(TAG, "onNavControllerReady")
         this.navController = navController
 
         // called whenever navigation destination changes
@@ -90,7 +89,7 @@ abstract class BaseNavActivityController(baseActivity: BaseActivity) : ActivityC
      */
     @CallSuper
     open fun onDestinationChanged(navController: NavController, navDestination: NavDestination) {
-        Log.d(DEBUG_TAG, "BaseNavActivity: onDestinationChanged, destination: ${navDestination.label}")
+        Log.d(TAG, "onDestinationChanged, destination: ${navDestination.label}")
     }
 
     /** Abstract function that must be implemented. Create your own fragment using a nav resource like this

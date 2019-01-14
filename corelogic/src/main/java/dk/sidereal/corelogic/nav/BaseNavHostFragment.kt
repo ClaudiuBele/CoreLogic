@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
 /** [NavHostFragment] alternative to be used when your activity is [BaseNavActivity].
@@ -16,9 +17,10 @@ import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
  */
 class BaseNavHostFragment : NavHostFragment() {
 
+    protected val TAG by lazy { javaClass.simpleTagName() }
 
     companion object {
-        val DEBUG_TAG = "NAV"
+        val TAG = "NAV"
 
 
         private val KEY_GRAPH_ID = "android-support-nav:fragment:graphId"
@@ -62,12 +64,12 @@ class BaseNavHostFragment : NavHostFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        Log.d(DEBUG_TAG, "BaseNavHostFragment: onAttach")
+        Log.d(TAG, "onAttach")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(DEBUG_TAG, "BaseNavHostFragment: onCreate")
+        Log.d(TAG, "onCreate")
     }
 
     /** After [onViewCreated], nav controller is not null.Root [NavFragment] in the navigation flow's onCreate
@@ -75,7 +77,7 @@ class BaseNavHostFragment : NavHostFragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d(DEBUG_TAG, "BaseNavHostFragment: onViewCreated")
+        Log.d(TAG, "onViewCreated")
         val controller = view.findNavController()
 
         val navActivityController =
@@ -94,18 +96,18 @@ class BaseNavHostFragment : NavHostFragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(DEBUG_TAG, "BaseNavHostFragment: onStart")
+        Log.d(TAG, "onStart")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(DEBUG_TAG, "BaseNavHostFragment: onResume")
+        Log.d(TAG, "onResume")
     }
 
     override fun onAttachFragment(fragment: Fragment?) {
         super.onAttachFragment(fragment)
         fragment?.let {
-            Log.d(DEBUG_TAG, "BaseNavHostFragment: onAttachFrament ${it.javaClass.simpleName}")
+            Log.d(TAG, "onAttachFragment: ${it.javaClass.simpleTagName()}")
         }
     }
 }
