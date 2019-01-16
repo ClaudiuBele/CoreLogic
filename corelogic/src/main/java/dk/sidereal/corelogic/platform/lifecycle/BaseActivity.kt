@@ -46,6 +46,14 @@ open class BaseActivity : AppCompatActivity() {
         controllers.forEach { it.onViewCreated(this) }
     }
 
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        // outstate is not null, otherwise there will be NPE in platform Activity code
+        val realOutState = outState!!
+        controllers.forEach { it.onSaveInstanceState(realOutState) }
+    }
+
     override fun onBackPressed() {
         var handledBackPressed = false
         controllers.forEach {
@@ -69,7 +77,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        controllers.forEach { it.dispose() }
+        controllers.forEach { it.onDestroy() }
         super.onDestroy()
     }
 

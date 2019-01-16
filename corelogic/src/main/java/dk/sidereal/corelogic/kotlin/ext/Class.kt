@@ -8,3 +8,13 @@ import dk.sidereal.corelogic.util.StringFormattingUtils
  *
  */
 fun <T> Class<T>.simpleTagName() = StringFormattingUtils.toLowercaseWithUnderscores(simpleName)
+
+
+fun <T> Class<T>.hasConstructor(vararg paramterTypes: Class<*>): Boolean {
+    try {
+        getConstructor(*paramterTypes)
+        return true
+    } catch (ex: Exception) {
+        return false
+    }
+}
