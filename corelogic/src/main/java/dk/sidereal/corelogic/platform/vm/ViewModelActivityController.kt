@@ -40,11 +40,10 @@ open class ViewModelActivityController(coreActivity: CoreActivity) :
 
     private var lastSavedInstance: Bundle? = null
 
-
     @CallSuper
     override fun onViewModelCreated(viewModel: ViewModel) {
         if (viewModel is StatefulViewModel) {
-            viewModel.restoreState(lastSavedInstance)
+            viewModel.restoreStateInternal(lastSavedInstance)
             Log.d(TAG, "onViewModelCreated: restoreState called for ${viewModel::class.java.simpleTagName()}")
         }
         viewModels.add(viewModel)
@@ -60,7 +59,7 @@ open class ViewModelActivityController(coreActivity: CoreActivity) :
         super.onSaveInstanceState(outState)
         viewModels.forEach {
             if (it is StatefulViewModel) {
-                it.saveInstanceState(outState)
+                it.saveInstanceStateInternal(outState)
                 Log.d(TAG, "onSaveInstanceState: saveInstanceState called for ${it::class.java.simpleTagName()}")
             }
         }
@@ -76,7 +75,7 @@ open class ViewModelActivityController(coreActivity: CoreActivity) :
      * classes and constructors for them, check
      *
      */
-    fun <T : ViewModel> get(clazz: Class<T>) {
-        viewModelProvider.get(clazz)
+    fun <T : ViewModel> get(clazz: Class<T>): T {
+        return viewModelProvider.get(clazz)
     }
 }

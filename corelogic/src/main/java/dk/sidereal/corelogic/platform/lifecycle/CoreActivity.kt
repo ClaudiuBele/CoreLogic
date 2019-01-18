@@ -5,7 +5,9 @@ import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
+import dk.sidereal.corelogic.platform.vm.ViewModelActivityController
 
 open class CoreActivity : AppCompatActivity() {
 
@@ -71,7 +73,7 @@ open class CoreActivity : AppCompatActivity() {
             }
         }
 
-        if (handledBackPressed) {
+        if (!handledBackPressed) {
             super.onBackPressed()
         }
     }
@@ -107,6 +109,16 @@ open class CoreActivity : AppCompatActivity() {
 
     }
 
+    /** Retrieves the desired view model. Will create it if neeeded. For supported viewmodel
+     * classes and constructors for them, check [ViewModelActivityController]
+     *
+     */
+    fun <T : ViewModel> get(clazz: Class<T>): T {
+        val vmController = getController(ViewModelActivityController::class.java)
+        checkNotNull(vmController)
+        return vmController.get(clazz)
+    }
+
     /** Returns a read-only list of controllers
      *
      */
@@ -120,7 +132,9 @@ open class CoreActivity : AppCompatActivity() {
      * Some default controllers are added by [CoreActivity] [dk.sidereal.corelogic.nav.CoreNavActivity]
 
      */
-    protected open fun onCreateControllers(controllers: MutableList<ActivityController>) {}
+    protected open fun onCreateControllers(controllers: MutableList<ActivityController>) {
+        controllers.add(ViewModelActivityController(this))
+    }
 
 
 }

@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
+import dk.sidereal.corelogic.platform.vm.ViewModelActivityController
 
 open class CoreFragment : Fragment() {
 
@@ -34,6 +36,21 @@ open class CoreFragment : Fragment() {
         Log.d(TAG, "onAttach")
         controllers.forEach { it.onAttach(context) }
     }
+
+
+    /** Retrieves the desired view model. Will create it if neeeded. For supported viewmodel
+     * classes and constructors for them, check [ViewModelActivityController]
+     *
+     * Will throw exception if fragment detached and [getActivity] null
+     *
+     */
+    fun <T : ViewModel> get(clazz: Class<T>): T {
+        checkNotNull(coreActivity)
+        val vmController = coreActivity!!.getController(ViewModelActivityController::class.java)
+        checkNotNull(vmController)
+        return vmController.get(clazz)
+    }
+
 
     /** Returns a read-only list of controllers
      *

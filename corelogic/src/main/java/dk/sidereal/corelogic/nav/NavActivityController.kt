@@ -1,10 +1,12 @@
 package dk.sidereal.corelogic.nav
 
+import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.isEmpty
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -66,8 +68,9 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
         return true
     }
 
-    override fun getNavHostFragment(): CoreNavHostFragment {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        navController.saveState()
     }
 
     /** Destinations for which toolbar shows up as home
@@ -82,7 +85,9 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
                 constraintApplier.disconnect(ConstraintSet.TOP)
                 constraintApplier.connect(ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM)
             }
-            bottomNavigationView.inflateMenu(bottomNavigationMenuId)
+            if (bottomNavigationView.menu.isEmpty()) {
+                bottomNavigationView.inflateMenu(bottomNavigationMenuId)
+            }
             NavigationUI.setupWithNavController(bottomNavigationView, navController)
         } else {
             contentRoot.applyViewConstraints(bottomNavigationView) { constraintApplier ->
@@ -103,7 +108,9 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
 
             // set menu
-            navigationView.inflateMenu(navigationMenuId)
+            if (navigationView.menu.isEmpty()) {
+                navigationView.inflateMenu(navigationMenuId)
+            }
 
             // bind navigation to selected item two ways
             NavigationUI.setupWithNavController(navigationView, navController)

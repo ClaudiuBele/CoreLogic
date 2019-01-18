@@ -15,6 +15,7 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
     companion object {
 
         val NAV_HOST_ROOT_ID = R.id.nav_host_fragment_root
+        val NAV_HOST_FRAGMENT_TAG = "NAV_HOST_FRAGMENT_TAG"
 
     }
 
@@ -31,15 +32,19 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
         // drawerLayout view must not be null
         navHostRoot = coreActivity.findViewById<ViewGroup>(NAV_HOST_ROOT_ID)!!
 
-        val navHostFragment = getNavHostFragment()
-        // add nav fragment
-        coreActivity.supportFragmentManager.beginTransaction().apply {
-            replace(NAV_HOST_ROOT_ID, navHostFragment)
-            if (isPrimaryNavigation()) {
-                setPrimaryNavigationFragment(navHostFragment)
+
+        if (coreActivity.supportFragmentManager.findFragmentByTag(NAV_HOST_FRAGMENT_TAG) == null) {
+            val navHostFragment = getNavHostFragment()
+            // add nav fragment
+            coreActivity.supportFragmentManager.beginTransaction().apply {
+                replace(NAV_HOST_ROOT_ID, navHostFragment, NAV_HOST_FRAGMENT_TAG)
+                if (isPrimaryNavigation()) {
+                    setPrimaryNavigationFragment(navHostFragment)
+                }
+                commit()
             }
-            commit()
         }
+
 
     }
 

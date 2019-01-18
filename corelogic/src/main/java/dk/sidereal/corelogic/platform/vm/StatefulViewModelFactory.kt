@@ -21,6 +21,7 @@ class StatefulViewModelFactory(val activity: CoreActivity, private val onViewMod
         fun onViewModelCreated(viewModel: ViewModel)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
 
         val viewModel =
@@ -69,7 +70,7 @@ class StatefulViewModelFactory(val activity: CoreActivity, private val onViewMod
                         "- ViewModel with Application/AppCompatActivity/empty constructors.\n"
             )
         onViewModelCreated.onViewModelCreated(viewModel)
-        return super.create(modelClass)
+        return viewModel as? T? ?: super.create(modelClass)
     }
 
 }
