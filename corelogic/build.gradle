@@ -34,9 +34,6 @@ android {
 
 dependencies {
 
-    // compile is used as fix to https://youtrack.jetbzrains.com/issue/KT-28355
-    // applying the `apply 'java-library'` plugin doesn't work with an android library so this is the only solution
-    // error with `java-library`: The 'java' plugin has been applied, but it is not compatible with the Android plugins.
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     api 'androidx.appcompat:appcompat:1.0.2@aar'
 
@@ -47,9 +44,9 @@ dependencies {
     // see core packages here https://developer.android.com/kotlin/ktx#core-packages
     api 'androidx.core:core-ktx:1.0.1@aar'
 
-    testCompile 'junit:junit:4.12'
-    androidTestCompile 'androidx.test:runner:1.1.1'
-    androidTestCompile 'androidx.test.espresso:espresso-core:3.1.1'
+    testApi 'junit:junit:4.12'
+    androidTestApi 'androidx.test:runner:1.1.1'
+    androidTestApi 'androidx.test.espresso:espresso-core:3.1.1'
 
     def lifecycle_version = "2.0.0"
     // ViewModel and LiveData
