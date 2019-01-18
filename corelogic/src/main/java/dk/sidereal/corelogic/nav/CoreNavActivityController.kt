@@ -50,7 +50,7 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
 
     /** Called by [CoreNavHostFragment.onViewCreated] after whichs' super creates the [NavController] which is passed
      * into the activity. If you want to remove this, expect to be able to call [Navigation.findNavController]
-     * and not get an exception beggining with onStart.
+     * and not getVm an exception beggining with onStart.
      *
      * The benefit of this callback is that it is called before the drawerLayout navigation's fragment's [NavFragment.onAttach]
      * is called, which means they can access the activity's nav controller if they want to.

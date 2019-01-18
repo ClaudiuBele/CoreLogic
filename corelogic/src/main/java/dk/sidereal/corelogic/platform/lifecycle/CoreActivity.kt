@@ -113,7 +113,7 @@ open class CoreActivity : AppCompatActivity() {
      * classes and constructors for them, check [ViewModelActivityController]
      *
      */
-    fun <T : ViewModel> get(clazz: Class<T>): T {
+    fun <T : ViewModel> getVm(clazz: Class<T>): T {
         val vmController = getController(ViewModelActivityController::class.java)
         checkNotNull(vmController)
         return vmController.get(clazz)

@@ -30,9 +30,9 @@ class MoreInfoFragment() : NavFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.button)?.setOnClickListener {
-            get(MoreInfoViewModel::class.java).triggerClick()
+            getVm(MoreInfoViewModel::class.java).triggerClick()
         }
-        get(MoreInfoViewModel::class.java).clicksLiveData.observe(this, Observer { clicks ->
+        getVm(MoreInfoViewModel::class.java).clicksLiveData.observe(this, Observer { clicks ->
             if (clicks == null) return@Observer
 
             context?.let {

@@ -44,7 +44,7 @@ open class CoreFragment : Fragment() {
      * Will throw exception if fragment detached and [getActivity] null
      *
      */
-    fun <T : ViewModel> get(clazz: Class<T>): T {
+    fun <T : ViewModel> getVm(clazz: Class<T>): T {
         checkNotNull(coreActivity)
         val vmController = coreActivity!!.getController(ViewModelActivityController::class.java)
         checkNotNull(vmController)
