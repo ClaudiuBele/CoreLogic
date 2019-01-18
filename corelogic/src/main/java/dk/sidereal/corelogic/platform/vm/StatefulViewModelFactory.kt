@@ -6,15 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import dk.sidereal.corelogic.kotlin.ext.hasConstructor
-import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
-import dk.sidereal.corelogic.platform.lifecycle.BaseApplication
+import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
+import dk.sidereal.corelogic.platform.lifecycle.CoreApplication
 
 /** View model factory that supports all viewmodels created through (in this order):
  *
- * - [StatefulViewModel] subclasses with a [BaseApplication]/[BaseActivity]/[Context]/empty constructor; or
+ * - [StatefulViewModel] subclasses with a [CoreApplication]/[CoreActivity]/[Context]/empty constructor; or
  * - [ViewModel] subclasses with [Application]/[AppCompatActivity]/empty constructor
  */
-class StatefulViewModelFactory(val activity: BaseActivity, private val onViewModelCreated: OnViewModelCreated) :
+class StatefulViewModelFactory(val activity: CoreActivity, private val onViewModelCreated: OnViewModelCreated) :
     ViewModelProvider.AndroidViewModelFactory(activity.application) {
 
     interface OnViewModelCreated {
@@ -25,14 +25,14 @@ class StatefulViewModelFactory(val activity: BaseActivity, private val onViewMod
 
         val viewModel =
             (if (StatefulViewModel::class.java.isAssignableFrom(modelClass)) {
-                if (modelClass.hasConstructor(BaseApplication::class.java)) {
+                if (modelClass.hasConstructor(CoreApplication::class.java)) {
                     modelClass
-                        .getConstructor(BaseApplication::class.java)
+                        .getConstructor(CoreApplication::class.java)
                         .newInstance(activity.application) as ViewModel
-                } else if (modelClass.hasConstructor(BaseActivity::class.java)) {
+                } else if (modelClass.hasConstructor(CoreActivity::class.java)) {
                     modelClass
-                        .getConstructor(BaseActivity::class.java)
-                        .newInstance(activity, activity.baseApplication) as ViewModel
+                        .getConstructor(CoreActivity::class.java)
+                        .newInstance(activity, activity.coreApplication) as ViewModel
                 } else if (modelClass.hasConstructor(Context::class.java)) {
                     modelClass
                         .getConstructor(Context::class.java)
@@ -65,7 +65,7 @@ class StatefulViewModelFactory(val activity: BaseActivity, private val onViewMod
             }) ?: throw IllegalArgumentException(
                 "" +
                         "Invalid ViewModel class provided ${modelClass.canonicalName}. Must be either (instanciated in this order):\n" +
-                        "- StatefulViewModel with BaseApplication/BaseActivity/Context constructor; or \n" +
+                        "- StatefulViewModel with CoreApplication/CoreActivity/Context constructor; or \n" +
                         "- ViewModel with Application/AppCompatActivity/empty constructors.\n"
             )
         onViewModelCreated.onViewModelCreated(viewModel)

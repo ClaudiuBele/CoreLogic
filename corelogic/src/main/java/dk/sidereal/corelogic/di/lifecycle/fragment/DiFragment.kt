@@ -1,10 +1,10 @@
 package dk.sidereal.corelogic.di.lifecycle.fragment
 
 import android.content.Context
-import dk.sidereal.corelogic.platform.lifecycle.BaseFragment
+import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 
 @Suppress("UNUSED")
-abstract class DiFragment : BaseFragment() {
+abstract class DiFragment : CoreFragment() {
 
     internal abstract fun getDiComponent(): DiFragmentController<DiFragment>
 

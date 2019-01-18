@@ -1,8 +1,8 @@
 package dk.sidereal.corelogic.di.lifecycle
 
-import dk.sidereal.corelogic.platform.lifecycle.BaseApplication
+import dk.sidereal.corelogic.platform.lifecycle.CoreApplication
 
-abstract class DiApplication : BaseApplication() {
+abstract class DiApplication : CoreApplication() {
 
     internal abstract fun getDiController(): DiApplicationController<DiApplication>
 

@@ -12,10 +12,10 @@ import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import dk.sidereal.corelogic.R
-import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
+import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 import dk.sidereal.corelogic.platform.widget.constraint.applyViewConstraints
 
-abstract class NavActivityController(baseActivity: BaseActivity) : BaseNavActivityController(baseActivity) {
+abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivityController(coreActivity) {
 
     protected lateinit var drawerLayout: DrawerLayout
     protected lateinit var navigationView: NavigationView
@@ -25,14 +25,14 @@ abstract class NavActivityController(baseActivity: BaseActivity) : BaseNavActivi
     protected var savedAppBarConfiguration: AppBarConfiguration? = null
     protected lateinit var navigationUI: MultiStartNavigationUI
 
-    override fun onCreateView(baseActivity: BaseActivity): Boolean {
-        baseActivity.setContentView(R.layout.activity_nav)
+    override fun onCreateView(coreActivity: CoreActivity): Boolean {
+        coreActivity.setContentView(R.layout.activity_nav)
         return true
     }
 
-    override fun onViewCreated(baseActivity: BaseActivity) {
-        super.onViewCreated(baseActivity)
-        baseActivity.apply {
+    override fun onViewCreated(coreActivity: CoreActivity) {
+        super.onViewCreated(coreActivity)
+        coreActivity.apply {
             drawerLayout = findViewById(R.id.root)
             navigationView = findViewById(R.id.navigation_view)
             contentRoot = findViewById(R.id.content_root)
@@ -66,7 +66,7 @@ abstract class NavActivityController(baseActivity: BaseActivity) : BaseNavActivi
         return true
     }
 
-    override fun getNavHostFragment(): BaseNavHostFragment {
+    override fun getNavHostFragment(): CoreNavHostFragment {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

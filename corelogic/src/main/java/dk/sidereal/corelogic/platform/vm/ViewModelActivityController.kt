@@ -10,21 +10,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
-import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
-import dk.sidereal.corelogic.platform.lifecycle.BaseApplication
+import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
+import dk.sidereal.corelogic.platform.lifecycle.CoreApplication
 
 /** [ActivityController] tasked with saving and restoring state from viewModels (if [StatefulViewModel]).
  *
  * Get your viewModels with [get]
  *
  * Using this class restricts your viewmodel usage to
- * - [StatefulViewModel] subclasses with a [BaseApplication]/[BaseActivity]/[Context] constructor parameter; or
+ * - [StatefulViewModel] subclasses with a [CoreApplication]/[CoreActivity]/[Context] constructor parameter; or
  * - [ViewModel] subclasses with [Application]/[AppCompatActivity]/empty constructor.
  * attempting
  *
  */
-open class ViewModelActivityController(baseActivity: BaseActivity) :
-    ActivityController(baseActivity),
+open class ViewModelActivityController(coreActivity: CoreActivity) :
+    ActivityController(coreActivity),
     StatefulViewModelFactory.OnViewModelCreated {
 
     companion object {

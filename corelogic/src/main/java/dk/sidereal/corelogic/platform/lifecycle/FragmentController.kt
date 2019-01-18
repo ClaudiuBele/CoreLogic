@@ -3,9 +3,9 @@ package dk.sidereal.corelogic.platform.lifecycle
 import android.content.Context
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
-/** A fragment controller. Must be created and added to list in [BaseFragment.onCreateControllers]
+/** A fragment controller. Must be created and added to list in [CoreFragment.onCreateControllers]
  */
-open class FragmentController(protected val baseFragment: BaseFragment) {
+open class FragmentController(protected val coreFragment: CoreFragment) {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -14,15 +14,15 @@ open class FragmentController(protected val baseFragment: BaseFragment) {
     }
 
     protected val context: Context?
-        get() = baseFragment.context
+        get() = coreFragment.context
     protected val requireContext: Context
-        get() = baseFragment.requireContext()
-    protected val baseActivity: BaseActivity?
-        get() = baseFragment.baseActivity
-    protected val requireBaseActivity: BaseActivity
-        get() = baseFragment.requireBaseActivity
+        get() = coreFragment.requireContext()
+    protected val coreActivity: CoreActivity?
+        get() = coreFragment.coreActivity
+    protected val requireCoreActivity: CoreActivity
+        get() = coreFragment.requireCoreActivity
 
-    /** Called in [BaseFragment.onCreate] after [BaseFragment.onCreateControllers]
+    /** Called in [CoreFragment.onCreate] after [CoreFragment.onCreateControllers]
      */
     internal open fun onAttach(context: Context?) {}
 

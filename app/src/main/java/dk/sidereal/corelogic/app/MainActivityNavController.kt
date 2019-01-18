@@ -1,12 +1,12 @@
 package dk.sidereal.corelogic.app
 
-import dk.sidereal.corelogic.nav.BaseNavHostFragment
+import dk.sidereal.corelogic.nav.CoreNavHostFragment
 import dk.sidereal.corelogic.nav.NavActivityController
-import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
+import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 
-class MainActivityNavController(baseActivity: BaseActivity) : NavActivityController(baseActivity) {
+class MainActivityNavController(coreActivity: CoreActivity) : NavActivityController(coreActivity) {
 
-    override fun getNavHostFragment(): BaseNavHostFragment = BaseNavHostFragment.create(R.navigation.nav_main)
+    override fun getNavHostFragment(): CoreNavHostFragment = CoreNavHostFragment.create(R.navigation.nav_main)
 
     override fun getBottomNavigationMenuId(): Int? {
         return R.menu.menu_main

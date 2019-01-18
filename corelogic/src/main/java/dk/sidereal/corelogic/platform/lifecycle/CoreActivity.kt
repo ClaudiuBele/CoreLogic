@@ -7,21 +7,21 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
-open class BaseActivity : AppCompatActivity() {
+open class CoreActivity : AppCompatActivity() {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
     companion object {
-        val INNER_TAG by lazy { BaseActivity::class.simpleTagName() }
+        val INNER_TAG by lazy { CoreActivity::class.simpleTagName() }
     }
 
     private val controllers: MutableList<ActivityController> = mutableListOf()
 
-    val baseApplication: BaseApplication
-        get() = application as BaseApplication
+    val coreApplication: CoreApplication
+        get() = application as CoreApplication
 
-    private val baseFragments: List<BaseFragment>
-        get() = supportFragmentManager.fragments.dropWhile { it !is BaseFragment }.map { it as BaseFragment }
+    private val coreFragments: List<CoreFragment>
+        get() = supportFragmentManager.fragments.dropWhile { it !is CoreFragment }.map { it as CoreFragment }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +41,7 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         if (!hasSetContentView) {
-            Log.w("BaseActivity", "No content view set by activity controllers")
+            Log.w("CoreActivity", "No content view set by activity controllers")
         }
         controllers.forEach { it.onViewCreated(this) }
     }
@@ -65,7 +65,7 @@ open class BaseActivity : AppCompatActivity() {
             return
         }
 
-        baseFragments.forEach {
+        coreFragments.forEach {
             if (!handledBackPressed) {
                 handledBackPressed = handledBackPressed or it.onBackPressed()
             }
@@ -103,7 +103,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onAttachFragment(fragment: Fragment?) {
         super.onAttachFragment(fragment)
-        controllers.forEach { it.onAttachFragment(fragment as? BaseFragment) }
+        controllers.forEach { it.onAttachFragment(fragment as? CoreFragment) }
 
     }
 
@@ -117,7 +117,7 @@ open class BaseActivity : AppCompatActivity() {
         controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
 
     /** Where you setup your [ActivityController]. called in [onCreate]. Add your controllers to [controllers] parameter.
-     * Some default controllers are added by [BaseActivity] [dk.sidereal.corelogic.nav.BaseNavActivity]
+     * Some default controllers are added by [CoreActivity] [dk.sidereal.corelogic.nav.CoreNavActivity]
 
      */
     protected open fun onCreateControllers(controllers: MutableList<ActivityController>) {}

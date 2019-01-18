@@ -4,7 +4,7 @@ import androidx.appcompat.widget.Toolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
-/** Subclass of [BaseNavActivity] which bundles Navigation integration with the following widgets [BottomNavigationView],
+/** Subclass of [CoreNavActivity] which bundles Navigation integration with the following widgets [BottomNavigationView],
  * [NavigationView], [Toolbar].
  *
  * You need to implement [getStartDestinations] to set which destinations will count as home in relation to [Toolbar.getNavigationIcon]],
@@ -19,9 +19,9 @@ import com.google.android.material.navigation.NavigationView
  * You can override [getBottomNavigationMenuId] and return a non-null [androidx.annotation.MenuRes] id to show a
  * [BottomNavigationView] with current theme applied. The view is setup with [navController] automatically
  */
-abstract class NavActivity : BaseNavActivity() {
+abstract class NavActivity : CoreNavActivity() {
 
-    override fun onCreateNavigationController(): BaseNavActivityController {
+    override fun onCreateNavigationController(): CoreNavActivityController {
         return object : NavActivityController(this@NavActivity) {
             override fun getStartDestinations(): List<Int> {
                 return this@NavActivity.getStartDestinations()

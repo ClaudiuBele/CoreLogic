@@ -2,7 +2,7 @@ package dk.sidereal.corelogic.platform.lifecycle
 
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
-abstract class ApplicationController(protected val baseApplication: BaseApplication) {
+abstract class ApplicationController(protected val coreApplication: CoreApplication) {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -11,11 +11,11 @@ abstract class ApplicationController(protected val baseApplication: BaseApplicat
     }
 
 
-    /** Called in [BaseApplication.onCreate] after [BaseApplication.onCreateControllers]
+    /** Called in [CoreApplication.onCreate] after [CoreApplication.onCreateControllers]
      */
     open fun onCreate() {}
 
-    /** Called  in [BaseApplication.onTerminate]
+    /** Called  in [CoreApplication.onTerminate]
      *
      */
     open fun onTerminate() {}

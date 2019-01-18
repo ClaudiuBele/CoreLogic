@@ -9,22 +9,22 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
-open class BaseFragment : Fragment() {
+open class CoreFragment : Fragment() {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
     companion object {
-        val INNER_TAG by lazy { BaseFragment::class.simpleTagName() }
+        val INNER_TAG by lazy { CoreFragment::class.simpleTagName() }
     }
 
-    val baseActivity: BaseActivity?
-        get() = activity as? BaseActivity
-    val baseApplication: BaseApplication?
-        get() = baseActivity?.baseApplication
-    val requireBaseActivity: BaseActivity
-        get() = requireActivity() as BaseActivity
-    val requireApplication: BaseApplication
-        get() = requireBaseActivity.baseApplication
+    val coreActivity: CoreActivity?
+        get() = activity as? CoreActivity
+    val coreApplication: CoreApplication?
+        get() = coreActivity?.coreApplication
+    val requireCoreActivity: CoreActivity
+        get() = requireActivity() as CoreActivity
+    val requireApplication: CoreApplication
+        get() = requireCoreActivity.coreApplication
 
     private val controllers: MutableList<FragmentController> = mutableListOf()
 
@@ -44,26 +44,26 @@ open class BaseFragment : Fragment() {
     fun <T : FragmentController> getController(clazz: Class<T>): T? =
         controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
 
-    /** Called in [BaseFragment.onAttach]
+    /** Called in [CoreFragment.onAttach]
      *
      */
     protected open fun onCreateControllers(controllers: MutableList<FragmentController>) {}
 
 
-    /** Called from [BaseActivity.onBackPressed]
+    /** Called from [CoreActivity.onBackPressed]
      * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
      *
      */
     open fun onBackPressed(): Boolean = false
 
-    /** Called in [BaseActivity.onDestroy]
+    /** Called in [CoreActivity.onDestroy]
      *
      */
     open fun dispose() {}
 
-    /** Called after [BaseActivity.onAttachFragment] inside the override
+    /** Called after [CoreActivity.onAttachFragment] inside the override
      */
-    open fun onAttachFragment(baseFragment: BaseFragment?) {}
+    open fun onAttachFragment(coreFragment: CoreFragment?) {}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -73,7 +73,7 @@ open class BaseFragment : Fragment() {
         super.onDestroyView()
     }
 
-    /** Called by [BaseActivity.onBackPressed]
+    /** Called by [CoreActivity.onBackPressed]
      * Return true to flag that the fragment
      * handled the back internally and that the
      * activity shouldn't call super

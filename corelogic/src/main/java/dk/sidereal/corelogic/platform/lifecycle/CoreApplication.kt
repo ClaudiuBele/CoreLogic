@@ -3,12 +3,12 @@ package dk.sidereal.corelogic.platform.lifecycle
 import android.app.Application
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
-open class BaseApplication : Application() {
+open class CoreApplication : Application() {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
     companion object {
-        val INNER_TAG by lazy { BaseFragment::class.simpleTagName() }
+        val INNER_TAG by lazy { CoreFragment::class.simpleTagName() }
     }
 
     private val controllers: MutableList<ApplicationController> = mutableListOf()

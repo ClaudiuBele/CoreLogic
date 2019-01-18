@@ -8,9 +8,9 @@ import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import dk.sidereal.corelogic.R
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
-import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
+import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 
-abstract class BaseNavActivityController(baseActivity: BaseActivity) : ActivityController(baseActivity) {
+abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityController(coreActivity) {
 
     companion object {
 
@@ -21,19 +21,19 @@ abstract class BaseNavActivityController(baseActivity: BaseActivity) : ActivityC
     lateinit var navController: NavController
     lateinit var navHostRoot: ViewGroup
 
-    override fun onCreateView(baseActivity: BaseActivity): Boolean {
-        baseActivity.setContentView(R.layout.activity_nav_base)
+    override fun onCreateView(coreActivity: CoreActivity): Boolean {
+        coreActivity.setContentView(R.layout.activity_nav_core)
         return true
     }
 
-    override fun onViewCreated(baseActivity: BaseActivity) {
-        super.onViewCreated(baseActivity)
+    override fun onViewCreated(coreActivity: CoreActivity) {
+        super.onViewCreated(coreActivity)
         // drawerLayout view must not be null
-        navHostRoot = baseActivity.findViewById<ViewGroup>(NAV_HOST_ROOT_ID)!!
+        navHostRoot = coreActivity.findViewById<ViewGroup>(NAV_HOST_ROOT_ID)!!
 
         val navHostFragment = getNavHostFragment()
         // add nav fragment
-        baseActivity.supportFragmentManager.beginTransaction().apply {
+        coreActivity.supportFragmentManager.beginTransaction().apply {
             replace(NAV_HOST_ROOT_ID, navHostFragment)
             if (isPrimaryNavigation()) {
                 setPrimaryNavigationFragment(navHostFragment)
@@ -43,24 +43,24 @@ abstract class BaseNavActivityController(baseActivity: BaseActivity) : ActivityC
 
     }
 
-    /** Called by [BaseNavHostFragment.onViewCreated] after whichs' super creates the [NavController] which is passed
+    /** Called by [CoreNavHostFragment.onViewCreated] after whichs' super creates the [NavController] which is passed
      * into the activity. If you want to remove this, expect to be able to call [Navigation.findNavController]
      * and not get an exception beggining with onStart.
      *
      * The benefit of this callback is that it is called before the drawerLayout navigation's fragment's [NavFragment.onAttach]
      * is called, which means they can access the activity's nav controller if they want to.
      *
-     * BaseNavHostFragment: onCreate
-    BaseNavHostFragment: onViewCreated
-    BaseNavActivity: onNavControllerReady
-    BaseNavActivity: onDestinationChanged, destination: fragment_intro
+     * CoreNavHostFragment: onCreate
+    CoreNavHostFragment: onViewCreated
+    CoreNavActivity: onNavControllerReady
+    CoreNavActivity: onDestinationChanged, destination: fragment_intro
     NavFragment onAttach, controller null false
     NavFragment onCreate, controller null false
-    BaseNavHostFragment: onStart
+    CoreNavHostFragment: onStart
     NavFragment onStart
-    BaseNavActivity: onStart
-    BaseNavActivity: onResume
-    BaseNavHostFragment: onResume
+    CoreNavActivity: onStart
+    CoreNavActivity: onResume
+    CoreNavHostFragment: onResume
     NavFragment onResume
      *
      */
@@ -79,7 +79,7 @@ abstract class BaseNavActivityController(baseActivity: BaseActivity) : ActivityC
 
     }
 
-    /** If this returns true, the [BaseNavHostFragment] will be set as the main primary navigation fragment,
+    /** If this returns true, the [CoreNavHostFragment] will be set as the main primary navigation fragment,
      * handling navigation callbacks like back presses.
      */
     open fun isPrimaryNavigation(): Boolean = true
@@ -93,9 +93,9 @@ abstract class BaseNavActivityController(baseActivity: BaseActivity) : ActivityC
     }
 
     /** Abstract function that must be implemented. Create your own fragment using a nav resource like this
-     *  [BaseNavHostFragment.create(R.navigation.nav_main)]
+     *  [CoreNavHostFragment.create(R.navigation.nav_main)]
      *
      */
-    abstract fun getNavHostFragment(): BaseNavHostFragment
+    abstract fun getNavHostFragment(): CoreNavHostFragment
 
 }

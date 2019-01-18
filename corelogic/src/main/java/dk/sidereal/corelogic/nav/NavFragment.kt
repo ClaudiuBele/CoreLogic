@@ -3,20 +3,20 @@ package dk.sidereal.corelogic.nav
 import android.content.Context
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import dk.sidereal.corelogic.platform.lifecycle.BaseFragment
+import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 
 /** Base fragment to be used for navigation
  *
  */
-open class NavFragment : BaseFragment() {
+open class NavFragment : CoreFragment() {
 
-    /** Not null from [onAttach] if used with [BaseNavActivity] and [BaseNavHostFragment]
+    /** Not null from [onAttach] if used with [CoreNavActivity] and [CoreNavHostFragment]
      *
      */
     val navController: NavController
         get() = NavHostFragment.findNavController(this)
 
-    /** Nav controller not null here. Becomes not null after [BaseNavHostFragment.onViewCreated], after which the home
+    /** Nav controller not null here. Becomes not null after [CoreNavHostFragment.onViewCreated], after which the home
      * fragment is created.
      *
      */
