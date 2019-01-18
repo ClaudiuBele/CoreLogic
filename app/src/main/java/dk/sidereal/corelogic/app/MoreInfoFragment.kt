@@ -12,7 +12,7 @@ import dk.sidereal.corelogic.nav.NavFragment
  * A simple [Fragment] subclass.
  *
  */
-class MoreInfoFragment : NavFragment() {
+class MoreInfoFragment() : NavFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

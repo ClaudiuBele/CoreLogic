@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group  'com.github.ClaudiuBele'
+group 'com.github.ClaudiuBele'
 version '0.3.3'
 
 apply plugin: 'kotlin-android'
@@ -11,7 +11,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 14
         targetSdkVersion 28
     }
 
@@ -49,7 +49,7 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
     androidTestCompile 'androidx.test:runner:1.1.1'
-    androidTestCompile'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestCompile 'androidx.test.espresso:espresso-core:3.1.1'
 
     def lifecycle_version = "2.0.0"
     // ViewModel and LiveData

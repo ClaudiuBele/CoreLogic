@@ -11,7 +11,7 @@ import dk.sidereal.corelogic.nav.NavFragment
  * A simple [Fragment] subclass.
  *
  */
-class ContactsFragment : NavFragment() {
+class ContactsFragment() : NavFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
