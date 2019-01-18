@@ -17,8 +17,6 @@ open class BaseFragment : Fragment() {
         val INNER_TAG by lazy { BaseFragment::class.simpleTagName() }
     }
 
-    protected val controllers: MutableList<FragmentController> = mutableListOf()
-
     val baseActivity: BaseActivity?
         get() = activity as? BaseActivity
     val baseApplication: BaseApplication?
@@ -28,17 +26,28 @@ open class BaseFragment : Fragment() {
     val requireApplication: BaseApplication
         get() = requireBaseActivity.baseApplication
 
+    private val controllers: MutableList<FragmentController> = mutableListOf()
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        onCreateControllers()
+        onCreateControllers(controllers)
         Log.d(TAG, "onAttach")
         controllers.forEach { it.onAttach(context) }
     }
 
+    /** Returns a read-only list of controllers
+     *
+     */
+    fun getControllers(): List<FragmentController> = controllers.toList()
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T : FragmentController> getController(clazz: Class<T>): T? =
+        controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
+
     /** Called in [BaseFragment.onAttach]
      *
      */
-    protected open fun onCreateControllers() {}
+    protected open fun onCreateControllers(controllers: MutableList<FragmentController>) {}
 
 
     /** Called from [BaseActivity.onBackPressed]

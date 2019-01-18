@@ -11,23 +11,30 @@ open class BaseApplication : Application() {
         val INNER_TAG by lazy { BaseFragment::class.simpleTagName() }
     }
 
-    internal val controllers: MutableList<ApplicationController> = mutableListOf()
+    private val controllers: MutableList<ApplicationController> = mutableListOf()
 
     override fun onCreate() {
         super.onCreate()
-        onSetupControllers()
+        onCreateControllers(controllers)
         controllers.forEach { it.onCreate() }
     }
 
-    internal open fun onSetupControllers() {}
-
     @Suppress("UNCHECKED_CAST")
-    internal fun <T : ApplicationController> getController(clazz: Class<T>): T? =
-        controllers.firstOrNull { it.javaClass.isAssignableFrom(clazz) } as? T
+    fun <T : ApplicationController> getController(clazz: Class<T>): T? =
+        controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
 
     override fun onTerminate() {
         super.onTerminate()
-        controllers.forEach { it.dispose() }
+        controllers.forEach { it.onTerminate() }
     }
+
+    /** Returns a read-only list of controllers
+     *
+     */
+    fun getControllers(): List<ApplicationController> = controllers.toList()
+
+    protected open fun onCreateControllers(controllers: MutableList<ApplicationController>) {}
+
+
 }
 

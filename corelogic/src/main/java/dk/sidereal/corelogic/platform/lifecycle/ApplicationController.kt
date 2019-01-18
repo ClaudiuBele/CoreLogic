@@ -11,13 +11,13 @@ abstract class ApplicationController(protected val baseApplication: BaseApplicat
     }
 
 
-    /** Called in [BaseApplication.onCreate] after [BaseApplication.onSetupControllers]
+    /** Called in [BaseApplication.onCreate] after [BaseApplication.onCreateControllers]
      */
     open fun onCreate() {}
 
     /** Called  in [BaseApplication.onTerminate]
      *
      */
-    open fun dispose() {}
+    open fun onTerminate() {}
 
 }

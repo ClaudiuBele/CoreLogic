@@ -21,12 +21,12 @@ import com.google.android.material.navigation.NavigationView
  */
 abstract class NavActivity : BaseNavActivity() {
 
-    override fun onCreateControllers() {
-        controllers.add(object : NavActivityController(this@NavActivity) {
+    override fun onCreateNavigationController(): BaseNavActivityController {
+        return object : NavActivityController(this@NavActivity) {
             override fun getStartDestinations(): List<Int> {
                 return this@NavActivity.getStartDestinations()
             }
-        })
+        }
     }
 
     /** Destinations for which toolbar shows up as home

@@ -15,7 +15,7 @@ open class BaseActivity : AppCompatActivity() {
         val INNER_TAG by lazy { BaseActivity::class.simpleTagName() }
     }
 
-    val controllers: MutableList<ActivityController> = mutableListOf()
+    private val controllers: MutableList<ActivityController> = mutableListOf()
 
     val baseApplication: BaseApplication
         get() = application as BaseApplication
@@ -25,7 +25,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onCreateControllers()
+        onCreateControllers(controllers)
         controllers.forEach { it.onCreate(savedInstanceState) }
 
         var hasSetContentView = false
@@ -107,14 +107,20 @@ open class BaseActivity : AppCompatActivity() {
 
     }
 
-    /** Where you setup your [ActivityController]. called in [onCreate]. Add your controllers to [controllers]
-
+    /** Returns a read-only list of controllers
+     *
      */
-    protected open fun onCreateControllers() {}
+    fun getControllers(): List<ActivityController> = controllers.toList()
 
     @Suppress("UNCHECKED_CAST")
-    internal fun <T : ActivityController> getController(clazz: Class<T>): T? =
-        controllers.firstOrNull { it.javaClass.isAssignableFrom(clazz) } as? T
+    fun <T : ActivityController> getController(clazz: Class<T>): T? =
+        controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
+
+    /** Where you setup your [ActivityController]. called in [onCreate]. Add your controllers to [controllers] parameter.
+     * Some default controllers are added by [BaseActivity] [dk.sidereal.corelogic.nav.BaseNavActivity]
+
+     */
+    protected open fun onCreateControllers(controllers: MutableList<ActivityController>) {}
 
 
 }

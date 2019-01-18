@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.navigation.NavController
 import dk.sidereal.corelogic.R
+import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
 /** BaseActivity that has a NavHostFragment. Must implement [getNavHostFragment].
@@ -33,13 +34,23 @@ abstract class BaseNavActivity : BaseActivity() {
         Log.d(DEBUG_TAG, "BaseNavActivity: onCreate")
     }
 
-    override fun onCreateControllers() {
-        controllers.add(object : BaseNavActivityController(this@BaseNavActivity) {
+    /** Implementations of [NavActivity] must override [onCreateNavigationController] if they want to provide a different controller
+     *
+     */
+    @CallSuper
+    override fun onCreateControllers(controllers: MutableList<ActivityController>) {
+        super.onCreateControllers(controllers)
+        controllers.add(onCreateNavigationController())
+    }
+
+    open fun onCreateNavigationController(): BaseNavActivityController {
+        return object : BaseNavActivityController(this@BaseNavActivity) {
             override fun getNavHostFragment(): BaseNavHostFragment {
                 return this@BaseNavActivity.getNavHostFragment()
             }
-        })
+        }
     }
+
 
     /** If you don't want to go the path of using a [BaseNavHostFragment], your
      * [Navigation.findNavController(this, R.id.nav_host_fragment)] [NavController] will start being not null here, where

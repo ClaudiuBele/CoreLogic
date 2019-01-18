@@ -1,10 +1,11 @@
 package dk.sidereal.corelogic.app
 
+import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 
 class MainActivity : BaseActivity() {
 
-    override fun onCreateControllers() {
+    override fun onCreateControllers(controllers: MutableList<ActivityController>) {
         controllers.add(MainActivityNavController(this))
     }
 

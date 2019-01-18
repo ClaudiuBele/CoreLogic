@@ -11,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
+import dk.sidereal.corelogic.platform.lifecycle.BaseApplication
 
 /** [NavHostFragment] alternative to be used when your activity is [BaseNavActivity].
  * Fragments inside must be [NavFragment]
@@ -18,6 +19,15 @@ import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
 class BaseNavHostFragment : NavHostFragment() {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
+
+    val baseActivity: BaseActivity?
+        get() = activity as? BaseActivity
+    val baseApplication: BaseApplication?
+        get() = baseActivity?.baseApplication
+    val requireBaseActivity: BaseActivity
+        get() = requireActivity() as BaseActivity
+    val requireApplication: BaseApplication
+        get() = requireBaseActivity.baseApplication
 
     companion object {
         val TAG = "NAV"
@@ -80,18 +90,9 @@ class BaseNavHostFragment : NavHostFragment() {
         Log.d(TAG, "onViewCreated")
         val controller = view.findNavController()
 
-        val navActivityController =
-            (activity as? BaseActivity)?.controllers?.firstOrNull { it is BaseNavActivityController || it is NavActivityController }
-
-        when (navActivityController) {
-            is NavActivityController -> {
-                navActivityController.onNavControllerReady(controller)
-            }
-            is BaseNavActivityController -> {
-                navActivityController.onNavControllerReady(controller)
-            }
-        }
-
+        val navActivityController = requireBaseActivity.getController(BaseNavActivityController::class.java)
+            ?: throw IllegalStateException("$TAG: Can't use BaseNavHostFragment in a BaseActivity without a BaseNavActivityController controller")
+        navActivityController.onNavControllerReady(controller)
     }
 
     override fun onStart() {

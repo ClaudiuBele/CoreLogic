@@ -3,7 +3,7 @@ package dk.sidereal.corelogic.platform.lifecycle
 import android.content.Context
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
-/** A fragment controller. Must be created in onAttach and added to [BaseFragment.controllers]
+/** A fragment controller. Must be created and added to list in [BaseFragment.onCreateControllers]
  */
 open class FragmentController(protected val baseFragment: BaseFragment) {
 

@@ -1,5 +1,6 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.CallSuper
@@ -18,12 +19,7 @@ abstract class ActivityController(protected val activity: BaseActivity) {
         val INNER_TAG by lazy { ActivityController::class.simpleTagName() }
     }
 
-
-    val applicationControllers: List<ApplicationController>
-        get() = activity.baseApplication.controllers
-
-    val context = activity
-
+    protected val context: Context = activity
 
     /** Called after [BaseActivity.onAttachFragment] inside the override
      */
@@ -36,15 +32,17 @@ abstract class ActivityController(protected val activity: BaseActivity) {
      */
     open fun onCreate(savedInstanceState: Bundle?) {}
 
-    /** Called in [BaseActivity.onDestroy]
-     *
-     */
-    open fun onDestroy() {}
 
     /** Called in [BaseActivity.onCreate]. Return true if you are setting the content view in this controller.
      *
      */
     open fun onCreateView(baseActivity: BaseActivity): Boolean = false
+
+    /** Called in [BaseActivity.onDestroy]
+     *
+     */
+    open fun onDestroy() {}
+
 
     /** Called in [BaseActivity.onCreate] after it calls [onCreateView] on all controllers
      */
