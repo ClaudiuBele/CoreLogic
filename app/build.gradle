@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 27
     defaultConfig {
         applicationId "dk.sidereal.corelogic.app"
         minSdkVersion 14
-        targetSdkVersion 28
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -29,8 +29,8 @@ android {
 }
 
 dependencies {
-//    implementation 'com.github.claudiu-bele:core-logic:fcec6ef371'
-    implementation project(":corelogic")
+    implementation 'com.github.claudiu-bele:core-logic:1aa071125f'
+//    implementation project(":corelogic")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 repositories {
