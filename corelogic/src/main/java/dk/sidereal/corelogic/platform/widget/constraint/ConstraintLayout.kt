@@ -3,6 +3,7 @@ package dk.sidereal.corelogic.platform.widget.constraint
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.ViewCompat
 
 inline fun ConstraintLayout.applyConstraints(consumer: (ConstraintSet) -> Unit) {
 
@@ -14,19 +15,23 @@ inline fun ConstraintLayout.applyConstraints(consumer: (ConstraintSet) -> Unit) 
 
 inline fun ConstraintLayout.applyViewConstraints(view: View, constraintApplier: (ConstraintApplier) -> Unit) {
     if (view.id == android.view.View.NO_ID) {
-        view.id = android.view.View.generateViewId()
+        view.id = ViewCompat.generateViewId()
     }
-    applyConstraints({ constraintSet: ConstraintSet ->
+    applyConstraints { constraintSet: ConstraintSet ->
         constraintApplier.invoke(constraintSet.getConstraintApplier(view))
-    })
+    }
 }
 
-inline fun ConstraintLayout.addViewAndApplyViewConstraints(view: View, index: Int = 0, constraintApplier: (ConstraintApplier) -> Unit) {
+inline fun ConstraintLayout.addViewAndApplyViewConstraints(
+    view: View,
+    index: Int = 0,
+    constraintApplier: (ConstraintApplier) -> Unit
+) {
     if (view.id == android.view.View.NO_ID) {
-        view.id = android.view.View.generateViewId()
+        view.id = ViewCompat.generateViewId()
     }
     addView(view, index)
-    applyConstraints({ constraintSet: ConstraintSet ->
+    applyConstraints { constraintSet: ConstraintSet ->
         constraintApplier.invoke(constraintSet.getConstraintApplier(view))
-    })
+    }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">corelogic</string>
+    <string name="time_less_than_a_second">less than a second ago</string>
 </resources>

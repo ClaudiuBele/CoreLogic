@@ -7,7 +7,8 @@ class ConstraintApplier(val view: View, val constraintSet: ConstraintSet) {
 
     companion object {
         // spread is default
-        val supportedDefaultWidths: Array<Int> = arrayOf(ConstraintSet.MATCH_CONSTRAINT_WRAP, ConstraintSet.MATCH_CONSTRAINT_SPREAD)
+        val supportedDefaultWidths: Array<Int> =
+            arrayOf(ConstraintSet.MATCH_CONSTRAINT_WRAP, ConstraintSet.MATCH_CONSTRAINT_SPREAD)
     }
 
     fun centerInParentHorizontally(): ConstraintApplier {

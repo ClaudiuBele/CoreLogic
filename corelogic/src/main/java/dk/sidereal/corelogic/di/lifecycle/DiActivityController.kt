@@ -1,26 +1,27 @@
 package dk.sidereal.corelogic.di.lifecycle
 
+import dk.sidereal.corelogic.di.DiComponent
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
-import dk.sidereal.corelogic.platform.lifecycle.ApplicationController
-import dk.sidereal.corelogic.platform.lifecycle.BaseActivity
-import dk.sidereal.corelogic.platform.lifecycle.BaseFragment
+import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
+import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 
-abstract class DiActivityController<T : BaseActivity>(activity: T) : ActivityController(activity) {
+abstract class DiActivityController<T : CoreActivity>(activity: T) :
+    ActivityController(activity),
+    DiController {
 
-    abstract fun getComponent(): DiComponent
     abstract fun inject(activity: T)
 
     @Suppress("UNUSED")
     val applicationController: DiApplicationController<*>?
-        get () = activity.baseApplication.getController(DiApplicationController::class.java)
+        get () = activity.coreApplication.getController(DiApplicationController::class.java)
 
     @Suppress("UNUSED")
     val applicationComponent: DiComponent?
-        get() = activity.baseApplication.getController(DiApplicationController::class.java)?.getComponent()
+        get() = activity.coreApplication.getController(DiApplicationController::class.java)?.getComponent()
 
     @Suppress("UNUSED")
-    override fun onAttachFragment(baseFragment: BaseFragment?) {
-        super.onAttachFragment(baseFragment)
+    override fun onAttachFragment(coreFragment: CoreFragment?) {
+        super.onAttachFragment(coreFragment)
 
     }
 
