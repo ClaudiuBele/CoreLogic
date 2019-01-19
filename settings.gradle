@@ -1,1 +1,1 @@
-include ':corelogic'
+include ':app', ':corelogic'
