@@ -1,4 +1,4 @@
-package dk.sidereal.corelogic.platform.recyclerview
+package dk.sidereal.corelogic.platform.widget.recyclerview
 
 interface Comparable {
 
