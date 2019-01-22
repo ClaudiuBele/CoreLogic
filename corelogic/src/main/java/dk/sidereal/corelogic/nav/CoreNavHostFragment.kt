@@ -1,5 +1,6 @@
 package dk.sidereal.corelogic.nav
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -20,14 +21,19 @@ class CoreNavHostFragment : NavHostFragment() {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
-    val coreActivity: CoreActivity?
-        get() = activity as? CoreActivity
+    val application: Application?
+        get() = activity?.application
+    val requireApplication: Application
+        get() = requireCoreActivity.application
     val coreApplication: CoreApplication?
         get() = coreActivity?.coreApplication
+    val requireCoreApplication: CoreApplication
+        get() = requireCoreActivity.application as CoreApplication
+    // activity and requireActivity already exist
+    val coreActivity: CoreActivity?
+        get() = activity as? CoreActivity
     val requireCoreActivity: CoreActivity
         get() = requireActivity() as CoreActivity
-    val requireApplication: CoreApplication
-        get() = requireCoreActivity.coreApplication
 
     companion object {
         val TAG = "NAV"

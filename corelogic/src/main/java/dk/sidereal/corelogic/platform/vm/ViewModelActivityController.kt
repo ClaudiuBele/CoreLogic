@@ -52,7 +52,7 @@ open class ViewModelActivityController(coreActivity: CoreActivity) :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.lastSavedInstance = lastSavedInstance
+        this.lastSavedInstance = savedInstanceState
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

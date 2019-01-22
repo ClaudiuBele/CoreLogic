@@ -11,13 +11,14 @@ import android.widget.TextView
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import dk.sidereal.corelogic.nav.NavFragment
+import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 import dk.sidereal.corelogic.platform.vm.StatefulViewModel
 
 /**
  * A simple [Fragment] subclass.
  *
  */
-class MoreInfoFragment() : NavFragment() {
+class MoreInfoFragment() : CoreFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,10 +53,6 @@ class MoreInfoViewModel() : StatefulViewModel() {
         const val STATE_CLICKS = "STATE_CLICKS"
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
     override fun restoreState(state: Bundle?, timeSaved: Long?) {
         clicks = state?.getInt(STATE_CLICKS) ?: 0
         clicksLiveData.postValue(clicks)
@@ -66,7 +63,7 @@ class MoreInfoViewModel() : StatefulViewModel() {
     }
 
     fun triggerClick() {
-        clicks++
+        clicks += 1
         clicksLiveData.postValue(clicks)
     }
 

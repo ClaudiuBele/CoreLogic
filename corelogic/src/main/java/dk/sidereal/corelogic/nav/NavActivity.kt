@@ -26,6 +26,10 @@ abstract class NavActivity : CoreNavActivity() {
             override fun getStartDestinations(): List<Int> {
                 return this@NavActivity.getStartDestinations()
             }
+
+            override fun getNavHostFragment(): CoreNavHostFragment {
+                return this@NavActivity.getNavHostFragment()
+            }
         }
     }
 
