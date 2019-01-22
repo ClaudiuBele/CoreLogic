@@ -13,11 +13,11 @@ abstract class DiActivityController<T : CoreActivity>(activity: T) :
 
     @Suppress("UNUSED")
     val applicationController: DiApplicationController<*>?
-        get () = activity.coreApplication.getController(DiApplicationController::class.java)
+        get () = activity.coreApplication?.getController(DiApplicationController::class.java)
 
     @Suppress("UNUSED")
     val applicationComponent: DiComponent?
-        get() = activity.coreApplication.getController(DiApplicationController::class.java)?.getComponent()
+        get() = activity.coreApplication?.getController(DiApplicationController::class.java)?.getComponent()
 
     @Suppress("UNUSED")
     override fun onAttachFragment(coreFragment: CoreFragment?) {

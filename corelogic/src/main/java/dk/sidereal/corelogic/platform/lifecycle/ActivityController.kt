@@ -19,6 +19,13 @@ abstract class ActivityController(protected val activity: CoreActivity) {
         val INNER_TAG by lazy { ActivityController::class.simpleTagName() }
     }
 
+    val coreApplication: CoreApplication? by lazy { activity.application as? CoreApplication?}
+
+    /** Will throw if application is not of type [CoreApplication]
+     *
+     */
+    val requireCoreApplication: CoreApplication by lazy { activity.application as CoreApplication}
+
     protected val context: Context = activity
 
     /** Called after [CoreActivity.onAttachFragment] inside the override

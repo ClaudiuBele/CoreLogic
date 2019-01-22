@@ -2,7 +2,6 @@ package dk.sidereal.corelogic.nav
 
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.navigation.NavController
 import dk.sidereal.corelogic.R
@@ -19,11 +18,9 @@ abstract class CoreNavActivity : CoreActivity() {
 
     companion object {
         val DEBUG_TAG = "NAV"
-        val NAV_HOST_ROOT_ID = R.id.nav_host_fragment_root
     }
 
     lateinit var navController: NavController
-    lateinit var navHostRoot: ViewGroup
 
     /** Don't call [setContentView] here. If you want a custom layout override
      * [setNavContentView]

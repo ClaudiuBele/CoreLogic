@@ -1,5 +1,6 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
+import android.app.Application
 import android.content.Context
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
@@ -21,6 +22,10 @@ open class FragmentController(protected val coreFragment: CoreFragment) {
         get() = coreFragment.coreActivity
     protected val requireCoreActivity: CoreActivity
         get() = coreFragment.requireCoreActivity
+    val requireApplication: Application
+        get() = requireCoreActivity.application
+    val requireCoreApplication: CoreApplication
+        get() = requireCoreActivity.application as CoreApplication
 
     /** Called in [CoreFragment.onCreate] after [CoreFragment.onCreateControllers]
      */

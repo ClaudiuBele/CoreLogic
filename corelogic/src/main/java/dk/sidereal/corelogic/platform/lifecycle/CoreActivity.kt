@@ -19,8 +19,12 @@ open class CoreActivity : AppCompatActivity() {
 
     private val controllers: MutableList<ActivityController> = mutableListOf()
 
-    val coreApplication: CoreApplication
-        get() = application as CoreApplication
+    val coreApplication: CoreApplication? by lazy { application as? CoreApplication }
+
+    /** Will throw if application is not of type [CoreApplication]
+     *
+     */
+    val requireCoreApplication: CoreApplication by lazy { application as CoreApplication }
 
     private val coreFragments: List<CoreFragment>
         get() = supportFragmentManager.fragments.dropWhile { it !is CoreFragment }.map { it as CoreFragment }

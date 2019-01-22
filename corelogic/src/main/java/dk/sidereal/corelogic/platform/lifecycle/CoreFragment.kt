@@ -1,5 +1,6 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -13,20 +14,28 @@ import dk.sidereal.corelogic.platform.vm.ViewModelActivityController
 
 open class CoreFragment : Fragment() {
 
-    protected val TAG by lazy { javaClass.simpleTagName() }
-
     companion object {
         val INNER_TAG by lazy { CoreFragment::class.simpleTagName() }
     }
 
-    val coreActivity: CoreActivity?
-        get() = activity as? CoreActivity
+    val application: Application?
+        get() = activity?.application
+    val requireApplication: Application
+        get() = requireCoreActivity.application
     val coreApplication: CoreApplication?
         get() = coreActivity?.coreApplication
+    /** Will throw if application is not of type [CoreApplication]
+     *
+     */
+    val requireCoreApplication: CoreApplication
+        get() = requireCoreActivity.application as CoreApplication
+    // activity and requireActivity already exist
+    val coreActivity: CoreActivity?
+        get() = activity as? CoreActivity
     val requireCoreActivity: CoreActivity
         get() = requireActivity() as CoreActivity
-    val requireApplication: CoreApplication
-        get() = requireCoreActivity.coreApplication
+
+    protected val TAG by lazy { javaClass.simpleTagName() }
 
     private val controllers: MutableList<FragmentController> = mutableListOf()
 
