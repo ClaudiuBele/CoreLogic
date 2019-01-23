@@ -1,5 +1,8 @@
 # CoreLogic
 
+[![](https://jitpack.io/v/claudiu-bele/core-logic.svg)](https://jitpack.io/#claudiu-bele/core-logic)
+
+
 CoreLogic is a framework meant to simplify android development, in the new era of single-activity apps.
 
 CoreLogic does the heavy lifting, so you can code your app the way you want to.
@@ -18,7 +21,7 @@ In your app's `build.gradle` (not the root one) add this dependency to your depe
 
 ```
 dependencies {
-    implementation 'com.github.claudiu-bele:core-logic:0.4.?'
+    implementation 'com.github.claudiu-bele:core-logic:0.4.1'
 }
 
 ```
