@@ -21,7 +21,7 @@ In your app's `build.gradle` (not the root one) add this dependency to your depe
 
 ```
 dependencies {
-    implementation 'com.github.claudiu-bele:core-logic:0.4.1'
+    implementation 'com.github.claudiu-bele:core-logic:0.4.2'
 }
 
 ```
