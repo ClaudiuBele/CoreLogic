@@ -1,4 +1,6 @@
 <resources>
+    <string name="general_next">Next</string>
+
     <string name="app_name">CoreLogic Sample</string>
 
     <string name="contacts_title">Contacts page</string>
@@ -12,7 +14,7 @@
     <string name="more_info_title">Nested fragment with more info\n Clicks: %1$d</string>
     <string name="more_info_click_me">click me</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="onboarding_first_page_title">First onboarding page</string>
+    <string name="onboarding_second_page_title">Second onboarding page</string>
 
 </resources>

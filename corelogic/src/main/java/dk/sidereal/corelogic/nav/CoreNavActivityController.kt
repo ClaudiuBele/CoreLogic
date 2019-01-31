@@ -3,12 +3,15 @@ package dk.sidereal.corelogic.nav
 import android.util.Log
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import dk.sidereal.corelogic.R
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
+import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
+import java.lang.ref.WeakReference
 
 abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityController(coreActivity) {
 
@@ -16,11 +19,13 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
 
         val NAV_HOST_ROOT_ID = R.id.nav_host_fragment_root
         val NAV_HOST_FRAGMENT_TAG = "NAV_HOST_FRAGMENT_TAG"
-
     }
 
     lateinit var navController: NavController
     lateinit var navHostRoot: ViewGroup
+
+    var lastNavigatedFragment: WeakReference<CoreFragment?> = WeakReference(CoreFragment())
+
 
     override fun onCreateView(coreActivity: CoreActivity): Boolean {
         coreActivity.setContentView(R.layout.activity_nav_core)
@@ -70,9 +75,20 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
      *
      */
     @CallSuper
-    open fun onNavControllerReady(navController: NavController) {
+    open fun onNavControllerReady(
+        navController: NavController,
+        navHostFragment: CoreNavHostFragment
+    ) {
         Log.d(TAG, "onNavControllerReady")
         this.navController = navController
+
+        val fragments = navHostFragment.childFragmentManager.fragments
+        val lastFragment = fragments.lastOrNull()
+        val currentFragment = lastFragment as? CoreFragment
+
+        currentFragment?.let {
+            onFragmentNavigatedTo(it)
+        }
 
         // called whenever navigation destination changes
         navController.addOnDestinationChangedListener { controller, destination, arguments ->
@@ -80,7 +96,42 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
                 controller,
                 destination
             )
+            navHostFragment.childFragmentManager.addOnBackStackChangedListener(
+                object : FragmentManager.OnBackStackChangedListener {
+                    override fun onBackStackChanged() {
+                        Log.d(TAG, "Backstack changed :*")
+
+                        val fragments = navHostFragment.childFragmentManager.fragments
+                        val lastFragment = fragments.lastOrNull()
+                        val currentFragment = lastFragment as? CoreFragment
+
+                        if (lastNavigatedFragment.get() != currentFragment) {
+                            lastNavigatedFragment = WeakReference(currentFragment)
+                            if (currentFragment != null) {
+                                onFragmentNavigatedTo(currentFragment)
+
+                            }
+                        }
+                        navHostFragment.childFragmentManager.removeOnBackStackChangedListener(this)
+                    }
+                }
+            )
         }
+
+    }
+
+    /** Called by  [CoreNavHostFragment.onAttachFragment]
+     */
+    open fun onNavFragmentAttached(navFragment: NavFragment) {
+        navFragment.onAttachedToNavController(this)
+
+        if (lastNavigatedFragment.get() != navFragment) {
+            lastNavigatedFragment = WeakReference(navFragment)
+            onFragmentNavigatedTo(navFragment)
+        }
+    }
+
+    open fun onFragmentNavigatedTo(coreFragment: CoreFragment) {
 
     }
 

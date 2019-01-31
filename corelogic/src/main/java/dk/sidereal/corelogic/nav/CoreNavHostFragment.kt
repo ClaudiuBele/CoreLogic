@@ -17,7 +17,7 @@ import dk.sidereal.corelogic.platform.lifecycle.CoreApplication
 /** [NavHostFragment] alternative to be used when your activity is [CoreNavActivity].
  * Fragments inside must be [NavFragment]
  */
-class CoreNavHostFragment : NavHostFragment() {
+open class CoreNavHostFragment : NavHostFragment() {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -98,7 +98,7 @@ class CoreNavHostFragment : NavHostFragment() {
 
         val navActivityController = requireCoreActivity.getController(CoreNavActivityController::class.java)
             ?: throw IllegalStateException("$TAG: Can't use CoreNavHostFragment in a CoreActivity without a CoreNavActivityController controller")
-        navActivityController.onNavControllerReady(controller)
+        navActivityController.onNavControllerReady(controller, this)
     }
 
     override fun onStart() {
@@ -115,6 +115,10 @@ class CoreNavHostFragment : NavHostFragment() {
         super.onAttachFragment(fragment)
         fragment?.let {
             Log.d(TAG, "onAttachFragment: ${it.javaClass.simpleTagName()}")
+        }
+        if (fragment is NavFragment) {
+            val navComponent = coreActivity?.getController(CoreNavActivityController::class.java)
+            navComponent?.onNavFragmentAttached(fragment)
         }
     }
 }

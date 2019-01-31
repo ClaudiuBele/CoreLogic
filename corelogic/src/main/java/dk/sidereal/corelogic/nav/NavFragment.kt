@@ -16,6 +16,12 @@ open class NavFragment : CoreFragment() {
     val navController: NavController
         get() = NavHostFragment.findNavController(this)
 
+    open val showsActionBarOnNavigated: Boolean = true
+
+    open val showsBottomNavigationViewOnNavigated: Boolean = true
+
+    open val animatesNavigationViewTransition: Boolean = true
+
     /** Nav controller not null here. Becomes not null after [CoreNavHostFragment.onViewCreated], after which the home
      * fragment is created.
      *
@@ -23,5 +29,7 @@ open class NavFragment : CoreFragment() {
     override fun onAttach(context: Context?) {
         super.onAttach(context)
     }
+
+    open fun onAttachedToNavController(navActivityController: CoreNavActivityController) {}
 
 }

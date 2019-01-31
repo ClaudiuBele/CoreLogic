@@ -3,22 +3,21 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".MoreInfoFragment">
+             tools:context=".OnboardingFirstPageFragment">
 
     <TextView
-            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            tools:text="Number of clicks: 5"/>
+            android:text="@string/onboarding_first_page_title"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
 
     <Button
-            android:id="@+id/button"
+            android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="@dimen/grid_10x"
-            android:text="@string/more_info_click_me"/>
+            android:text="@string/general_next"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="@dimen/grid_10x"/>
 
 </FrameLayout>

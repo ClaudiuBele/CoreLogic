@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_main"
-    app:startDestination="@id/navigation">
-    <navigation
-        android:id="@+id/navigation"
-        app:startDestination="@id/contactsFragment">
-        <fragment
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_main"
+            app:startDestination="@id/contactsFragment">
+    <fragment
             android:id="@+id/contactsFragment"
             android:name="dk.sidereal.corelogic.app.ContactsFragment"
             android:label="fragment_contacts"
-            tools:layout="@layout/fragment_contacts" />
-        <fragment
+            tools:layout="@layout/fragment_contacts"/>
+    <fragment
+            android:id="@+id/moreInfoFragment"
+            android:name="dk.sidereal.corelogic.app.MoreInfoFragment"
+            android:label="fragment_more_info"
+            tools:layout="@layout/fragment_more_info"/>
+    <fragment
             android:id="@+id/infoFragment"
             android:name="dk.sidereal.corelogic.app.InfoFragment"
             android:label="fragment_info"
             tools:layout="@layout/fragment_info">
-            <action
+        <action
                 android:id="@+id/action_infoFragment_to_moreInfoFragment"
-                app:destination="@id/moreInfoFragment" />
-        </fragment>
-        <fragment
-            android:id="@+id/moreInfoFragment"
-            android:name="dk.sidereal.corelogic.app.MoreInfoFragment"
-            android:label="fragment_more_info"
-            tools:layout="@layout/fragment_more_info" />
-    </navigation>
+                app:destination="@id/moreInfoFragment"/>
+    </fragment>
 </navigation>

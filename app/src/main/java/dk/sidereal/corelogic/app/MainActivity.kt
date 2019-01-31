@@ -13,4 +13,5 @@ class MainActivity : CoreActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return super.onSupportNavigateUp()
     }
+
 }

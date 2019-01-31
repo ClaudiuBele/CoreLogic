@@ -10,7 +10,6 @@ import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 
 /** CoreActivity that has a NavHostFragment. Must implement [getNavHostFragment].
  *
- * If you are extending this, you can implement a custom layout by overriding [setNavContentView]
  *
  * Following https://developer.android.com/topic/libraries/architecture/navigation/navigation-implementing
  */
