@@ -2,6 +2,7 @@ package dk.sidereal.corelogic.nav
 
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.navigation.NavController
 import dk.sidereal.corelogic.R
@@ -10,16 +11,15 @@ import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 
 /** CoreActivity that has a NavHostFragment. Must implement [getNavHostFragment].
  *
- *
  * Following https://developer.android.com/topic/libraries/architecture/navigation/navigation-implementing
  */
-abstract class CoreNavActivity : CoreActivity() {
+abstract class CoreNavActivity
+    : CoreActivity(),
+    CoreNavActivityController.NavFragmentCreator {
 
     companion object {
         val DEBUG_TAG = "NAV"
     }
-
-    lateinit var navController: NavController
 
     /** Don't call [setContentView] here. If you want a custom layout override
      * [setNavContentView]
@@ -34,19 +34,10 @@ abstract class CoreNavActivity : CoreActivity() {
      *
      */
     @CallSuper
-    override fun onCreateControllers(controllers: MutableList<ActivityController>) {
-        super.onCreateControllers(controllers)
-        controllers.add(onCreateNavigationController())
+    override fun onCreateControllers(outControllers: MutableList<ActivityController>) {
+        super.onCreateControllers(outControllers)
+        outControllers.add(onCreateNavigationController())
     }
-
-    open fun onCreateNavigationController(): CoreNavActivityController {
-        return object : CoreNavActivityController(this@CoreNavActivity) {
-            override fun getNavHostFragment(): CoreNavHostFragment {
-                return this@CoreNavActivity.getNavHostFragment()
-            }
-        }
-    }
-
 
     /** If you don't want to go the path of using a [CoreNavHostFragment], your
      * [Navigation.findNavController(this, R.id.nav_host_fragment)] [NavController] will start being not null here, where
@@ -64,11 +55,15 @@ abstract class CoreNavActivity : CoreActivity() {
         Log.d(DEBUG_TAG, "CoreNavActivity: onResume")
     }
 
-    /** Abstract function that must be implemented. Create your own fragment using a nav resource like this
-     *  [CoreNavHostFragment.create(R.navigation.nav_main)]
-     *
+    /** Called in [CoreNavActivity.onCreateControllers]. This type of activity's contract is needing a [CoreNavActivityController],
+     * which achieves navigation.
      */
-    abstract fun getNavHostFragment(): CoreNavHostFragment
+    abstract fun onCreateNavigationController(): CoreNavActivityController
 
+    /** In the activity layout, The view above [CoreNavHostFragment] view, works outside the navigation flow.
+     * Perfect for [dk.sidereal.corelogic.platform.widget.SlidingUpPanel]
+     */
+    val overlayContainer: ViewGroup
+        get() = getController(CoreNavActivityController::class.java)!!.overlayContainer
 
 }

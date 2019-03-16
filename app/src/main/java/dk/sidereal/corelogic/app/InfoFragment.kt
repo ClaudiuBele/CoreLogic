@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.nav.NavFragment
 
 class InfoFragment() : NavFragment() {
@@ -18,6 +19,22 @@ class InfoFragment() : NavFragment() {
         view?.findViewById<Button>(R.id.button)?.setOnClickListener {
             navController.navigate(R.id.action_infoFragment_to_moreInfoFragment)
         }
+        view?.findViewById<Button>(R.id.popup_toggle)?.setOnClickListener {
+            activity?.supportFragmentManager?.apply {
+                val popupFragment = findFragmentByTag(PopupFragment::class.java.simpleTagName())
+                if(popupFragment != null) {
+                    beginTransaction()
+                        .remove(popupFragment)
+                        .commit()
+                } else {
+                    beginTransaction()
+                        .add(requireNavActivityOverlayContainer.id, PopupFragment(), PopupFragment::class.java.simpleTagName())
+                        .commit()
+                }
+            }        }
     }
+
+    override val showsBottomNavigationViewOnNavigated: Boolean
+        get() = false
 
 }

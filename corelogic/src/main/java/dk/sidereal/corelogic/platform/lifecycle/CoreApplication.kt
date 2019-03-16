@@ -33,7 +33,7 @@ open class CoreApplication : Application() {
      */
     fun getControllers(): List<ApplicationController> = controllers.toList()
 
-    protected open fun onCreateControllers(controllers: MutableList<ApplicationController>) {}
+    protected open fun onCreateControllers(ourControllers: MutableList<ApplicationController>) {}
 
 
 }

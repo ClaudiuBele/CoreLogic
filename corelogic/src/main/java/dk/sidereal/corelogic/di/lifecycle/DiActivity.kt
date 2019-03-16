@@ -17,9 +17,9 @@ abstract class DiActivity : CoreActivity() {
         onPostInject()
     }
 
-    override fun onCreateControllers(controllers: MutableList<ActivityController>) {
-        super.onCreateControllers(controllers)
-        controllers.add(getDiController())
+    override fun onCreateControllers(outControllers: MutableList<ActivityController>) {
+        super.onCreateControllers(outControllers)
+        outControllers.add(getDiController())
     }
 
     protected open fun onInject() {

@@ -2,9 +2,15 @@ package dk.sidereal.corelogic.platform.lifecycle
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import androidx.annotation.CallSuper
+import androidx.lifecycle.LifecycleObserver
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
-/** A fragment controller. Must be created and added to list in [CoreFragment.onCreateControllers]
+/** Fragment controller. Contains a reference to a [CoreFragment] in order to delegate fragment callbacks ([LifecycleObserver]
+ * is not enough) in isolated units of logic. Must be created in [CoreFragment.onCreateControllers]
+ *
+ * Subclasses should shorten [FragmentController] suffix to Fc.
  */
 open class FragmentController(protected val coreFragment: CoreFragment) {
 
@@ -33,4 +39,19 @@ open class FragmentController(protected val coreFragment: CoreFragment) {
 
     open fun onBackPressed(): Boolean = false
 
+    /** Called in [CoreFragment.onNavigateUp]
+     */
+    open fun onNavigateUp(): Boolean = false
+
+    /** Called in [CoreFragment.onActivityResult]
+     *
+     */
+    @CallSuper
+    open fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+    }
+
+    /**
+     *
+     */
 }

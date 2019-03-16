@@ -4,6 +4,8 @@ import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -23,6 +25,43 @@ import dk.sidereal.corelogic.platform.widget.Views
 import dk.sidereal.corelogic.platform.widget.constraint.applyViewConstraints
 
 abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivityController(coreActivity) {
+
+    /** Delegates navigation-related information acquiring for setting up the views in the activity.
+     * A bottom navigation view, navigation view, or Action bar
+     *
+     *  You need to implement [getStartDestinations] to set which destinations will count as home in relation to [Toolbar.getNavigationIcon]],
+     * [onBackPressed], [onNavigateUp]
+     *
+     * You can override [getNavigationMenuId] and returns a non-null id to have a navigation view swipeable from the start
+     * side. The view is setup with [navController] automatically
+     *
+     * You can override [showActionBar] to returns true or false based on whether you want the built-in [Toolbar]
+     * to be shown and used for navigation
+     *
+     * You can override [getBottomNavigationMenuId] and return a non-null [androidx.annotation.MenuRes] id to show a
+     * [BottomNavigationView] with current theme applied. The view is setup with [navController] automatically
+
+     */
+    interface NavFragmentNavigator {
+        /** Return not null to show bottom navigation menu
+         */
+        fun getBottomNavigationMenuId(): Int? = null
+
+        /** Returns not null to show swipeable navigation menu
+         *
+         */
+        fun getNavigationMenuId(): Int? = null
+
+        /** Whether the action bar should be showed
+         */
+        fun showActionBar(): Boolean = true
+
+        /** Destinations for which toolbar shows up as home
+         */
+        fun getStartDestinations(): List<Int>
+    }
+
+    abstract val navFragmentNavigator: NavFragmentNavigator
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
@@ -49,14 +88,14 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
             navHostFragmentRoot = findViewById(R.id.nav_host_fragment_root)
             toolbar = findViewById(R.id.toolbar)
             appBar = findViewById(R.id.appbar)
-            toolbar.visibility = if (showActionBar()) View.VISIBLE else View.GONE
+            toolbar.visibility = if (navFragmentNavigator.showActionBar()) View.VISIBLE else View.GONE
             setSupportActionBar(toolbar)
         }
     }
 
     override fun onNavControllerReady(navController: NavController, navHostFragment: CoreNavHostFragment) {
         super.onNavControllerReady(navController, navHostFragment)
-        navigationUI = MultiStartNavigationUI(getStartDestinations())
+        navigationUI = MultiStartNavigationUI(navFragmentNavigator.getStartDestinations())
         invalidateBottomNavigationView()
         invalidateNavigationView()
     }
@@ -88,47 +127,48 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
         Views.afterViewsMeasured(listOf(appBar, bottomNavigationView)) {
 
             val newBottomNavigationViewAlpha =
-                if ((coreFragment as? NavFragment)?.showsBottomNavigationViewOnNavigated == true) 1F else 0F
+                if ((coreFragment as? NavFragment)?.showsBottomNavigationViewOnNavigated
+                        ?: NavFragment.DEFAULT_SHOWS_BOTTOM_NAVIGATION_VIEW) 1F else 0F
 
-            navHostFragmentRoot.setPadding(
-                0,
-                0,
-                0,
-                ((1 - newBottomNavigationViewAlpha) * bottomNavigationView.measuredHeight).toInt()
-            )
+            val newAppBarAlpha = if ((coreFragment as? NavFragment)?.showsActionBarOnNavigated
+                        ?: NavFragment.DEFAULT_SHOWS_ACTION_BAR) 1F else 0F
 
 
-            if (coreFragment is NavFragment) {
-                val newAppBarAlpha = if (coreFragment.showsActionBarOnNavigated) 1F else 0F
-
-                ValueAnimator.ofFloat(appBar.alpha, newAppBarAlpha).apply {
-                    addUpdateListener {
-                        val value = it.animatedValue as Float
-                        appBar.alpha = value
-                    }
-                    duration = 1000
-                    start()
+//            navHostFragmentRoot.setPadding(
+//                0,
+//                0,
+//                0,
+//                ((1 - newBottomNavigationViewAlpha) * bottomNavigationView.measuredHeight).toInt()
+//            )
+            ValueAnimator.ofFloat(appBar.alpha, newAppBarAlpha).apply {
+                interpolator = AccelerateDecelerateInterpolator()
+                addUpdateListener {
+                    val value = it.animatedValue as Float
+                    appBar.alpha = value
+                    val translateY = (1 - value) * -appBar.measuredHeight
+                    appBar.translationY = translateY
                 }
+                duration = 500
+                start()
+            }
 
-                ValueAnimator.ofFloat(bottomNavigationView.alpha, newBottomNavigationViewAlpha).apply {
-                    addUpdateListener {
-                        val value = it.animatedValue as Float
-                        bottomNavigationView.alpha = value
-                    }
-                    duration = 1000
-                    start()
+            ValueAnimator.ofFloat(bottomNavigationView.alpha, newBottomNavigationViewAlpha).apply {
+                interpolator = AccelerateDecelerateInterpolator()
+                addUpdateListener {
+                    val value = it.animatedValue as Float
+                    bottomNavigationView.alpha = value
+                    val translateY = (1 - value) * bottomNavigationView.measuredHeight
+                    bottomNavigationView.translationY = translateY
                 }
+                duration = 500
+                start()
             }
         }
     }
 
-    /** Destinations for which toolbar shows up as home
-     */
-    abstract fun getStartDestinations(): List<Int>
-
     fun invalidateBottomNavigationView() {
 
-        val bottomNavigationMenuId = getBottomNavigationMenuId()
+        val bottomNavigationMenuId = navFragmentNavigator.getBottomNavigationMenuId()
         if (bottomNavigationMenuId != null) {
             contentRoot.applyViewConstraints(bottomNavigationView) { constraintApplier ->
                 constraintApplier.disconnect(ConstraintSet.TOP)
@@ -148,7 +188,7 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
 
     fun invalidateNavigationView() {
         drawerLayout.closeDrawers()
-        val navigationMenuId = getNavigationMenuId()
+        val navigationMenuId = navFragmentNavigator.getNavigationMenuId()
         navigationView.isEnabled = navigationMenuId != null
         if (navigationMenuId != null) {
 
@@ -170,15 +210,4 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
     }
-
-    /** Return not null to show bottom navigation menu
-     */
-    open fun getBottomNavigationMenuId(): Int? = null
-
-    open fun getNavigationMenuId(): Int? = null
-
-    /** Whether the action bar should be showed
-     */
-    open fun showActionBar(): Boolean = true
-
 }

@@ -8,7 +8,9 @@
             android:id="@+id/contactsFragment"
             android:name="dk.sidereal.corelogic.app.ContactsFragment"
             android:label="fragment_contacts"
-            tools:layout="@layout/fragment_contacts"/>
+            tools:layout="@layout/fragment_contacts">
+
+    </fragment>
     <fragment
             android:id="@+id/moreInfoFragment"
             android:name="dk.sidereal.corelogic.app.MoreInfoFragment"

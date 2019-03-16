@@ -8,12 +8,36 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.Navigation
 import dk.sidereal.corelogic.R
+import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 import java.lang.ref.WeakReference
 
-abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityController(coreActivity) {
+/** Created view must provide ViewGroup in layout from [onCreateView] at id
+ * [dk.sidereal.corelogic.R.id.overlay_container]
+ *
+ */
+abstract class CoreNavActivityController(coreActivity: CoreActivity) :
+    ActivityController(coreActivity) {
+
+    /** Delegates creation of [CoreNavHostFragment], required for it. You can your own fragment using a nav resource,
+     * and [CoreNavHostFragment.create] like this
+     *  [CoreNavHostFragment.create(R.navigation.nav_main)]
+     *
+     */
+    interface NavFragmentCreator {
+        /** Create your own fragment using  [CoreNavHostFragment.Companion.create], using an xml nav resource, like this
+         *  [CoreNavHostFragment.create(R.navigation.nav_main)].
+         *
+         *  The fragment is then added to the backstack automatically at [CoreNavActivityController.NAV_HOST_ROOT_ID],
+         *  so you are only tasked with the fragment creation
+         *
+         *  [androidx.fragment.app.FragmentTransaction.setPrimaryNavigationFragment] is called on the transaction if
+         *  [isPrimaryNavigation] returns true (true by default)
+         */
+        fun createNavHostFragment(): CoreNavHostFragment
+    }
 
     companion object {
 
@@ -21,10 +45,14 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
         val NAV_HOST_FRAGMENT_TAG = "NAV_HOST_FRAGMENT_TAG"
     }
 
+    abstract val navFragmentCreator: NavFragmentCreator
+
     lateinit var navController: NavController
+    lateinit var navHostFragment: CoreNavHostFragment
     lateinit var navHostRoot: ViewGroup
 
     var lastNavigatedFragment: WeakReference<CoreFragment?> = WeakReference(CoreFragment())
+    lateinit var overlayContainer: ViewGroup
 
 
     override fun onCreateView(coreActivity: CoreActivity): Boolean {
@@ -36,10 +64,12 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
         super.onViewCreated(coreActivity)
         // drawerLayout view must not be null
         navHostRoot = coreActivity.findViewById<ViewGroup>(NAV_HOST_ROOT_ID)!!
+        overlayContainer = coreActivity.findViewById(R.id.overlay_container) as? ViewGroup ?:
+                throw IllegalStateException("ActivityController ${this::class.java.simpleTagName()} doesn't contain Viewgroup with id R.id.overlay_container")
 
 
         if (coreActivity.supportFragmentManager.findFragmentByTag(NAV_HOST_FRAGMENT_TAG) == null) {
-            val navHostFragment = getNavHostFragment()
+            val navHostFragment = navFragmentCreator.createNavHostFragment()
             // add nav fragment
             coreActivity.supportFragmentManager.beginTransaction().apply {
                 replace(NAV_HOST_ROOT_ID, navHostFragment, NAV_HOST_FRAGMENT_TAG)
@@ -49,8 +79,6 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
                 commit()
             }
         }
-
-
     }
 
     /** Called by [CoreNavHostFragment.onViewCreated] after whichs' super creates the [NavController] which is passed
@@ -81,6 +109,7 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
     ) {
         Log.d(TAG, "onNavControllerReady")
         this.navController = navController
+        this.navHostFragment = navHostFragment
 
         val fragments = navHostFragment.childFragmentManager.fragments
         val lastFragment = fragments.lastOrNull()
@@ -147,11 +176,4 @@ abstract class CoreNavActivityController(coreActivity: CoreActivity) : ActivityC
     open fun onDestinationChanged(navController: NavController, navDestination: NavDestination) {
         Log.d(TAG, "onDestinationChanged, destination: ${navDestination.label}")
     }
-
-    /** Abstract function that must be implemented. Create your own fragment using a nav resource like this
-     *  [CoreNavHostFragment.create(R.navigation.nav_main)]
-     *
-     */
-    abstract fun getNavHostFragment(): CoreNavHostFragment
-
 }

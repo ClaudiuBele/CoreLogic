@@ -8,9 +8,10 @@ import androidx.lifecycle.LifecycleObserver
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
 /** Activity controller. Contains a reference to a CoreActivity in order to delegate activity callbacks ([LifecycleObserver]
- * is not enough) in isolated units of logic. Must be created in [CoreActivity.onCreate]
+ * is not enough) in isolated units of logic. Must be created in [CoreActivity.onCreateControllers]
  *
- */
+ * Subclasses should shorten [ActivityController] suffix to Ac.
+ * */
 abstract class ActivityController(protected val activity: CoreActivity) {
 
     protected val TAG by lazy { javaClass.simpleTagName() }

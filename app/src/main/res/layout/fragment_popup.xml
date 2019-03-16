@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dk.sidereal.corelogic.platform.widget.SlidingUpPanel xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    app:umanoPanelHeight="@dimen/grid_5x"
+    app:umanoDragView="@id/mini_view"
+    app:mini_view="@id/mini_view">
+
+    <FrameLayout
+        android:foregroundGravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?android:windowBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="?android:textColorPrimaryInverse"
+            android:text="Mini view content"/>
+
+        <TextView
+            android:id="@+id/mini_view"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Title"
+            android:text="Mini view text"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/grid_5x"
+            android:background="?colorPrimary"/>
+
+    </FrameLayout>
+
+</dk.sidereal.corelogic.platform.widget.SlidingUpPanel>

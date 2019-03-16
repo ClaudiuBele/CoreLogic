@@ -5,9 +5,9 @@ import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 
 class MainActivity : CoreActivity() {
 
-    override fun onCreateControllers(controllers: MutableList<ActivityController>) {
-        super.onCreateControllers(controllers)
-        controllers.add(MainActivityNavController(this))
+    override fun onCreateControllers(outControllers: MutableList<ActivityController>) {
+        super.onCreateControllers(outControllers)
+        outControllers.add(MainActivityNavController(this))
     }
 
     override fun onSupportNavigateUp(): Boolean {

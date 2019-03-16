@@ -3,6 +3,7 @@ package dk.sidereal.corelogic.platform.lifecycle
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -26,7 +27,7 @@ open class CoreActivity : AppCompatActivity() {
      */
     val requireCoreApplication: CoreApplication by lazy { application as CoreApplication }
 
-    private val coreFragments: List<CoreFragment>
+     val coreFragments: List<CoreFragment>
         get() = supportFragmentManager.fragments.dropWhile { it !is CoreFragment }.map { it as CoreFragment }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +74,7 @@ open class CoreActivity : AppCompatActivity() {
 
         coreFragments.forEach {
             if (!handledBackPressed) {
-                handledBackPressed = handledBackPressed or it.onBackPressed()
+                handledBackPressed = handledBackPressed or it.onBackPressedInternal()
             }
         }
 
@@ -84,6 +85,7 @@ open class CoreActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         controllers.forEach { it.onDestroy() }
+        coreFragments.forEach { it.onActivityDestroyed() }
         super.onDestroy()
     }
 
@@ -132,12 +134,13 @@ open class CoreActivity : AppCompatActivity() {
     fun <T : ActivityController> getController(clazz: Class<T>): T? =
         controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
 
-    /** Where you setup your [ActivityController]. called in [onCreate]. Add your controllers to [controllers] parameter.
-     * Some default controllers are added by [CoreActivity] [dk.sidereal.corelogic.nav.CoreNavActivity]
+    /** Where you setup your [ActivityController]. called in [onCreate]. Add your outControllers to [outControllers] parameter.
+     * Some default outControllers are added by [CoreActivity] [dk.sidereal.corelogic.nav.CoreNavActivity]
 
      */
-    protected open fun onCreateControllers(controllers: MutableList<ActivityController>) {
-        controllers.add(ViewModelActivityController(this))
+    @CallSuper
+    protected open fun onCreateControllers(outControllers: MutableList<ActivityController>) {
+        outControllers.add(ViewModelActivityController(this))
     }
 
 

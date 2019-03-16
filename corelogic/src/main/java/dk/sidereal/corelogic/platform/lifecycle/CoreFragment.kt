@@ -7,12 +7,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.FrameLayout
+import androidx.annotation.CallSuper
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
+import dk.sidereal.corelogic.R
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.vm.ViewModelActivityController
 
-open class CoreFragment : Fragment() {
+/** Base fragment to be used with [CoreActivity], although it is compatible with non-[CoreActivity] subclasses aswell.
+ *
+ */
+open class CoreFragment : DialogFragment() {
 
     companion object {
         val INNER_TAG by lazy { CoreFragment::class.simpleTagName() }
@@ -35,6 +41,13 @@ open class CoreFragment : Fragment() {
     val requireCoreActivity: CoreActivity
         get() = requireActivity() as CoreActivity
 
+    val coreFragments: List<CoreFragment>
+        get() = childFragmentManager.fragments.dropWhile { it !is CoreFragment }.map { it as CoreFragment }
+
+    protected lateinit var root: FrameLayout
+    protected lateinit var viewContainer: FrameLayout
+    protected lateinit var overlayChildContainer: FrameLayout
+
     protected val TAG by lazy { javaClass.simpleTagName() }
 
     private val controllers: MutableList<FragmentController> = mutableListOf()
@@ -45,6 +58,60 @@ open class CoreFragment : Fragment() {
         Log.d(TAG, "onAttach")
         controllers.forEach { it.onAttach(context) }
     }
+
+    /** Override [onCreateFragmentView] instead for your view, and your view will be added to [R.id.view_container].
+     * Below the fragment view, you have access to [overlayChildContainer] which can be used for adding views on top of
+     * the main layout without hassle
+     *
+     */
+    @CallSuper
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val rootLayout = inflater.inflate(R.layout.fragment_core, container, false)
+        root = rootLayout.findViewById(R.id.item_view)
+        viewContainer = rootLayout.findViewById(R.id.view_container)
+        overlayChildContainer = rootLayout.findViewById(R.id.overlay_child_container)
+        val innerView = onCreateFragmentView(inflater,viewContainer, savedInstanceState)
+        innerView?.let {
+            viewContainer.addView(it)
+        }
+        return rootLayout
+    }
+
+    /** Called by [onCreateView]. View returned will be added to [dk.sidereal.corelogic.R.id.overlay_container]
+     *
+     */
+    protected open fun onCreateFragmentView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?
+        = null
+
+
+    /** Called in [CoreActivity.onNavigateUp]
+     *
+     */
+    protected open fun onNavigateUp(): Boolean {
+        var handledNavigateUp = false
+        controllers.forEach {
+            if (!handledNavigateUp) {
+                handledNavigateUp = handledNavigateUp or it.onNavigateUp()
+            }
+        }
+        return handledNavigateUp
+    }
+
+    /** Called in [CoreFragment.onAttach]. Add your outControllers to the passed parameter
+     */
+    protected open fun onCreateControllers(outControllers: MutableList<FragmentController>) {}
+
+
+    /** Called from [CoreActivity.onBackPressed]
+     * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
+     *
+     */
+    protected open fun onBackPressed(): Boolean = false
+
+    /** Called in [CoreActivity.onDestroy]
+     *
+     */
+    open fun onActivityDestroyed() {}
 
 
     /** Retrieves the desired view model. Will create it if neeeded. For supported viewmodel
@@ -70,35 +137,7 @@ open class CoreFragment : Fragment() {
     fun <T : FragmentController> getController(clazz: Class<T>): T? =
         controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
 
-    /** Called in [CoreFragment.onAttach]
-     *
-     */
-    protected open fun onCreateControllers(controllers: MutableList<FragmentController>) {}
-
-
-    /** Called from [CoreActivity.onBackPressed]
-     * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
-     *
-     */
-    open fun onBackPressed(): Boolean = false
-
-    /** Called in [CoreActivity.onDestroy]
-     *
-     */
-    open fun dispose() {}
-
-    /** Called after [CoreActivity.onAttachFragment] inside the override
-     */
-    open fun onAttachFragment(coreFragment: CoreFragment?) {}
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
+    
     /** Called by [CoreActivity.onBackPressed]
      * Return true to flag that the fragment
      * handled the back internally and that the

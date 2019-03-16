@@ -1,7 +1,14 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
+import androidx.lifecycle.LifecycleObserver
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 
+/** Application controller. Contains a reference to a [CoreApplication] in order to delegate application callbacks.
+ * Must be created in [CoreApplication.onCreateControllers]
+ *
+ * Subclasses should shorten [ApplicationController] suffix to Apc.
+ *
+ */
 abstract class ApplicationController(protected val coreApplication: CoreApplication) {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
