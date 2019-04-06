@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
+import dk.sidereal.corelogic.platform.ControllerHolder
 import dk.sidereal.corelogic.platform.vm.ViewModelActivityController
 
-open class CoreActivity : AppCompatActivity() {
+open class CoreActivity : AppCompatActivity(),
+    ControllerHolder<ActivityController> {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -18,7 +20,7 @@ open class CoreActivity : AppCompatActivity() {
         val INNER_TAG by lazy { CoreActivity::class.simpleTagName() }
     }
 
-    private val controllers: MutableList<ActivityController> = mutableListOf()
+    override var mutableControllers: MutableList<ActivityController> = mutableListOf()
 
     val coreApplication: CoreApplication? by lazy { application as? CoreApplication }
 
@@ -27,16 +29,17 @@ open class CoreActivity : AppCompatActivity() {
      */
     val requireCoreApplication: CoreApplication by lazy { application as CoreApplication }
 
-     val coreFragments: List<CoreFragment>
+    val coreFragments: List<CoreFragment>
         get() = supportFragmentManager.fragments.dropWhile { it !is CoreFragment }.map { it as CoreFragment }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        onCreateControllers(controllers)
-        controllers.forEach { it.onCreate(savedInstanceState) }
 
+
+        onCreateControllers()
+        mutableControllers.forEach { it.onCreate(savedInstanceState) }
         var hasSetContentView = false
-        controllers.forEach {
+        mutableControllers.forEach {
             val hasNewControllerSetContentView = it.onCreateView(this)
             if (hasSetContentView && hasNewControllerSetContentView) {
                 Log.w(
@@ -50,7 +53,7 @@ open class CoreActivity : AppCompatActivity() {
         if (!hasSetContentView) {
             Log.w("CoreActivity", "No content view set by activity controllers")
         }
-        controllers.forEach { it.onViewCreated(this) }
+        mutableControllers.forEach { it.onViewCreated(this) }
     }
 
     override fun onSaveInstanceState(outState: Bundle?) {
@@ -58,12 +61,12 @@ open class CoreActivity : AppCompatActivity() {
 
         // outstate is not null, otherwise there will be NPE in platform Activity code
         val realOutState = outState!!
-        controllers.forEach { it.onSaveInstanceState(realOutState) }
+        mutableControllers.forEach { it.onSaveInstanceState(realOutState) }
     }
 
     override fun onBackPressed() {
         var handledBackPressed = false
-        controllers.forEach {
+        mutableControllers.forEach {
             if (!handledBackPressed) {
                 handledBackPressed = handledBackPressed or it.onBackPressed()
             }
@@ -84,14 +87,14 @@ open class CoreActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        controllers.forEach { it.onDestroy() }
+        mutableControllers.forEach { it.onDestroy() }
         coreFragments.forEach { it.onActivityDestroyed() }
         super.onDestroy()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         var handledOptionsItem = false
-        controllers.forEach {
+        mutableControllers.forEach {
             if (!handledOptionsItem) {
                 handledOptionsItem = handledOptionsItem or it.onOptionsItemSelected(item)
             }
@@ -101,7 +104,7 @@ open class CoreActivity : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         var handledNavigateUp = false
-        controllers.forEach {
+        mutableControllers.forEach {
             if (!handledNavigateUp) {
                 handledNavigateUp = handledNavigateUp or it.onNavigateUp()
             }
@@ -111,8 +114,13 @@ open class CoreActivity : AppCompatActivity() {
 
     override fun onAttachFragment(fragment: Fragment?) {
         super.onAttachFragment(fragment)
-        controllers.forEach { it.onAttachFragment(fragment as? CoreFragment) }
+        mutableControllers.forEach { it.onAttachFragment(fragment as? CoreFragment) }
+    }
 
+    @CallSuper
+    override fun onCreateControllers(outControllers: MutableList<ActivityController>) {
+        super.onCreateControllers(outControllers)
+        outControllers.add(ViewModelActivityController(this))
     }
 
     /** Retrieves the desired view model. Will create it if neeeded. For supported viewmodel
@@ -123,24 +131,6 @@ open class CoreActivity : AppCompatActivity() {
         val vmController = getController(ViewModelActivityController::class.java)
         checkNotNull(vmController)
         return vmController.get(clazz)
-    }
-
-    /** Returns a read-only list of controllers
-     *
-     */
-    fun getControllers(): List<ActivityController> = controllers.toList()
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T : ActivityController> getController(clazz: Class<T>): T? =
-        controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
-
-    /** Where you setup your [ActivityController]. called in [onCreate]. Add your outControllers to [outControllers] parameter.
-     * Some default outControllers are added by [CoreActivity] [dk.sidereal.corelogic.nav.CoreNavActivity]
-
-     */
-    @CallSuper
-    protected open fun onCreateControllers(outControllers: MutableList<ActivityController>) {
-        outControllers.add(ViewModelActivityController(this))
     }
 
 

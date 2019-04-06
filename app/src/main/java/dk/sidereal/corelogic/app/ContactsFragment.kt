@@ -15,7 +15,7 @@ import dk.sidereal.corelogic.nav.NavFragment
  */
 class ContactsFragment() : NavFragment() {
 
-    override fun onCreateFragmentView(
+    override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,18 +26,22 @@ class ContactsFragment() : NavFragment() {
 
         view.findViewById<Button>(R.id.popup_toggle).setOnClickListener {
 
-                activity?.supportFragmentManager?.apply {
-                    val popupFragment = findFragmentByTag(PopupFragment::class.java.simpleTagName())
-                    if(popupFragment != null) {
-                        beginTransaction()
-                            .remove(popupFragment)
-                            .commit()
-                    } else {
-                        beginTransaction()
-                            .add(requireNavActivityOverlayContainer.id, PopupFragment(), PopupFragment::class.java.simpleTagName())
-                            .commit()
-                    }
+            activity?.supportFragmentManager?.apply {
+                val popupFragment = findFragmentByTag(PopupFragment::class.java.simpleTagName())
+                if (popupFragment != null) {
+                    beginTransaction()
+                        .remove(popupFragment)
+                        .commit()
+                } else {
+                    beginTransaction()
+                        .add(
+                            requireNavActivityOverlayContainer.id,
+                            PopupFragment(),
+                            PopupFragment::class.java.simpleTagName()
+                        )
+                        .commit()
                 }
+            }
         }
 
         return view

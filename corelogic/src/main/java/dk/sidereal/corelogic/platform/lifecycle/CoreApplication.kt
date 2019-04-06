@@ -2,8 +2,9 @@ package dk.sidereal.corelogic.platform.lifecycle
 
 import android.app.Application
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
+import dk.sidereal.corelogic.platform.ControllerHolder
 
-open class CoreApplication : Application() {
+open class CoreApplication : Application(), ControllerHolder<ApplicationController> {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -11,30 +12,18 @@ open class CoreApplication : Application() {
         val INNER_TAG by lazy { CoreFragment::class.simpleTagName() }
     }
 
-    private val controllers: MutableList<ApplicationController> = mutableListOf()
+    override var mutableControllers: MutableList<ApplicationController> = mutableListOf()
 
     override fun onCreate() {
         super.onCreate()
-        onCreateControllers(controllers)
-        controllers.forEach { it.onCreate() }
+        onCreateControllers()
+        mutableControllers.forEach { it.onCreate() }
     }
-
-    @Suppress("UNCHECKED_CAST")
-    fun <T : ApplicationController> getController(clazz: Class<T>): T? =
-        controllers.firstOrNull { clazz.isAssignableFrom(it.javaClass) } as? T
 
     override fun onTerminate() {
         super.onTerminate()
-        controllers.forEach { it.onTerminate() }
+        mutableControllers.forEach { it.onTerminate() }
     }
-
-    /** Returns a read-only list of controllers
-     *
-     */
-    fun getControllers(): List<ApplicationController> = controllers.toList()
-
-    protected open fun onCreateControllers(ourControllers: MutableList<ApplicationController>) {}
-
 
 }
 

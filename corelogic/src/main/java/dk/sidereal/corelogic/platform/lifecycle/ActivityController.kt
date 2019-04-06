@@ -6,13 +6,14 @@ import android.view.MenuItem
 import androidx.annotation.CallSuper
 import androidx.lifecycle.LifecycleObserver
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
+import dk.sidereal.corelogic.platform.AndroidModelController
 
 /** Activity controller. Contains a reference to a CoreActivity in order to delegate activity callbacks ([LifecycleObserver]
  * is not enough) in isolated units of logic. Must be created in [CoreActivity.onCreateControllers]
  *
  * Subclasses should shorten [ActivityController] suffix to Ac.
  * */
-abstract class ActivityController(protected val activity: CoreActivity) {
+abstract class ActivityController(override val model: CoreActivity) : AndroidModelController<CoreActivity> {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -20,12 +21,14 @@ abstract class ActivityController(protected val activity: CoreActivity) {
         val INNER_TAG by lazy { ActivityController::class.simpleTagName() }
     }
 
-    val coreApplication: CoreApplication? by lazy { activity.application as? CoreApplication?}
+    val coreApplication: CoreApplication? by lazy { activity.application as? CoreApplication? }
 
     /** Will throw if application is not of type [CoreApplication]
      *
      */
-    val requireCoreApplication: CoreApplication by lazy { activity.application as CoreApplication}
+    val requireCoreApplication: CoreApplication by lazy { activity.application as CoreApplication }
+
+    protected val activity: CoreActivity = model
 
     protected val context: Context = activity
 
@@ -39,7 +42,6 @@ abstract class ActivityController(protected val activity: CoreActivity) {
      * [CoreActivity.onCreateControllers]
      */
     open fun onCreate(savedInstanceState: Bundle?) {}
-
 
     /** Called in [CoreActivity.onCreate]. Return true if you are setting the content view in this controller.
      *
