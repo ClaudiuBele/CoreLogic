@@ -28,6 +28,16 @@ android {
     }
 }
 
+project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        freeCompilerArgs = [
+                "-Xjsr305=strict",
+                "-progressive"
+        ]
+        jvmTarget = "1.8"
+    }
+}
+
 dependencies {
 //    implementation 'com.github.claudiu-bele:core-logic:0.4.2'
     implementation project(":corelogic")

@@ -60,4 +60,16 @@ dependencies {
 
     api 'com.sothree.slidinguppanel:library:3.4.0'
 
+    api "io.reactivex.rxjava2:rxjava:2.2.12"
+    api 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    // more, Jake wharton's https://github.com/JakeWharton/RxRelay
+    // https://ryanharter.com/blog/handling-transient-events/
+    api 'com.jakewharton.rxrelay2:rxrelay:2.1.1'
+    // handle android lifecycle in observer
+    // https://github.com/uber/AutoDispose
+    api 'com.uber.autodispose:autodispose:1.3.0'
+    api 'com.uber.autodispose:autodispose-lifecycle:1.3.0'
+    api 'com.uber.autodispose:autodispose-android:1.3.0'
+    api 'com.uber.autodispose:autodispose-android-archcomponents:1.3.0@aar'
+    api 'com.uber.autodispose:autodispose-android-archcomponents-test:1.3.0'
 }
