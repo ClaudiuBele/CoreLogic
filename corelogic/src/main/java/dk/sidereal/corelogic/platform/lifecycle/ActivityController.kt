@@ -13,7 +13,8 @@ import dk.sidereal.corelogic.platform.AndroidModelController
  *
  * Subclasses should shorten [ActivityController] suffix to Ac.
  * */
-abstract class ActivityController(override val model: CoreActivity) : AndroidModelController<CoreActivity> {
+abstract class ActivityController(override val model: CoreActivity)
+    : AndroidModelController<CoreActivity> {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -22,9 +23,7 @@ abstract class ActivityController(override val model: CoreActivity) : AndroidMod
     }
 
     val coreApplication: CoreApplication? by lazy { activity.application as? CoreApplication? }
-
     /** Will throw if application is not of type [CoreApplication]
-     *
      */
     val requireCoreApplication: CoreApplication by lazy { activity.application as CoreApplication }
 

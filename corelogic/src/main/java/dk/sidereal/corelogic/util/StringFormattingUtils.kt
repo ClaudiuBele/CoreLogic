@@ -1,5 +1,7 @@
 package dk.sidereal.corelogic.util
 
+import kotlin.streams.toList
+
 object StringFormattingUtils {
 
     fun toLowercaseWithUnderscores(input: String): String {
@@ -37,4 +39,12 @@ object StringFormattingUtils {
         return stringBuilder.toString()
     }
 
+    fun isLowercaseWithNumbers(input: String): Boolean {
+        input.toCharArray().toList().forEachIndexed { index, i ->
+            if(i.isUpperCase() || i == ' ') {
+                return false
+            }
+        }
+        return true
+    }
 }
