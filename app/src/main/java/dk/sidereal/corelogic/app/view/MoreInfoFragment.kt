@@ -1,6 +1,7 @@
 package dk.sidereal.corelogic.app.view
 
 
+import android.app.Application
 import android.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,7 +17,9 @@ import com.jakewharton.rxrelay2.BehaviorRelay
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.autoDisposable
 import dk.sidereal.corelogic.app.R
+import dk.sidereal.corelogic.app.api.model.RepositoryResponse
 import dk.sidereal.corelogic.app.repo.DataRepository
+import dk.sidereal.corelogic.kotlin.ext.observeOnAndroidLifecycle
 import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 import dk.sidereal.corelogic.platform.vm.StatefulViewModel
 import io.reactivex.Observable
@@ -67,32 +70,33 @@ class MoreInfoFragment : CoreFragment() {
             })
 
         viewModel.githubRepoSubject
-            .observeOn(AndroidSchedulers.mainThread())
-            .autoDisposable(
-                AndroidLifecycleScopeProvider.from(
-                    viewLifecycleOwner,
-                    Lifecycle.Event.ON_DESTROY
-                )
-            )
-            .subscribe { repoData ->
-                if(repoData is String) {
-                    Snackbar.make(view, repoData, Snackbar.LENGTH_LONG).show()
-                }
-            }
+            .observeOnAndroidLifecycle(viewLifecycleOwner,
+                onSuccess = { repoData ->
+
+                    Snackbar.make(
+                        view,
+                        "${repoData.totalCount} repositories created with this app (not this app)",
+                        Snackbar.LENGTH_LONG
+                    ).show()
+
+                })
     }
 }
 
-class MoreInfoViewModel(val dataRepository: DataRepository) : StatefulViewModel() {
+class MoreInfoViewModel(
+    private val dataRepository: DataRepository,
+    private val application: Application
+) : StatefulViewModel() {
+
 
     private var clicks = 0
 
-
-    var githubRepoSubject = PublishSubject.create<String>()
+    var githubRepoSubject = BehaviorRelay.create<RepositoryResponse>()
 
     init {
         viewModelScope.launch {
             val data = dataRepository.getSomeData()
-            githubRepoSubject.onNext(data)
+            githubRepoSubject.accept(data)
         }
     }
 

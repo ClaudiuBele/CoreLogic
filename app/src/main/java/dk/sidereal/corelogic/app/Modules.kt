@@ -15,6 +15,6 @@ object Modules {
         single { GithubService.getRetrofit(get()) }
         single { GithubService.getService(get()) }
         single<DataRepository> { DataRepositoryImpl(get(), get()) }
-        viewModel { MoreInfoViewModel(get()) }
+        viewModel { MoreInfoViewModel(get(), get()) }
     }
 }

@@ -1,18 +1,20 @@
 package dk.sidereal.corelogic.app.repo
 
 import android.content.Context
-import com.google.gson.JsonElement
 import dk.sidereal.corelogic.app.api.GithubService
+import dk.sidereal.corelogic.app.api.model.RepositoryResponse
 
 interface DataRepository {
-    suspend fun getSomeData(): String
+    suspend fun getSomeData(): RepositoryResponse
 }
 
-class DataRepositoryImpl(private val context: Context,
-                         private val githubService: GithubService) : DataRepository{
+class DataRepositoryImpl(
+    private val context: Context,
+    private val githubService: GithubService
+) : DataRepository {
 
-    override suspend fun getSomeData(): String {
-        return githubService.listRepos().toString()
+    override suspend fun getSomeData(): RepositoryResponse {
+        return githubService.listRepos()
     }
 
 }
