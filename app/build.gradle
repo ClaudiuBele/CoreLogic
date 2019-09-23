@@ -39,8 +39,8 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-//    implementation 'com.github.claudiu-bele:core-logic:0.4.2'
-    implementation project(":corelogic")
+    implementation 'com.github.claudiu-bele:core-logic:0.4.3'
+//    implementation project(":corelogic")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 repositories {
