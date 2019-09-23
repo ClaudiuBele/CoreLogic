@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.autoDisposable
@@ -26,6 +27,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
 import kotlinx.coroutines.launch
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
@@ -35,6 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class MoreInfoFragment : CoreFragment() {
 
     val viewModel: MoreInfoViewModel by sharedViewModel()
+    val gson : Gson by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,10 +75,10 @@ class MoreInfoFragment : CoreFragment() {
         viewModel.githubRepoSubject
             .observeOnAndroidLifecycle(viewLifecycleOwner,
                 onSuccess = { repoData ->
-
+                    val reasonToUseGson = gson.toJson(repoData)
                     Snackbar.make(
                         view,
-                        "${repoData.totalCount} repositories created with this app (not this app)",
+                        "${repoData.totalCount} repositories created with this app (not this app) ${reasonToUseGson.length}",
                         Snackbar.LENGTH_LONG
                     ).show()
 

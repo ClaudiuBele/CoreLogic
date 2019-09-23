@@ -56,7 +56,7 @@ open class NavFragment : CoreFragment() {
      * fragment is created.
      *
      */
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
     }
 

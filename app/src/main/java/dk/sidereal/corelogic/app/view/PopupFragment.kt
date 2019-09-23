@@ -10,7 +10,7 @@ import dk.sidereal.corelogic.nav.NavFragment
 
 class PopupFragment : NavFragment() {
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
     }
 

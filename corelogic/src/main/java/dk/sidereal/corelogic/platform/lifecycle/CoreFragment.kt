@@ -42,7 +42,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
 
     override var mutableControllers: MutableList<FragmentController> = mutableListOf()
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         onCreateControllers()
         Log.d(TAG, "onAttach")

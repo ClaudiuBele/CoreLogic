@@ -56,12 +56,11 @@ open class CoreActivity : AppCompatActivity(),
         mutableControllers.forEach { it.onViewCreated(this) }
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         // outstate is not null, otherwise there will be NPE in platform Activity code
-        val realOutState = outState!!
-        mutableControllers.forEach { it.onSaveInstanceState(realOutState) }
+        mutableControllers.forEach { it.onSaveInstanceState(outState) }
     }
 
     override fun onBackPressed() {
@@ -112,7 +111,7 @@ open class CoreActivity : AppCompatActivity(),
         return handledNavigateUp or super.onSupportNavigateUp()
     }
 
-    override fun onAttachFragment(fragment: Fragment?) {
+    override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
         mutableControllers.forEach { it.onAttachFragment(fragment as? CoreFragment) }
     }

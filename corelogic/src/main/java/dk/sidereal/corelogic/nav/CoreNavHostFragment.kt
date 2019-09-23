@@ -111,9 +111,9 @@ open class CoreNavHostFragment : NavHostFragment() {
         Log.d(TAG, "onResume")
     }
 
-    override fun onAttachFragment(fragment: Fragment?) {
+    override fun onAttachFragment(fragment: Fragment) {
         super.onAttachFragment(fragment)
-        fragment?.let {
+        fragment.let {
             Log.d(TAG, "onAttachFragment: ${it.javaClass.simpleTagName()}")
         }
         if (fragment is NavFragment) {
