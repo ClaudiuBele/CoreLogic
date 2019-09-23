@@ -6,13 +6,13 @@
 
     <include app:graph="@navigation/nav_main"/>
     <fragment android:id="@+id/onboardingFirstPageFragment2"
-              android:name="dk.sidereal.corelogic.app.OnboardingFirstPageFragment"
+              android:name="dk.sidereal.corelogic.app.view.OnboardingFirstPageFragment"
               android:label="fragment_onboarding_first_page" tools:layout="@layout/fragment_onboarding_first_page">
         <action android:id="@+id/action_onboarding_1_to_2"
                 app:destination="@id/onboardingSecondPageFragment"/>
     </fragment>
     <fragment android:id="@+id/onboardingSecondPageFragment"
-              android:name="dk.sidereal.corelogic.app.OnboardingSecondPageFragment"
+              android:name="dk.sidereal.corelogic.app.view.OnboardingSecondPageFragment"
               android:label="fragment_onboarding_second_page" tools:layout="@layout/fragment_onboarding_second_page">
         <action android:id="@+id/action_onboarding_2_to_nav_main" app:destination="@id/nav_main"/>
     </fragment>

@@ -1,4 +1,4 @@
-package dk.sidereal.corelogic.app
+package dk.sidereal.corelogic.app.view
 
 import android.app.Fragment
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import dk.sidereal.corelogic.app.R
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.nav.NavFragment
 

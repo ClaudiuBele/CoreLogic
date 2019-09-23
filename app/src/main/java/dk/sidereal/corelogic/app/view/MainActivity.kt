@@ -1,4 +1,4 @@
-package dk.sidereal.corelogic.app
+package dk.sidereal.corelogic.app.view
 
 import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.CoreActivity

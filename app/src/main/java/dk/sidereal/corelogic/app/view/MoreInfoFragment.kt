@@ -1,4 +1,4 @@
-package dk.sidereal.corelogic.app
+package dk.sidereal.corelogic.app.view
 
 
 import android.app.Fragment
@@ -10,20 +10,28 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.viewModelScope
+import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxrelay2.BehaviorRelay
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import com.uber.autodispose.autoDisposable
+import dk.sidereal.corelogic.app.R
+import dk.sidereal.corelogic.app.repo.DataRepository
 import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 import dk.sidereal.corelogic.platform.vm.StatefulViewModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.subjects.PublishSubject
+import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 /**
  * A simple [Fragment] subclass.
  *
  */
 class MoreInfoFragment : CoreFragment() {
+
+    val viewModel: MoreInfoViewModel by sharedViewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,27 +44,57 @@ class MoreInfoFragment : CoreFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view.findViewById<Button>(R.id.button)?.setOnClickListener {
-            getVm(MoreInfoViewModel::class.java).triggerClick()
+            viewModel.triggerClick()
         }
 
-        getVm(MoreInfoViewModel::class.java).clicksSubject
+        viewModel.clicksRelay
             // receive updates on main thread
             .observeOn(AndroidSchedulers.mainThread())
             // auto dispose on OnDestroy tied to lifecycle of LifecycleOwner
-            .autoDisposable(AndroidLifecycleScopeProvider.from(this, Lifecycle.Event.ON_DESTROY))
+            .autoDisposable(
+                AndroidLifecycleScopeProvider.from(
+                    viewLifecycleOwner,
+                    Lifecycle.Event.ON_DESTROY
+                )
+            )
             .subscribe({ clicks ->
                 context?.let {
-                    view.findViewById<TextView>(R.id.title).text = it.getString(R.string.more_info_title, clicks)
+                    view.findViewById<TextView>(R.id.title).text =
+                        it.getString(R.string.more_info_title, clicks)
                 }
             }, {
                 Toast.makeText(requireContext(), it.message, Toast.LENGTH_LONG).show()
             })
+
+        viewModel.githubRepoSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .autoDisposable(
+                AndroidLifecycleScopeProvider.from(
+                    viewLifecycleOwner,
+                    Lifecycle.Event.ON_DESTROY
+                )
+            )
+            .subscribe { repoData ->
+                if(repoData is String) {
+                    Snackbar.make(view, repoData, Snackbar.LENGTH_LONG).show()
+                }
+            }
     }
 }
 
-class MoreInfoViewModel : StatefulViewModel() {
+class MoreInfoViewModel(val dataRepository: DataRepository) : StatefulViewModel() {
 
     private var clicks = 0
+
+
+    var githubRepoSubject = PublishSubject.create<String>()
+
+    init {
+        viewModelScope.launch {
+            val data = dataRepository.getSomeData()
+            githubRepoSubject.onNext(data)
+        }
+    }
 
     // will only relay last value, seems like LiveData, in that the last value is also passed.
     /**
@@ -79,9 +117,14 @@ class MoreInfoViewModel : StatefulViewModel() {
      *
      *
      */
+    /** Relay posts last value to new observers, subject doesn't. Each useful for specific cases.
+     * For state data to be shown when returning to the fragment, use relay to get a call back when
+     * entering
+     *
+     */
     var clicksRelay = BehaviorRelay.createDefault(clicks)
-    val viewEvents: Observable<Int> = clicksRelay
     var clicksSubject = PublishSubject.create<Int>()
+    val viewEvents: Observable<Int> = clicksRelay
 
     companion object {
         const val STATE_CLICKS = "STATE_CLICKS"

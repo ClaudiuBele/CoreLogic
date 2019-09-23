@@ -1,8 +1,8 @@
-package dk.sidereal.corelogic.app
+package dk.sidereal.corelogic.app.view
 
+import dk.sidereal.corelogic.app.R
 import dk.sidereal.corelogic.nav.CoreNavHostFragment
 import dk.sidereal.corelogic.nav.EmbeddedNavActivityController
-import dk.sidereal.corelogic.nav.NavActivityController
 import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 
 class MainActivityNavController(coreActivity: CoreActivity) : EmbeddedNavActivityController(coreActivity) {
@@ -18,7 +18,10 @@ class MainActivityNavController(coreActivity: CoreActivity) : EmbeddedNavActivit
     }
 
     override fun getStartDestinations(): List<Int> {
-        return listOf(R.id.contactsFragment, R.id.infoFragment)
+        return listOf(
+            R.id.contactsFragment,
+            R.id.infoFragment
+        )
     }
 
     override fun showActionBar(): Boolean {

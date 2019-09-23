@@ -6,19 +6,19 @@
             app:startDestination="@id/contactsFragment">
     <fragment
             android:id="@+id/contactsFragment"
-            android:name="dk.sidereal.corelogic.app.ContactsFragment"
+            android:name="dk.sidereal.corelogic.app.view.ContactsFragment"
             android:label="fragment_contacts"
             tools:layout="@layout/fragment_contacts">
 
     </fragment>
     <fragment
             android:id="@+id/moreInfoFragment"
-            android:name="dk.sidereal.corelogic.app.MoreInfoFragment"
+            android:name="dk.sidereal.corelogic.app.view.MoreInfoFragment"
             android:label="fragment_more_info"
             tools:layout="@layout/fragment_more_info"/>
     <fragment
             android:id="@+id/infoFragment"
-            android:name="dk.sidereal.corelogic.app.InfoFragment"
+            android:name="dk.sidereal.corelogic.app.view.InfoFragment"
             android:label="fragment_info"
             tools:layout="@layout/fragment_info">
         <action

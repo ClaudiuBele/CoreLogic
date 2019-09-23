@@ -1,6 +1,9 @@
 package dk.sidereal.corelogic.app
 
 import android.app.Application
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
 /** Used to show compatibility between non-[dk.sidereal.corelogic.platform.lifecycle.CoreApplication] and
  * [dk.sidereal.corelogic.platform.lifecycle.CoreActivity] & [dk.sidereal.corelogic.platform.lifecycle.CoreFragment] logic.
@@ -14,4 +17,13 @@ import android.app.Application
  */
 class SampleApplication : Application() {
 
+    override fun onCreate() {
+        super.onCreate()
+
+        startKoin {
+            androidLogger()
+            androidContext(this@SampleApplication)
+            modules(Modules.modules)
+        }
+    }
 }
