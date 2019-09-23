@@ -21,18 +21,18 @@ class InputTest {
      */
 
     @Test
-    fun inputValidator_NonNullNumber() {
+    fun nullableInt_isNull() {
         val someInt: Int? = null
         assertThat(someInt).isEqualTo(null)
     }
 
     @Test
-    fun inputValidator_StringWithLowercaseAndUnderscores_ReturnsFalse(){
+    fun stringWithLowercaseAndUnderscores_isRight(){
         assertThat("Failing lowercase string".isLowerCaseWithUnderscores()).isFalse()
     }
 
     @Test
-    fun inputValidator_StringWithLowercaseAndUnderscores_ReturnsTrue() {
+    fun stringWithLowercaseAndUnderscores_isWrong() {
         assertThat("Failing lowercaseString"
             .toLowerCaseWithUnderscores()
             .isLowerCaseWithUnderscores()).isTrue()

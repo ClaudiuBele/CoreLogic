@@ -10,6 +10,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.runners.MockitoJUnitRunner
 
 private const val FAKE_STRING = "HELLO WORLD"
+private const val WRONG_FAKE_STRING = "WRONG STRING"
 
 @RunWith(MockitoJUnitRunner::class)
 class ContextTest {
@@ -18,7 +19,7 @@ class ContextTest {
     private lateinit var mockContext: Context
 
     @Test
-    fun readStringFromContext_LocalizedString() {
+    fun readStringFromContext_rightString() {
         // Given a mocked Context injected into the object under test..., R.string.app_name used directly in
         // extension function mockContext.getAppName
         `when`(mockContext.getString(R.string.app_name))
@@ -29,5 +30,14 @@ class ContextTest {
 
         // ...then the result should be the expected one.
         assertThat(result).isEqualTo(FAKE_STRING)
+    }
+
+    @Test
+    fun readStringFromContext_wrongString() {
+
+        `when`(mockContext.getString(R.string.app_name))
+            .thenReturn(WRONG_FAKE_STRING)
+        val result: String = mockContext.getAppName()
+        assertThat(result).isNotEqualTo(FAKE_STRING)
     }
 }
