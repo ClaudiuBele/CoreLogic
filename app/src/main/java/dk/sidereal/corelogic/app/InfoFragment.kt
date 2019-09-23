@@ -10,7 +10,11 @@ import dk.sidereal.corelogic.nav.NavFragment
 
 class InfoFragment() : NavFragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.fragment_info, container, false)
     }
 
@@ -22,19 +26,21 @@ class InfoFragment() : NavFragment() {
         view?.findViewById<Button>(R.id.popup_toggle)?.setOnClickListener {
             activity?.supportFragmentManager?.apply {
                 val popupFragment = findFragmentByTag(PopupFragment::class.java.simpleTagName())
-                if(popupFragment != null) {
+                if (popupFragment != null) {
                     beginTransaction()
                         .remove(popupFragment)
                         .commit()
                 } else {
                     beginTransaction()
-                        .add(requireNavActivityOverlayContainer.id, PopupFragment(), PopupFragment::class.java.simpleTagName())
+                        .add(
+                            requireNavActivityOverlayContainer.id,
+                            PopupFragment(),
+                            PopupFragment::class.java.simpleTagName()
+                        )
                         .commit()
                 }
-            }        }
+            }
+        }
     }
-
-    override val showsBottomNavigationViewOnNavigated: Boolean
-        get() = false
 
 }

@@ -49,11 +49,19 @@ dependencies {
     testImplementation "com.google.truth:truth:1.0"
     //endregion
 
+    // region retrofit
+
+    // Gson + Retrofit
+    api 'com.google.code.gson:gson:2.8.5'
+    api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
+    api 'com.squareup.retrofit2:converter-gson:2.3.0'
+    api 'com.squareup.retrofit2:retrofit:2.3.0'
+    // endregion
 
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     api 'androidx.appcompat:appcompat:1.0.2@aar'
 
-    def nav_version = "1.0.0-alpha09"
+    def nav_version = "1.0.0"
     api "android.arch.navigation:navigation-fragment-ktx:$nav_version"
     api "android.arch.navigation:navigation-ui-ktx:$nav_version"
 
