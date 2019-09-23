@@ -19,7 +19,8 @@ class ContextTest {
 
     @Test
     fun readStringFromContext_LocalizedString() {
-        // Given a mocked Context injected into the object under test...
+        // Given a mocked Context injected into the object under test..., R.string.app_name used directly in
+        // extension function mockContext.getAppName
         `when`(mockContext.getString(R.string.app_name))
             .thenReturn(FAKE_STRING)
 
