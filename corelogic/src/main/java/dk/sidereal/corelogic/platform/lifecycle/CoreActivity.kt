@@ -1,5 +1,6 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -9,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.ControllerHolder
-import dk.sidereal.corelogic.platform.vm.ViewModelActivityController
+import dk.sidereal.corelogic.platform.vm.ViewModelAc
 
 open class CoreActivity : AppCompatActivity(),
     ControllerHolder<ActivityController> {
@@ -56,11 +57,37 @@ open class CoreActivity : AppCompatActivity(),
         mutableControllers.forEach { it.onViewCreated(this) }
     }
 
+    override fun onAttachFragment(fragment: Fragment) {
+        super.onAttachFragment(fragment)
+        mutableControllers.forEach { it.onAttachFragment(fragment as? CoreFragment) }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mutableControllers.forEach { it.onStart() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mutableControllers.forEach { it.onResume() }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mutableControllers.forEach { it.onActivityResult(requestCode, resultCode, data) }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         // outstate is not null, otherwise there will be NPE in platform Activity code
         mutableControllers.forEach { it.onSaveInstanceState(outState) }
+    }
+
+    override fun onDestroy() {
+        mutableControllers.forEach { it.onDestroy() }
+        coreFragments.forEach { it.onActivityDestroyed() }
+        super.onDestroy()
     }
 
     override fun onBackPressed() {
@@ -85,12 +112,6 @@ open class CoreActivity : AppCompatActivity(),
         }
     }
 
-    override fun onDestroy() {
-        mutableControllers.forEach { it.onDestroy() }
-        coreFragments.forEach { it.onActivityDestroyed() }
-        super.onDestroy()
-    }
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         var handledOptionsItem = false
         mutableControllers.forEach {
@@ -111,23 +132,18 @@ open class CoreActivity : AppCompatActivity(),
         return handledNavigateUp or super.onSupportNavigateUp()
     }
 
-    override fun onAttachFragment(fragment: Fragment) {
-        super.onAttachFragment(fragment)
-        mutableControllers.forEach { it.onAttachFragment(fragment as? CoreFragment) }
-    }
-
     @CallSuper
     override fun onCreateControllers(outControllers: MutableList<ActivityController>) {
         super.onCreateControllers(outControllers)
-        outControllers.add(ViewModelActivityController(this))
+        outControllers.add(ViewModelAc(this))
     }
 
     /** Retrieves the desired view model. Will create it if neeeded. For supported viewmodel
-     * classes and constructors for them, check [ViewModelActivityController]
+     * classes and constructors for them, check [ViewModelAc]
      *
      */
     fun <T : ViewModel> getVm(clazz: Class<T>): T {
-        val vmController = getController(ViewModelActivityController::class.java)
+        val vmController = getController(ViewModelAc::class.java)
         checkNotNull(vmController)
         return vmController.get(clazz)
     }

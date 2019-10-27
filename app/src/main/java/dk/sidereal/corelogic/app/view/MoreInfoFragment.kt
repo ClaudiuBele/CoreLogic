@@ -37,7 +37,7 @@ import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 class MoreInfoFragment : CoreFragment() {
 
     val viewModel: MoreInfoViewModel by sharedViewModel()
-    val gson : Gson by inject()
+    val gson: Gson by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,7 +99,9 @@ class MoreInfoViewModel(
     init {
         viewModelScope.launch {
             val data = dataRepository.getSomeData()
-            githubRepoSubject.accept(data)
+            data.body()?.let {
+                githubRepoSubject.accept(it)
+            }
         }
     }
 
@@ -129,6 +131,7 @@ class MoreInfoViewModel(
      * entering
      *
      */
+    //TODO remove Relay, is Subject from RxJava
     var clicksRelay = BehaviorRelay.createDefault(clicks)
     var clicksSubject = PublishSubject.create<Int>()
     val viewEvents: Observable<Int> = clicksRelay

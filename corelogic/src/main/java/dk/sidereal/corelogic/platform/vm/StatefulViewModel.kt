@@ -6,7 +6,7 @@ import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 import dk.sidereal.corelogic.util.TimeUtils
 
-/** Viewmodel whose [restoreState] and [saveInstanceState] are called by [ViewModelActivityController] when used
+/** Viewmodel whose [restoreState] and [saveInstanceState] are called by [ViewModelAc] when used
  * in [CoreActivity].
  *
  * If you want to use [CoreActivity]/ [dk.sidereal.corelogic.platform.lifecycle.CoreApplication] / [Context] constructors

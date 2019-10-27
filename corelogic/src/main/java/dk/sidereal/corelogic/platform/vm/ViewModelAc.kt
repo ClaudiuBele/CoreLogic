@@ -23,12 +23,12 @@ import dk.sidereal.corelogic.platform.lifecycle.CoreApplication
  * attempting
  *
  */
-open class ViewModelActivityController(coreActivity: CoreActivity) :
+open class ViewModelAc(coreActivity: CoreActivity) :
     ActivityController(coreActivity),
     StatefulViewModelFactory.OnViewModelCreated {
 
     companion object {
-        private val TAG = ViewModelActivityController::class.java.simpleTagName()
+        private val TAG = ViewModelAc::class.java.simpleTagName()
     }
 
     /** List of models managed through this controller. G
@@ -36,7 +36,8 @@ open class ViewModelActivityController(coreActivity: CoreActivity) :
      */
     private val viewModels = mutableListOf<ViewModel>()
 
-    protected open val viewModelProvider = ViewModelProviders.of(activity, StatefulViewModelFactory(activity, this))
+    protected open val viewModelProvider =
+        ViewModelProviders.of(activity, StatefulViewModelFactory(activity, this))
 
     private var lastSavedInstance: Bundle? = null
 
@@ -44,7 +45,10 @@ open class ViewModelActivityController(coreActivity: CoreActivity) :
     override fun onViewModelCreated(viewModel: ViewModel) {
         if (viewModel is StatefulViewModel) {
             viewModel.restoreStateInternal(lastSavedInstance)
-            Log.d(TAG, "onViewModelCreated: restoreState called for ${viewModel::class.java.simpleTagName()}")
+            Log.d(
+                TAG,
+                "onViewModelCreated: restoreState called for ${viewModel::class.java.simpleTagName()}"
+            )
         }
         viewModels.add(viewModel)
     }
@@ -60,7 +64,10 @@ open class ViewModelActivityController(coreActivity: CoreActivity) :
         viewModels.forEach {
             if (it is StatefulViewModel) {
                 it.saveInstanceStateInternal(outState)
-                Log.d(TAG, "onSaveInstanceState: saveInstanceState called for ${it::class.java.simpleTagName()}")
+                Log.d(
+                    TAG,
+                    "onSaveInstanceState: saveInstanceState called for ${it::class.java.simpleTagName()}"
+                )
             }
         }
     }

@@ -1,6 +1,7 @@
 package dk.sidereal.corelogic.platform.lifecycle
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.annotation.CallSuper
@@ -13,8 +14,8 @@ import dk.sidereal.corelogic.platform.AndroidModelController
  *
  * Subclasses should shorten [ActivityController] suffix to Ac.
  * */
-abstract class ActivityController(override val model: CoreActivity)
-    : AndroidModelController<CoreActivity> {
+abstract class ActivityController(final override val model: CoreActivity) :
+    AndroidModelController<CoreActivity> {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -22,21 +23,20 @@ abstract class ActivityController(override val model: CoreActivity)
         val INNER_TAG by lazy { ActivityController::class.simpleTagName() }
     }
 
-    val coreApplication: CoreApplication? by lazy { activity.application as? CoreApplication? }
+    // region Properties
+
+    val coreApplication: CoreApplication? by lazy { activity.coreApplication }
+
     /** Will throw if application is not of type [CoreApplication]
      */
-    val requireCoreApplication: CoreApplication by lazy { activity.application as CoreApplication }
+    val requireCoreApplication: CoreApplication by lazy { activity.requireCoreApplication }
 
     protected val activity: CoreActivity = model
 
     protected val context: Context = activity
+    // endregion Properties
 
-    /** Called after [CoreActivity.onAttachFragment] inside the override
-     */
-    open fun onAttachFragment(coreFragment: CoreFragment?) {
-
-    }
-
+    // region Lifecycle
     /** Called in [CoreActivity.onCreate] after
      * [CoreActivity.onCreateControllers]
      */
@@ -47,17 +47,43 @@ abstract class ActivityController(override val model: CoreActivity)
      */
     open fun onCreateView(coreActivity: CoreActivity): Boolean = false
 
-    /** Called in [CoreActivity.onDestroy]
-     *
-     */
-    open fun onDestroy() {}
-
-
     /** Called in [CoreActivity.onCreate] after it calls [onCreateView] on all controllers
      */
     @CallSuper
     open fun onViewCreated(coreActivity: CoreActivity) {
     }
+
+    /** Called after [CoreActivity.onAttachFragment] inside the override
+     */
+    open fun onAttachFragment(coreFragment: CoreFragment?) {}
+
+    /** Called after [CoreActivity.onStart]
+     *
+     */
+    open fun onStart() {}
+
+    /** Called after [CoreActivity.onResume]
+     *
+     */
+    open fun onResume() {}
+
+    /** Called after [CoreActivity.onActivityResult]
+     */
+    open fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {}
+
+
+    /** Called in [CoreActivity.onSaveInstanceState]
+     */
+    @CallSuper
+    open fun onSaveInstanceState(outState: Bundle) {
+    }
+
+    /** Called in [CoreActivity.onDestroy]
+     *
+     */
+    open fun onDestroy() {}
+    // endregion lifecycle
+
 
     /** Called in [CoreActivity.onSupportNavigateUp]
      */
@@ -71,9 +97,4 @@ abstract class ActivityController(override val model: CoreActivity)
      */
     open fun onBackPressed(): Boolean = false
 
-    /** Called in [CoreActivity.onSaveInstanceState]
-     */
-    @CallSuper
-    open fun onSaveInstanceState(outState: Bundle) {
-    }
 }

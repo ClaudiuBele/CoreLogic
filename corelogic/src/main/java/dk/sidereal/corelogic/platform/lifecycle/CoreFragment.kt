@@ -7,7 +7,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.ControllerHolder
-import dk.sidereal.corelogic.platform.vm.ViewModelActivityController
+import dk.sidereal.corelogic.platform.vm.ViewModelAc
 
 /** Base fragment to be used with [CoreActivity], although it is compatible with non-[CoreActivity] subclasses aswell.
  *
@@ -42,6 +42,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
 
     override var mutableControllers: MutableList<FragmentController> = mutableListOf()
 
+    //region Lifecycle
     override fun onAttach(context: Context) {
         super.onAttach(context)
         onCreateControllers()
@@ -54,6 +55,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
     override fun onCreateControllers(outControllers: MutableList<FragmentController>) {
         super.onCreateControllers(outControllers)
     }
+    // endregion
 
     /** Called in [CoreActivity.onNavigateUp]
      *
@@ -81,14 +83,14 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
 
 
     /** Retrieves the desired view model. Will create it if neeeded. For supported viewmodel
-     * classes and constructors for them, check [ViewModelActivityController]
+     * classes and constructors for them, check [ViewModelAc]
      *
      * Will throw exception if fragment detached and [getActivity] null
      *
      */
     fun <T : ViewModel> getVm(clazz: Class<T>): T {
         checkNotNull(coreActivity)
-        val vmController = coreActivity!!.getController(ViewModelActivityController::class.java)
+        val vmController = coreActivity!!.getController(ViewModelAc::class.java)
         checkNotNull(vmController)
         return vmController.get(clazz)
     }

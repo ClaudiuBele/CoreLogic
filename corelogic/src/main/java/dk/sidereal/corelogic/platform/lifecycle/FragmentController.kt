@@ -43,6 +43,16 @@ open class FragmentController(override val model: CoreFragment) :
 
     open fun onBackPressed(): Boolean = false
 
+    /** Called in [CoreFragment.onStart]
+     *
+     */
+    open fun onStart() {}
+
+    /** Called in [CoreFragment.onResume]
+     *
+     */
+    open fun onResume() {}
+
     /** Called in [CoreFragment.onNavigateUp]
      */
     open fun onNavigateUp(): Boolean = false

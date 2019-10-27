@@ -3,6 +3,7 @@ package dk.sidereal.corelogic.app.api
 import com.google.gson.Gson
 import dk.sidereal.corelogic.app.api.model.RepositoryResponse
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -24,7 +25,7 @@ interface GithubService {
     }
 
     @GET("search/repositories?q=stars%3A>0&s=stars&type=Repositories")
-    suspend fun listRepos(): RepositoryResponse
+    suspend fun listRepos(): Response<RepositoryResponse>
 
 
     @GET("/repos/{ownerData}/{repo}/pulls")
