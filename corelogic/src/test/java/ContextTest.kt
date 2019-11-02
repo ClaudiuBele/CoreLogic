@@ -7,7 +7,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import org.mockito.runners.MockitoJUnitRunner
+import org.mockito.junit.MockitoJUnitRunner
 
 private const val FAKE_STRING = "HELLO WORLD"
 private const val WRONG_FAKE_STRING = "WRONG STRING"

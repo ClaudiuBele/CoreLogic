@@ -129,8 +129,8 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // UI
-    api 'androidx.constraintlayout:constraintlayout:2.0.0-beta2'
-    api 'com.google.android.material:material:1.1.0-alpha10'
+    api 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
+    api 'com.google.android.material:material:1.2.0-alpha01'
 
     api 'com.sothree.slidinguppanel:library:3.4.0'
     //endregion
