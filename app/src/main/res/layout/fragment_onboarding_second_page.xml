@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context=".view.OnboardingSecondPageFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_second_page"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.OnboardingSecondPageFragment">
 
     <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/onboarding_second_page_title"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
+        android:id="@+id/onboarding_second_page_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/onboarding_second_page_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
     <Button
-            android:id="@+id/next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/general_next"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="@dimen/grid_10x"/>
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="@dimen/grid_10x"
+        android:text="@string/general_next" />
 
 </FrameLayout>
