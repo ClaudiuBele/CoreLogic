@@ -5,7 +5,9 @@ apply plugin: 'kotlin-android-extensions'
 repositories {
     maven {
         url 'https://jitpack.io'
-        credentials { username jitpackAuthToken }
+        if(jitpackAuthToken != null) {
+            credentials { username jitpackAuthToken }
+        }
     }
 }
 
