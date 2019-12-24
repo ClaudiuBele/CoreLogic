@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group 'com.github.ClaudiuBele'
-version '0.4.5'
+version '0.4.6'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -129,8 +129,8 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // UI
-    api 'androidx.constraintlayout:constraintlayout:2.0.0-beta3'
-    api 'com.google.android.material:material:1.2.0-alpha01'
+    api 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
+    api 'com.google.android.material:material:1.2.0-alpha03'
 
     api 'com.sothree.slidinguppanel:library:3.4.0'
     //endregion

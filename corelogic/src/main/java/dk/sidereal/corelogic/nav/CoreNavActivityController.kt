@@ -21,13 +21,12 @@ import java.lang.ref.WeakReference
 abstract class CoreNavActivityController(coreActivity: CoreActivity) :
     ActivityController(coreActivity) {
 
-    /** Delegates creation of [CoreNavHostFragment], required for it. You can your own fragment using a nav resource,
-     * and [CoreNavHostFragment.create] like this
-     *  [CoreNavHostFragment.create(R.navigation.nav_main)]
+    /** Delegates creation of [CoreNavHostFragment], required for it. You can create your own [NavFragmentCreator] using a nav resource,
+     * or [CoreNavHostFragment.create] e.g. [CoreNavHostFragment.create(R.navigation.nav_main)]
      *
      */
     interface NavFragmentCreator {
-        /** Create your own fragment using  [CoreNavHostFragment.Companion.create], using an xml nav resource, like this
+        /** Create your own fragment using  [CoreNavHostFragment.Companion.create], using an xml nav resource, e.g.
          *  [CoreNavHostFragment.create(R.navigation.nav_main)].
          *
          *  The fragment is then added to the backstack automatically at [CoreNavActivityController.NAV_HOST_ROOT_ID],
