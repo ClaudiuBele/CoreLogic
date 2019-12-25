@@ -2,6 +2,7 @@ package dk.sidereal.corelogic.platform.lifecycle
 
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
@@ -68,6 +69,11 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
             }
         }
         return handledNavigateUp
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        mutableControllers.forEach { it.onActivityResult(requestCode, resultCode, data) }
     }
 
     /** Called from [CoreActivity.onBackPressed]
