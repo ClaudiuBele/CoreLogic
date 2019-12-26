@@ -63,6 +63,10 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
 
     abstract val navFragmentNavigator: NavFragmentNavigator
 
+    /** Whether to ignore back presses. Useful to set to true when working with fragments through the backstack
+     */
+    var ignoreBackPress: Boolean = false
+
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
     lateinit var contentRoot: ConstraintLayout
@@ -101,6 +105,8 @@ abstract class NavActivityController(coreActivity: CoreActivity) : CoreNavActivi
     }
 
     override fun onBackPressed(): Boolean {
+        if(ignoreBackPress)
+            return false
         // Optional if you want the app to close when the back button is pressed
         // on a start destination
         return navigationUI.onBackPressed(activity, navController)
