@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.ControllerHolder
+import dk.sidereal.corelogic.platform.HandlesBackPress
 import dk.sidereal.corelogic.platform.vm.ViewModelAc
 
 open class CoreActivity : AppCompatActivity(),
@@ -101,11 +102,14 @@ open class CoreActivity : AppCompatActivity(),
             return
         }
 
-        coreFragments.forEach {
-            if (!handledBackPressed) {
-                handledBackPressed = handledBackPressed or it.onBackPressedInternal()
+        supportFragmentManager.fragments
+            .dropWhile { it !is HandlesBackPress }
+            .map { it as HandlesBackPress }
+            .forEach {
+                if(!handledBackPressed) {
+                    handledBackPressed = handledBackPressed or it.onBackPressedInternal()
+                }
             }
-        }
 
         if (!handledBackPressed) {
             super.onBackPressed()

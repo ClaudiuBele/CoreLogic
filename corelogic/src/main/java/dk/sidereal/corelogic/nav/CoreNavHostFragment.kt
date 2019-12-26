@@ -11,13 +11,16 @@ import androidx.navigation.NavGraph
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
+import dk.sidereal.corelogic.platform.HandlesBackPress
+import dk.sidereal.corelogic.platform.lifecycle.ActivityController
 import dk.sidereal.corelogic.platform.lifecycle.CoreActivity
 import dk.sidereal.corelogic.platform.lifecycle.CoreApplication
+import dk.sidereal.corelogic.platform.lifecycle.CoreFragment
 
 /** [NavHostFragment] alternative to be used when your activity is [CoreNavActivity].
  * Fragments inside must be [NavFragment]
  */
-open class CoreNavHostFragment : NavHostFragment() {
+open class CoreNavHostFragment : NavHostFragment(), HandlesBackPress {
 
     protected val TAG by lazy { javaClass.simpleTagName() }
 
@@ -121,4 +124,27 @@ open class CoreNavHostFragment : NavHostFragment() {
             navComponent?.onNavFragmentAttached(fragment)
         }
     }
+    /** Called by [CoreActivity.onBackPressed]
+     * Return true to flag that the fragment
+     * handled the back internally and that the
+     * activity shouldn't call super
+     *
+     */
+    override fun onBackPressedInternal(): Boolean {
+        var handledBackPressed = false
+        childFragmentManager.fragments.forEach {
+            handledBackPressed = handledBackPressed or ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
+        }
+        if (handledBackPressed) {
+            return true
+        }
+        return onBackPressed()
+    }
+
+    /** Called from [CoreFragment.onBackPressedInternal]
+     * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
+     *
+     */
+    override fun onBackPressed(): Boolean  = false
+
 }

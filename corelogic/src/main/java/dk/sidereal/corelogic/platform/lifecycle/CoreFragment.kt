@@ -7,13 +7,15 @@ import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
+import dk.sidereal.corelogic.nav.CoreNavHostFragment
 import dk.sidereal.corelogic.platform.ControllerHolder
+import dk.sidereal.corelogic.platform.HandlesBackPress
 import dk.sidereal.corelogic.platform.vm.ViewModelAc
 
 /** Base fragment to be used with [CoreActivity], although it is compatible with non-[CoreActivity] subclasses aswell.
  *
  */
-open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController> {
+open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>, HandlesBackPress {
 
     companion object {
         val INNER_TAG by lazy { CoreFragment::class.simpleTagName() }
@@ -76,11 +78,37 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
         mutableControllers.forEach { it.onActivityResult(requestCode, resultCode, data) }
     }
 
+
+    /** Called by [CoreActivity.onBackPressed]
+     * Return true to flag that the fragment
+     * handled the back internally and that the
+     * activity shouldn't call super
+     *
+     */
+    override fun onBackPressedInternal(): Boolean {
+        var handledBackPressed = false
+        mutableControllers.forEach {
+            if (!handledBackPressed) {
+                handledBackPressed = handledBackPressed or it.onBackPressed()
+            }
+        }
+        if (handledBackPressed) {
+            return true
+        }
+        childFragmentManager.fragments.forEach {
+            handledBackPressed = handledBackPressed or ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
+        }
+        if (handledBackPressed) {
+            return true
+        }
+        return onBackPressed()
+    }
+
     /** Called from [CoreFragment.onBackPressedInternal]
      * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
      *
      */
-    protected open fun onBackPressed(): Boolean  = false
+    override fun onBackPressed(): Boolean  = false
 
     /** Called in [CoreActivity.onDestroy]
      *
@@ -99,31 +127,6 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
         val vmController = coreActivity!!.getController(ViewModelAc::class.java)
         checkNotNull(vmController)
         return vmController.get(clazz)
-    }
-
-    /** Called by [CoreActivity.onBackPressed]
-     * Return true to flag that the fragment
-     * handled the back internally and that the
-     * activity shouldn't call super
-     *
-     */
-    internal fun onBackPressedInternal(): Boolean {
-        var handledBackPressed = false
-        mutableControllers.forEach {
-            if (!handledBackPressed) {
-                handledBackPressed = handledBackPressed or it.onBackPressed()
-            }
-        }
-        if (handledBackPressed) {
-            return true
-        }
-        childFragmentManager.fragments.forEach {
-            handledBackPressed = handledBackPressed or ((it as? CoreFragment)?.onBackPressed() ?: false)
-        }
-        if (handledBackPressed) {
-            return true
-        }
-        return onBackPressed()
     }
 
 
