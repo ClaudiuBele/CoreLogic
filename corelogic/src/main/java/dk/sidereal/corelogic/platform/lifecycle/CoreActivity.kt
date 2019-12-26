@@ -103,7 +103,7 @@ open class CoreActivity : AppCompatActivity(),
         }
 
         supportFragmentManager.fragments
-            .dropWhile { it !is HandlesBackPress }
+            .filter { it is HandlesBackPress }
             .map { it as HandlesBackPress }
             .forEach {
                 if(!handledBackPressed) {
