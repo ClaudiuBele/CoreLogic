@@ -80,7 +80,13 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
      * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
      *
      */
-    protected open fun onBackPressed(): Boolean = false
+    protected open fun onBackPressed(): Boolean {
+        var handledBack = false
+        childFragmentManager.fragments.forEach {
+            handledBack = handledBack or ((it as? CoreFragment)?.onBackPressed() ?: false)
+        }
+        return handledBack
+    }
 
     /** Called in [CoreActivity.onDestroy]
      *
