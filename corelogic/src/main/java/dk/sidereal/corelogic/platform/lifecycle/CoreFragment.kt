@@ -76,17 +76,11 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
         mutableControllers.forEach { it.onActivityResult(requestCode, resultCode, data) }
     }
 
-    /** Called from [CoreActivity.onBackPressed]
+    /** Called from [CoreFragment.onBackPressedInternal]
      * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
      *
      */
-    protected open fun onBackPressed(): Boolean {
-        var handledBack = false
-        childFragmentManager.fragments.forEach {
-            handledBack = handledBack or ((it as? CoreFragment)?.onBackPressed() ?: false)
-        }
-        return handledBack
-    }
+    protected open fun onBackPressed(): Boolean  = false
 
     /** Called in [CoreActivity.onDestroy]
      *
@@ -119,6 +113,12 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
             if (!handledBackPressed) {
                 handledBackPressed = handledBackPressed or it.onBackPressed()
             }
+        }
+        if (handledBackPressed) {
+            return true
+        }
+        childFragmentManager.fragments.forEach {
+            handledBackPressed = handledBackPressed or ((it as? CoreFragment)?.onBackPressed() ?: false)
         }
         if (handledBackPressed) {
             return true
