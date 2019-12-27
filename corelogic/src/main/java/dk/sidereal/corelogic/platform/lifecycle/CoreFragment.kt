@@ -95,8 +95,10 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
         if (handledBackPressed) {
             return true
         }
-        childFragmentManager.fragments.forEach {
-            handledBackPressed = handledBackPressed or ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
+        childFragmentManager.fragments.reversed().forEach {
+            if(!handledBackPressed) {
+                handledBackPressed =  ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
+            }
         }
         if (handledBackPressed) {
             return true
