@@ -99,8 +99,9 @@ open class CoreNavHostFragment : NavHostFragment(), HandlesBackPress {
         Log.d(TAG, "onViewCreated")
         val controller = view.findNavController()
 
-        val navActivityController = requireCoreActivity.getController(CoreNavActivityController::class.java)
-            ?: throw IllegalStateException("$TAG: Can't use CoreNavHostFragment in a CoreActivity without a CoreNavActivityController controller")
+        val navActivityController =
+            requireCoreActivity.getController(CoreNavActivityController::class.java)
+                ?: throw IllegalStateException("$TAG: Can't use CoreNavHostFragment in a CoreActivity without a CoreNavActivityController controller")
         navActivityController.onNavControllerReady(controller, this)
     }
 
@@ -124,6 +125,7 @@ open class CoreNavHostFragment : NavHostFragment(), HandlesBackPress {
             navComponent?.onNavFragmentAttached(fragment)
         }
     }
+
     /** Called by [CoreActivity.onBackPressed]
      * Return true to flag that the fragment
      * handled the back internally and that the
@@ -131,20 +133,36 @@ open class CoreNavHostFragment : NavHostFragment(), HandlesBackPress {
      *
      */
     override fun onBackPressedInternal(): Boolean {
+        Log.d(
+            "alt-nav",
+            "CoreNavHostFragment (${this::class.java.simpleName}) onBackPressedInternal"
+        )
         var handledBackPressed = false
         childFragmentManager.fragments.forEach {
-            handledBackPressed = handledBackPressed or ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
+            handledBackPressed =
+                handledBackPressed or ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
         }
+        Log.d(
+            "alt-nav",
+            "CoreNavHostFragment (${this::class.java.simpleName}) child fragments handled back: $handledBackPressed"
+        )
+
         if (handledBackPressed) {
             return true
         }
-        return onBackPressed()
+
+        handledBackPressed = onBackPressed()
+        Log.d(
+            "alt-nav",
+            "CoreNavHostFragment (${this::class.java.simpleName}) onBackPressed handled back: $handledBackPressed"
+        )
+        return handledBackPressed
     }
 
     /** Called from [CoreFragment.onBackPressedInternal]
      * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
      *
      */
-    override fun onBackPressed(): Boolean  = false
+    override fun onBackPressed(): Boolean = false
 
 }

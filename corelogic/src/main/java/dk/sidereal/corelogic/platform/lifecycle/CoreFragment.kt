@@ -7,7 +7,6 @@ import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
-import dk.sidereal.corelogic.nav.CoreNavHostFragment
 import dk.sidereal.corelogic.platform.ControllerHolder
 import dk.sidereal.corelogic.platform.HandlesBackPress
 import dk.sidereal.corelogic.platform.vm.ViewModelAc
@@ -86,31 +85,46 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
      *
      */
     override fun onBackPressedInternal(): Boolean {
+        Log.d("alt-nav", "CoreFragment (${this::class.java.simpleName}) onBackPressedInternal")
         var handledBackPressed = false
         mutableControllers.forEach {
             if (!handledBackPressed) {
                 handledBackPressed = handledBackPressed or it.onBackPressed()
             }
         }
+        Log.d(
+            "alt-nav",
+            "CoreFragment (${this::class.java.simpleName}) controllers handled back: $handledBackPressed"
+        )
         if (handledBackPressed) {
             return true
         }
         childFragmentManager.fragments.reversed().forEach {
-            if(!handledBackPressed) {
-                handledBackPressed =  ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
+            if (!handledBackPressed) {
+                handledBackPressed = ((it as? HandlesBackPress)?.onBackPressedInternal() ?: false)
             }
         }
+        Log.d(
+            "alt-nav",
+            "CoreFragment (${this::class.java.simpleName}) child fragments handled back: $handledBackPressed"
+        )
+
         if (handledBackPressed) {
             return true
         }
-        return onBackPressed()
+        handledBackPressed = onBackPressed()
+        Log.d(
+            "alt-nav",
+            "CoreFragment (${this::class.java.simpleName}) onBackPressed handled back: $handledBackPressed"
+        )
+        return handledBackPressed
     }
 
     /** Called from [CoreFragment.onBackPressedInternal]
      * if no attached [ActivityController] returns true in [ActivityController.onBackPressed]
      *
      */
-    override fun onBackPressed(): Boolean  = false
+    override fun onBackPressed(): Boolean = false
 
     /** Called in [CoreActivity.onDestroy]
      *

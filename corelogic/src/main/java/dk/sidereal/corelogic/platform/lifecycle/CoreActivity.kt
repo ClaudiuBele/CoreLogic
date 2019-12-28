@@ -92,12 +92,17 @@ open class CoreActivity : AppCompatActivity(),
     }
 
     override fun onBackPressed() {
+        Log.d("alt-nav", "CoreActivity (${this::class.java.simpleName}) onBackPressed")
         var handledBackPressed = false
         mutableControllers.forEach {
             if (!handledBackPressed) {
                 handledBackPressed = handledBackPressed or it.onBackPressed()
             }
         }
+        Log.d(
+            "alt-nav",
+            "CoreActivity (${this::class.java.simpleName}) controllers handled onBackPressed $handledBackPressed"
+        )
         if (handledBackPressed) {
             return
         }
@@ -106,10 +111,14 @@ open class CoreActivity : AppCompatActivity(),
             .filter { it is HandlesBackPress }
             .map { it as HandlesBackPress }
             .forEach {
-                if(!handledBackPressed) {
+                if (!handledBackPressed) {
                     handledBackPressed = handledBackPressed or it.onBackPressedInternal()
                 }
             }
+        Log.d(
+            "alt-nav",
+            "CoreActivity (${this::class.java.simpleName}) fragments handled onBackPressed $handledBackPressed"
+        )
 
         if (!handledBackPressed) {
             super.onBackPressed()
