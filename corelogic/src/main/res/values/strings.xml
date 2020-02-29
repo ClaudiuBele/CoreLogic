@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">corelogic</string>
     <string name="time_less_than_a_second">less than a second ago</string>
+    <string name="general_moments_ago">moments</string>
+    <string name="general__time__ago">%1$s ago</string>
 </resources>
