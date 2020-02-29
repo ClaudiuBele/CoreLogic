@@ -4,5 +4,10 @@
     <declare-styleable name="SlidingUpPanel">
         <attr name="mini_view" format="reference"/>
     </declare-styleable>
+    <declare-styleable name="CollapsingToolbarLayoutExtension">
+        <attr name="maxLines" format="integer" />
+        <attr name="lineSpacingExtra" format="float"/>
+        <attr name="lineSpacingMultiplier" format="float"/>
+    </declare-styleable>
 
 </resources>
