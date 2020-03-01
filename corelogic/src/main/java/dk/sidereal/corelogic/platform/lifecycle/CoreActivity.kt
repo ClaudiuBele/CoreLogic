@@ -32,7 +32,7 @@ open class CoreActivity : AppCompatActivity(),
     val requireCoreApplication: CoreApplication by lazy { application as CoreApplication }
 
     val coreFragments: List<CoreFragment>
-        get() = supportFragmentManager.fragments.dropWhile { it !is CoreFragment }.map { it as CoreFragment }
+        get() = supportFragmentManager.fragments.map { it as? CoreFragment }.filterNotNull()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
