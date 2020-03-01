@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.opacapp.multilinecollapsingtoolbar
+package dk.sidereal.corelogic.platform.widget.collapsing
 
 import android.content.res.ColorStateList
 import android.content.res.TypedArray
@@ -32,6 +32,7 @@ import androidx.core.math.MathUtils
 import androidx.core.text.TextDirectionHeuristicsCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
+import dk.sidereal.corelogic.R
 import dk.sidereal.corelogic.platform.util.AnimationUtils
 
 // BEGIN MODIFICATION: Added imports

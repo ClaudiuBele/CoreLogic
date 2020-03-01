@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.opacapp.multilinecollapsingtoolbar
+package dk.sidereal.corelogic.platform.widget.collapsing
 
 import android.view.View
 import androidx.core.view.ViewCompat

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package net.opacapp.multilinecollapsingtoolbar
+package dk.sidereal.corelogic.platform.widget.collapsing
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -29,7 +29,6 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import android.widget.FrameLayout
 import androidx.annotation.*
 import androidx.appcompat.widget.Toolbar
@@ -39,7 +38,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.math.MathUtils
 import androidx.core.util.ObjectsCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.appbar.AppBarLayout
@@ -47,7 +45,7 @@ import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.internal.ThemeEnforcement.checkAppCompatTheme
 import dk.sidereal.corelogic.R
 import dk.sidereal.corelogic.platform.util.AnimationUtils
-import net.opacapp.multilinecollapsingtoolbar.CollapsingToolbarLayout.LayoutParams
+import dk.sidereal.corelogic.platform.widget.collapsing.CollapsingToolbarLayout.LayoutParams
 import java.lang.annotation.Retention
 import java.lang.annotation.RetentionPolicy
 
