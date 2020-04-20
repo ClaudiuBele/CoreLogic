@@ -46,3 +46,26 @@ class IntPref(override val sharedPreferences: SharedPreferences, override val ke
         return sharedPreferences.getInt(key, default ?: 0)
     }
 }
+
+class LongPref(override val sharedPreferences: SharedPreferences, override val key: String) :
+    SharedPrefManager<Long> {
+
+    override fun setValue(value: Long) {
+        sharedPreferences.edit().putLong(key, value).apply()
+    }
+
+    override fun getValue(default: Long?): Long? {
+        return sharedPreferences.getLong(key, default ?: 0)
+    }
+}
+class FloatPref(override val sharedPreferences: SharedPreferences, override val key: String) :
+    SharedPrefManager<Float> {
+
+    override fun setValue(value: Float) {
+        sharedPreferences.edit().putFloat(key, value).apply()
+    }
+
+    override fun getValue(default: Float?): Float? {
+        return sharedPreferences.getFloat(key, default ?: 0F)
+    }
+}
