@@ -3,6 +3,7 @@ package dk.sidereal.corelogic.platform.lifecycle
 import android.app.Application
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.ControllerHolder
+import dk.sidereal.corelogic.platform.PermissionsDelegate
 
 open class CoreApplication : Application(), ControllerHolder<ApplicationController> {
 
@@ -13,6 +14,7 @@ open class CoreApplication : Application(), ControllerHolder<ApplicationControll
     }
 
     override var mutableControllers: MutableList<ApplicationController> = mutableListOf()
+    lateinit var permissions: PermissionsDelegate
 
     override fun onCreate() {
         super.onCreate()
