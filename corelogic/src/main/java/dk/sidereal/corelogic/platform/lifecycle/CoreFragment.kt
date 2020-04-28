@@ -3,12 +3,14 @@ package dk.sidereal.corelogic.platform.lifecycle
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.util.Log
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import dk.sidereal.corelogic.kotlin.ext.simpleTagName
 import dk.sidereal.corelogic.platform.ControllerHolder
 import dk.sidereal.corelogic.platform.HandlesBackPress
+import dk.sidereal.corelogic.platform.ext.hasPermission
 import dk.sidereal.corelogic.platform.vm.ViewModelAc
 
 /** Base fragment to be used with [CoreActivity], although it is compatible with non-[CoreActivity] subclasses aswell.
@@ -50,6 +52,52 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
         onCreateControllers()
         Log.d(TAG, "onAttach")
         mutableControllers.forEach { it.onAttach(context) }
+    }
+
+    data class PermissionRequest(val requestCode: Int,
+                                 val permissions: Array<out String>,
+                                 val onGrantResults: (IntArray)->Unit,
+                                 val onDenied: ((IntArray) -> Unit)? = {})
+
+    val permissions = mutableListOf<PermissionRequest>()
+
+    fun requestPermissions(permissionRequest: PermissionRequest){
+
+        val grants = permissionRequest.permissions.map {
+            it to requireContext().hasPermission(it)
+        }
+        val notGranted = grants.filter { !it.second }.map { it.first }
+
+        // if 0 not granted means all are granted, call callback
+        if(notGranted.isEmpty()) {
+            permissionRequest.permissions.map { PackageManager.PERMISSION_GRANTED }.let {
+                permissionRequest.onGrantResults(it.toIntArray())
+            }
+            return
+        }
+        permissions.add(permissionRequest)
+//        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+//            ConfirmationDialog().show(childFragmentManager, FRAGMENT_DIALOG)
+//        } else {
+        requestPermissions(notGranted.toTypedArray(), permissionRequest.requestCode)
+//        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        this.permissions.firstOrNull { it.requestCode == requestCode }?.let { request ->
+            grantResults.filter { it == PackageManager.PERMISSION_GRANTED }.let { granted ->
+                request.onGrantResults(granted.toIntArray())
+            }
+            grantResults.filter { it == PackageManager.PERMISSION_DENIED }.let { denied ->
+                request.onDenied?.invoke(denied.toIntArray())
+            }
+            this.permissions.remove(request)
+        }
     }
 
     /** Called in [CoreFragment.onAttach]. Add your outControllers to the passed parameter
