@@ -79,7 +79,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
 //        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
 //            ConfirmationDialog().show(childFragmentManager, FRAGMENT_DIALOG)
 //        } else {
-        requestPermissions(notGranted.toTypedArray(), permissionRequest.requestCode)
+        requestPermissions(permissionRequest.permissions, permissionRequest.requestCode)
 //        }
     }
 
