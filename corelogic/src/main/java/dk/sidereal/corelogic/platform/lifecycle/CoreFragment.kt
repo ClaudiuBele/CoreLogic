@@ -90,9 +90,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         this.permissions.firstOrNull { it.requestCode == requestCode }?.let { request ->
-            grantResults.filter { it == PackageManager.PERMISSION_GRANTED }.let { granted ->
-                request.onGrantResults(granted.toIntArray())
-            }
+            request.onGrantResults(grantResults)
             grantResults.filter { it == PackageManager.PERMISSION_DENIED }.let { denied ->
                 request.onDenied?.invoke(denied.toIntArray())
             }
