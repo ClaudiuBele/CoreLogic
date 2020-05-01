@@ -94,7 +94,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
             val permissionResponses = permissions.mapIndexed { index, permission ->
                 var dontShowAgain = false
                 if(grantResults[index] == PackageManager.PERMISSION_DENIED) {
-                   dontShowAgain =  shouldShowRequestPermissionRationale(permission)
+                   dontShowAgain =  shouldShowRequestPermissionRationale(permission).not()
                 }
                 PermissionResponse(permission,grantResults[index] == PackageManager.PERMISSION_GRANTED, dontShowAgain)
             }
