@@ -57,7 +57,11 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
     data class PermissionRequest(val requestCode: Int,
                                  val permissions: Array<out String>,
                                  val onGrantResults: (IntArray)->Unit,
-                                 val onDenied: ((IntArray) -> Unit)? = {})
+                                 val onDenied: ((List<PermissionResponse>) -> Unit)? = {})
+
+    data class PermissionResponse(val permission: String,
+                                  val granted: Boolean,
+                                  val dontShowAgain: Boolean = false)
 
     val permissions = mutableListOf<PermissionRequest>()
 
@@ -91,8 +95,18 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         this.permissions.firstOrNull { it.requestCode == requestCode }?.let { request ->
             request.onGrantResults(grantResults)
-            grantResults.filter { it == PackageManager.PERMISSION_DENIED }.let { denied ->
-                request.onDenied?.invoke(denied.toIntArray())
+            val permissionResponses = permissions.mapIndexed { index, s ->
+                PermissionResponse(s,grantResults[index] == PackageManager.PERMISSION_GRANTED)
+            }
+            permissionResponses.filter { it.granted == false }.let { denied ->
+                if(!denied.isEmpty()) {
+                    // https://stackoverflow.com/a/31925748/9301088
+                    // if shouldShowRequestPermissionRationale( permission) is false and status is denied
+                    // means user also selected "don't ask me again", in which case we take the user to the settings
+                    val deniedWithRationale =
+                        denied.map { PermissionResponse(it.permission,it.granted,shouldShowRequestPermissionRationale(it.permission)) }
+                    request.onDenied?.invoke(deniedWithRationale)
+                }
             }
             this.permissions.remove(request)
         }
