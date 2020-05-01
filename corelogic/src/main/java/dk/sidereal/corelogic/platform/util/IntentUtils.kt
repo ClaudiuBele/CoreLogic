@@ -5,35 +5,49 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import androidx.core.content.ContextCompat.startActivity
 
 
-object IntentUtils  {
-
-    fun goToAppSettings(context: Context) {
+object IntentUtils {
+    fun getToAppSettings(context: Context): Intent {
         val intent = Intent()
         intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
         val uri: Uri = Uri.fromParts("package", context.packageName, null)
         intent.data = uri
-        context.startActivity(intent)
+        return intent
     }
 
-    fun goToPlaystore(context: Context) {
-        context.packageName
+    fun getToPlaystore(context: Context): Intent {
         try {
-            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=${context.packageName}")))
+            return Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("market://details?id=${context.packageName}")
+            )
         } catch (anfe: ActivityNotFoundException) {
-            context.startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
-                )
+            return Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
             )
         }
     }
 
+    fun getToWebsite(context: Context, url: String): Intent {
+        return Intent(Intent.ACTION_VIEW, Uri.parse(url))
+    }
+
+
+    fun goToAppSettings(context: Context) {
+        getToAppSettings(context).let {
+            context.startActivity(it)
+        }
+    }
+
+    fun goToPlaystore(context: Context) {
+        getToPlaystore(context).let {
+            context.startActivity(it)
+        }
+    }
+
     fun goToWebsite(context: Context, url: String) {
-        val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-        context.startActivity(browserIntent)
+        context.startActivity(getToWebsite(context, url))
     }
 }
