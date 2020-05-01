@@ -56,8 +56,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
 
     data class PermissionRequest(val requestCode: Int,
                                  val permissions: Array<out String>,
-                                 val onGrantResults: (IntArray)->Unit,
-                                 val onDenied: ((List<PermissionResponse>) -> Unit)? = {})
+                                 val onGrantResults: (List<PermissionResponse>)->Unit)
 
     data class PermissionResponse(val permission: String,
                                   val granted: Boolean,
@@ -74,9 +73,7 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
 
         // if 0 not granted means all are granted, call callback
         if(notGranted.isEmpty()) {
-            permissionRequest.permissions.map { PackageManager.PERMISSION_GRANTED }.let {
-                permissionRequest.onGrantResults(it.toIntArray())
-            }
+            permissionRequest.onGrantResults(permissionRequest.permissions.map { PermissionResponse(it, true, true) })
             return
         }
         permissions.add(permissionRequest)
@@ -94,20 +91,14 @@ open class CoreFragment : DialogFragment(), ControllerHolder<FragmentController>
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         this.permissions.firstOrNull { it.requestCode == requestCode }?.let { request ->
-            request.onGrantResults(grantResults)
-            val permissionResponses = permissions.mapIndexed { index, s ->
-                PermissionResponse(s,grantResults[index] == PackageManager.PERMISSION_GRANTED)
-            }
-            permissionResponses.filter { it.granted == false }.let { denied ->
-                if(!denied.isEmpty()) {
-                    // https://stackoverflow.com/a/31925748/9301088
-                    // if shouldShowRequestPermissionRationale( permission) is false and status is denied
-                    // means user also selected "don't ask me again", in which case we take the user to the settings
-                    val deniedWithRationale =
-                        denied.map { PermissionResponse(it.permission,it.granted,shouldShowRequestPermissionRationale(it.permission)) }
-                    request.onDenied?.invoke(deniedWithRationale)
+            val permissionResponses = permissions.mapIndexed { index, permission ->
+                var dontShowAgain = false
+                if(grantResults[index] == PackageManager.PERMISSION_DENIED) {
+                   dontShowAgain =  shouldShowRequestPermissionRationale(permission)
                 }
+                PermissionResponse(permission,grantResults[index] == PackageManager.PERMISSION_GRANTED, dontShowAgain)
             }
+            request.onGrantResults(permissionResponses)
             this.permissions.remove(request)
         }
     }
