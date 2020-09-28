@@ -27,6 +27,24 @@ open class NavFragment : CoreFragment() {
     protected val navController: NavController
         get() = NavHostFragment.findNavController(this)
 
+    /** Not null from [onAttach] if used with [CoreNavActivity] and [CoreNavHostFragment]
+     *
+     */
+    protected val navController2: NavController
+        get()  {
+            if(navActivityController?.navController != null) {
+                return navActivityController?.navController!!
+            }
+            var navController : NavController? = null;
+
+            try{
+                navController =  NavHostFragment.findNavController(this)
+            } catch (ex: IllegalStateException) {
+                // no nav controller in fragment
+            }
+            return navController!!
+        }
+
     protected val navActivity: CoreNavActivity?
         get() = coreActivity as? CoreNavActivity
 
