@@ -42,6 +42,8 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 dependencies {
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+
 
     // region Testing
 
