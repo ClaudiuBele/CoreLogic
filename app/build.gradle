@@ -6,8 +6,8 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "dk.sidereal.corelogic.app"
-        minSdkVersion 14
-        targetSdkVersion 28
+        minSdkVersion versions.sdk.minimum
+        targetSdkVersion versions.sdk.target
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -17,7 +17,7 @@ android {
 
         }
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -41,7 +41,7 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 dependencies {
     implementation 'com.github.claudiu-bele:core-logic:0.4.5'
 //    implementation project(":corelogic")
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
 
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
