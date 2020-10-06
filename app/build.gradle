@@ -39,16 +39,27 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 }
 
 dependencies {
-    implementation 'com.github.claudiu-bele:core-logic:0.6.1'
-//    implementation project(":corelogic")
+//    implementation 'com.github.claudiu-bele:core-logic:0.6.1'
+    implementation project(":corelogic")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
 
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.12'
 
-    androidTestImplementation 'androidx.test:runner:1.2.0'
-    androidTestImplementation 'androidx.test:rules:1.2.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+    androidTestImplementation 'androidx.test:core:1.3.0'
+    androidTestImplementation 'androidx.test:core-ktx:1.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.2'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.test.espresso}"
+
+    def KOTLIN_COROUTINES_VERSION = '1.3.0-M1'
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.0.0'
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$KOTLIN_COROUTINES_VERSION"
+    // Koin for Unit tests
+    testImplementation "org.koin:koin-test:${versions.koin}"
 }
 repositories {
     mavenCentral()

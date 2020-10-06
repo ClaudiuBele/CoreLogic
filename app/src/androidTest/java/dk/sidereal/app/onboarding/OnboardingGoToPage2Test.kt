@@ -2,23 +2,28 @@ package dk.sidereal.app.onboarding
 
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.filters.LargeTest
-import androidx.test.rule.ActivityTestRule
-import androidx.test.runner.AndroidJUnit4
 import dk.sidereal.corelogic.app.R
 import dk.sidereal.corelogic.app.view.MainActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RunWith(value = AndroidJUnit4::class)
+@RunWith(value = androidx.test.ext.junit.runners.AndroidJUnit4::class)
 @LargeTest
 class OnboardingGoToPage2Test {
 
-    @get:Rule
-    var activityRule: ActivityTestRule<MainActivity>
-            = ActivityTestRule(MainActivity::class.java)
+    /**
+     * Use [ActivityScenarioRule] to create and launch the activity under test before each test,
+     * and close it after each test. This is a replacement for
+     * [androidx.test.rule.ActivityTestRule].
+     */
+    @get:Rule var activityScenarioRule = activityScenarioRule<MainActivity>()
+
 
     @Test
     fun testGoToPage2() {
@@ -28,6 +33,7 @@ class OnboardingGoToPage2Test {
             .perform(ViewActions.click())
         // Check that the page has changed
         Espresso.onView(ViewMatchers.withId(R.id.onboarding_second_page))
+            .check(matches(isDisplayed()))
     }
 
 }
