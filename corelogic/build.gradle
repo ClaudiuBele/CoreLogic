@@ -85,7 +85,7 @@ dependencies {
     // Koin for Unit tests
     testImplementation "org.koin:koin-test:$koin_version"
     // Koin for Java developers
-    api "org.koin:koin-java:$koin_version"
+    api "org.koin:koin-java:${versions.koin}"
 
     // ANDROID X
     // Koin AndroidX Scope features
@@ -137,5 +137,9 @@ dependencies {
 
     api 'com.sothree.slidinguppanel:library:3.4.0'
     //endregion
+
+    api "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
+
+
 }
 

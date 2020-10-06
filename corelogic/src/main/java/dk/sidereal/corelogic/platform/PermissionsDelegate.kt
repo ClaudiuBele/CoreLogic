@@ -38,7 +38,7 @@ class PermissionsDelegate constructor(
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    fun neverAskAgainSelected(activity: Activity, permission: String?): Boolean {
+    fun neverAskAgainSelected(activity: Activity, permission: String): Boolean {
         val prevShouldShowStatus = getRatinaleDisplayStatus(activity, permission)
         val currShouldShowStatus =
             activity.shouldShowRequestPermissionRationale(permission)

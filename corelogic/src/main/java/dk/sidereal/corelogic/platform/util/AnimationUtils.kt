@@ -40,6 +40,23 @@ object AnimationUtils {
         }
     }
 
+    fun animateScale(view: View, from: Float = -1f, to: Float, duration: Long = 200L, onDone: (() -> Unit)? = null) {
+        ValueAnimator.ofFloat(from, to).apply {
+            var prevAlpha = view.scaleX
+            this.duration = duration
+            addUpdateListener {
+                if (view.scaleX == prevAlpha) {
+                    view.alpha = it.animatedValue as Float
+                    prevAlpha = view.alpha
+                }
+            }
+            addListener(onEnd = {
+                onDone?.invoke()
+            })
+            start()
+        }
+    }
+
     /**
      * Linear interpolation between `startValue` and `endValue` by `fraction`.
      */

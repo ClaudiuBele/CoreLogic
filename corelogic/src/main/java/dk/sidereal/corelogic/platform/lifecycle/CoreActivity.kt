@@ -125,7 +125,7 @@ open class CoreActivity : AppCompatActivity(),
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         var handledOptionsItem = false
         mutableControllers.forEach {
             if (!handledOptionsItem) {

@@ -23,7 +23,9 @@ open class NavFragment : CoreFragment() {
 
     /** Not null from [onAttach] if used with [CoreNavActivity] and [CoreNavHostFragment]
      *
+     *
      */
+    @Deprecated("deprecated",ReplaceWith("NavFragment.navController2"))
     protected val navController: NavController
         get() = NavHostFragment.findNavController(this)
 
