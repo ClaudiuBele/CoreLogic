@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group 'com.github.ClaudiuBele'
-version '0.6.0'
+version '0.7.0'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -44,7 +44,7 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-
+    
     // region Testing
 
     // https://developer.android.com/training/testing/unit-testing/local-unit-tests
@@ -74,9 +74,6 @@ dependencies {
 
     // region Koin (DI)
     // good resource - https://insert-koin.io/docs/2.0/documentation/koin-android/index.html
-
-    // latest stable
-    def koin_version = '2.0.1'
 
     // Core Features
     // Koin for Kotlin
@@ -116,11 +113,11 @@ dependencies {
     // region Kotlin (+ Android)
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
     // see core packages here https://developer.android.com/kotlin/ktx#core-packages
-    api 'androidx.core:core-ktx:1.2.0@aar'
+    api 'androidx.core:core-ktx:1.3.2@aar'
     // endregion
 
     // region UI + lifecycle
-    api 'androidx.appcompat:appcompat:1.1.0@aar'
+    api 'androidx.appcompat:appcompat:1.2.0@aar'
 
     def nav_version = "1.0.0"
     api "android.arch.navigation:navigation-fragment-ktx:$nav_version"
@@ -133,8 +130,8 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // UI
-    api 'androidx.constraintlayout:constraintlayout:2.0.0-beta4'
-    api 'com.google.android.material:material:1.2.0-alpha05'
+    api 'androidx.constraintlayout:constraintlayout:2.0.1'
+    api 'com.google.android.material:material:1.3.0-alpha03'
 
     api 'com.sothree.slidinguppanel:library:3.4.0'
     //endregion
