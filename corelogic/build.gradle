@@ -44,7 +44,7 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    
+
     // region Testing
 
     // https://developer.android.com/training/testing/unit-testing/local-unit-tests
@@ -73,7 +73,6 @@ dependencies {
     // endregion
 
     // region Koin (DI)
-    // good resource - https://insert-koin.io/docs/2.0/documentation/koin-android/index.html
 
     // Core Features
     // Koin for Kotlin
