@@ -29,6 +29,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
     buildToolsVersion = '28.0.3'
 }
 
@@ -42,8 +45,7 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 dependencies {
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha06'
 
     // region Testing
 
@@ -63,7 +65,7 @@ dependencies {
     // region Retrofit (net)
 
     // Gson + Retrofit
-    api 'com.google.code.gson:gson:2.8.5'
+    api 'com.google.code.gson:gson:2.8.6'
     api 'com.squareup.okhttp3:logging-interceptor:3.9.1'
     api 'com.squareup.retrofit2:converter-gson:2.6.2'
     api 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -94,7 +96,7 @@ dependencies {
 
     // endregion
 
-     // region RxJava + friends ( rxandroid, rxrelay and autodispose)
+    // region RxJava + friends ( rxandroid, rxrelay and autodispose)
     api "io.reactivex.rxjava2:rxjava:2.2.12"
     api 'io.reactivex.rxjava2:rxandroid:2.1.1'
     // more, Jake wharton's https://github.com/JakeWharton/RxRelay
